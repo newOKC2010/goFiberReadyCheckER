@@ -8,6 +8,7 @@ import (
 	cors "go-fiber-check-ambu/src/controller/cors"
 	conn "go-fiber-check-ambu/src/database/connection"
 	loadenv "go-fiber-check-ambu/src/loadEnv"
+	routes "go-fiber-check-ambu/src/routes"
 )
 
 func main() {
@@ -22,7 +23,7 @@ func main() {
 	cors.CorsConfig(app)
 	log.Printf("Server started on port: %s", port)
 
-	// routes.SetupAuthRoutes(app, conn.Db)
+	routes.SetupAuthRoutes(app, conn.Db)
 	// routes.SetupUserManageRoutes(app, conn.Db)
 
 	if err := app.Listen(":" + port); err != nil {

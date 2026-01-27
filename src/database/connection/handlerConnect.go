@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	modelService "go-fiber-check-ambu/src/database/models"
 	loadenv "go-fiber-check-ambu/src/loadEnv"
 )
 
@@ -51,13 +52,13 @@ func HandleModelCreation() {
 		return
 	}
 
-	// log.Println("Creating models...")
-	// createdCount, err := models.CreateTables(Db)
-	// if err != nil {
-	// 	log.Fatalf("Failed to create models: %v", err)
-	// }
+	log.Println("Creating models...")
+	createdCount, err := modelService.CreateTables(Db)
+	if err != nil {
+		log.Fatalf("Failed to create models: %v", err)
+	}
 
-	// if createdCount > 0 {
-	// 	log.Printf("Models created successfully (%d new table(s))", createdCount)
-	// }
+	if createdCount > 0 {
+		log.Printf("Models created successfully (%d new table(s))", createdCount)
+	}
 }
