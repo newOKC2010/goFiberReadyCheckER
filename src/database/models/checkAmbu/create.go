@@ -32,16 +32,16 @@ type Checklist struct {
 type CarChecked struct {
 	bun.BaseModel `bun:"table:car_checked"`
 
-	ID               int64      `bun:"id,pk,autoincrement"`
-	CarID            int64      `bun:"car_id,notnull"`
-	LicensePlateName string     `bun:"license_plate_name,notnull"`
-	CheckedDate      *time.Time `bun:"checked_date,default:current_date"`
-	CheckedBy        *int64     `bun:"checked_by"`
-	ChecklistItems   string     `bun:"checklist_items,type:jsonb,notnull"`
-	IsActive         bool       `bun:"is_active,default:true"`
-	DeletedAt        *time.Time `bun:"deleted_at"`
-	CreatedAt        time.Time  `bun:"created_at,nullzero,notnull,default:current_timestamp"`
-	UpdatedAt        time.Time  `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+	ID               int64       `bun:"id,pk,autoincrement"`
+	CarID            int64       `bun:"car_id,notnull"`
+	LicensePlateName string      `bun:"license_plate_name,notnull"`
+	CheckedDate      *time.Time  `bun:"checked_date,type:date,default:current_date"`
+	CheckedBy        *int64      `bun:"checked_by"`
+	ChecklistItems   interface{} `bun:"checklist_items,type:jsonb,notnull"`
+	IsActive         bool        `bun:"is_active,default:true"`
+	DeletedAt        *time.Time  `bun:"deleted_at"`
+	CreatedAt        time.Time   `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+	UpdatedAt        time.Time   `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 
 	Car *Car `bun:"rel:belongs-to,join:car_id=id"`
 }
