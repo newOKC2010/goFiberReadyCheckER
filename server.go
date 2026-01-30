@@ -21,6 +21,7 @@ func main() {
 
 	app := fiber.New()
 	cors.CorsConfig(app)
+
 	log.Printf("Server started on port: %s", port)
 
 	routes.SetupAuthRoutes(app, conn.Db)
