@@ -14,14 +14,12 @@ Authorization: Bearer <token>
 | `note` | string | ❌ | หมายเหตุ |
 | `status` | boolean | ❌ | สถานะ |
 | `images_{checklist_id}` | file[] | ✅ | **บังคับส่งทุกครั้ง** |
-| `images_action` | string | ❌ | `"append"` = เพิ่ม, อื่นๆ = แทนที่ |
 
 ## กฎสำคัญ
 
 - ✅ **ต้องส่ง `images_{checklist_id}` ทุกครั้ง** (ตรงกับ checklist_id)
-- ส่งว่าง → ลบหมด
-- ส่งรูป → ลบเก่า + ใส่ใหม่
-- `images_action: "append"` → เก็บเก่า + เพิ่มใหม่
+- ส่งว่าง → ลบรูปเก่าทั้งหมด
+- ส่งรูป → ลบรูปเก่า + ใส่รูปใหม่ทั้งหมด
 
 ---
 
@@ -30,20 +28,13 @@ Authorization: Bearer <token>
 ### 1. ลบรูปทั้งหมด
 ```
 images_1: (ส่ง field ว่าง)
-→ ลบรูปเก่าหมด
+→ ลบรูปเก่าทั้งหมด
 ```
 
-### 2. Replace (ลบเก่า ใส่ใหม่)
+### 2. อัพเดทรูป (เช่น เดิม 3 รูป อยากเพิ่มอีก 2 รูป)
 ```
-images_1: [new1.jpg, new2.jpg]
-→ ลบรูปเก่าหมด + ใส่รูปใหม่
-```
-
-### 3. Append (เก็บเก่า เพิ่มใหม่)
-```
-images_action: "append"
-images_1: [new3.jpg]
-→ เก็บรูปเก่า + เพิ่มรูปใหม่
+images_1: [old1.jpg, old2.jpg, old3.jpg, new1.jpg, new2.jpg]
+→ ลบรูปเก่าทั้งหมด + ใส่รูปใหม่ทั้งหมด 5 รูป
 ```
 
 ---
@@ -57,12 +48,11 @@ formData.append('checklist_id', '1');
 
 // ต้องส่ง images_{checklist_id} ทุกครั้ง
 if (mode === 'delete') {
+  // ส่ง field ว่างเพื่อลบรูปทั้งหมด
   formData.append('images_1', '');
-} else if (mode === 'append') {
-  formData.append('images_action', 'append');
-  files.forEach(f => formData.append('images_1', f));
 } else {
-  files.forEach(f => formData.append('images_1', f));
+  // ส่งรูปทั้งหมด (รูปเก่า + รูปใหม่)
+  allFiles.forEach(f => formData.append('images_1', f));
 }
 
 await fetch('/car-checked/update', { method: 'PUT', body: formData });
@@ -80,6 +70,6 @@ await fetch('/car-checked/update', { method: 'PUT', body: formData });
 ## หมายเหตุ
 
 - ⚠️ ต้องส่ง `images_{checklist_id}` ทุกครั้ง (ตรงกับ ID)
-- ⚠️ Replace ลบรูปเก่าหมดทุกครั้ง
+- ⚠️ ทุกครั้งที่ส่งจะลบรูปเก่าทั้งหมดแล้วใส่รูปใหม่
+- ⚠️ Frontend ต้องส่งรูปทั้งหมด (รูปเก่า + รูปใหม่)
 - ⚠️ ไฟล์ที่ลบไม่สามารถกู้คืน
-- ✅ Append เท่านั้นที่ไม่ลบรูปเก่า

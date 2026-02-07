@@ -13,7 +13,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, checklistID, note string, status bool, imagesAction string, images []string, hasImagesField bool) error {
+func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, checklistID, note string, status bool, images []string, hasImagesField bool) error {
 	var carChecked modelCheckAmbu.CarChecked
 	err := db.NewSelect().
 		Model(&carChecked).
@@ -35,12 +35,7 @@ func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, ch
 			oldImages = items.Items[i].Images
 			items.Items[i].Note = note
 			items.Items[i].Status = status
-
-			if imagesAction == "append" {
-				items.Items[i].Images = append(items.Items[i].Images, images...)
-			} else {
-				items.Items[i].Images = images
-			}
+			items.Items[i].Images = images
 
 			found = true
 			break
@@ -61,7 +56,7 @@ func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, ch
 		return err
 	}
 
-	if imagesAction != "append" && len(oldImages) > 0 {
+	if len(oldImages) > 0 {
 		uploadPath := loadEnv.LoadUploadPath()
 		for _, oldImage := range oldImages {
 			fullPath := filepath.Join(uploadPath, oldImage)

@@ -81,7 +81,7 @@ func UpdateCarChecked(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		err = serviceUpdate.UpdateChecklistItem(ctx, db, req.CarCheckedID, req.ChecklistID, req.Note, req.Status, req.ImagesAction, images, hasImagesField)
+		err = serviceUpdate.UpdateChecklistItem(ctx, db, req.CarCheckedID, req.ChecklistID, req.Note, req.Status, images, hasImagesField)
 		if err != nil {
 			return c.Status(500).JSON(updateUtils.UpdateResponse{
 				Success: false,

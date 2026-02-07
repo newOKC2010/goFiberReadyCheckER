@@ -5,7 +5,6 @@ type UpdateChecklistItemRequest struct {
 	ChecklistID  string `form:"checklist_id" json:"checklist_id"`
 	Note         string `form:"note" json:"note"`
 	Status       bool   `form:"status" json:"status"`
-	ImagesAction string `form:"images_action" json:"images_action"`
 }
 
 type UpdateResponse struct {
