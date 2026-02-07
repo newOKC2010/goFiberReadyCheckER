@@ -19,11 +19,10 @@ func CheckChecklistExists(ctx context.Context, db *bun.DB, name string) (bool, e
 	return count > 0, err
 }
 
-func CreateChecklist(ctx context.Context, db *bun.DB, name string, description *string) (int64, error) {
+func CreateChecklist(ctx context.Context, db *bun.DB, name string) (int64, error) {
 	checklist := &modelCheckAmbu.Checklist{
-		Name:        name,
-		Description: description,
-		IsActive:    true,
+		Name:     name,
+		IsActive: true,
 	}
 
 	_, err := db.NewInsert().

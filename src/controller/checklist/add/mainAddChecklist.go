@@ -54,7 +54,7 @@ func AddChecklist(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		checklistID, err := serviceAddChecklist.CreateChecklist(ctx, db, req.Name, req.Description)
+		checklistID, err := serviceAddChecklist.CreateChecklist(ctx, db, req.Name)
 		if err != nil {
 			return c.Status(500).JSON(addChecklistUtils.AddChecklistResponse{
 				Success: false,

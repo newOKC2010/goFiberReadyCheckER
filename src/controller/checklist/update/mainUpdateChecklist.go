@@ -38,13 +38,11 @@ func UpdateChecklist(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		if req.Name != "" {
-			if err := handlerUpdateChecklist.ValidateName(req.Name); err != nil {
-				return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
-					Success: false,
-					Message: err.Error(),
-				})
-			}
+		if err := handlerUpdateChecklist.ValidateName(req.Name); err != nil {
+			return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
+				Success: false,
+				Message: err.Error(),
+			})
 		}
 
 		ctx := context.Background()
@@ -63,23 +61,21 @@ func UpdateChecklist(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		if req.Name != "" {
-			duplicate, err := serviceUpdateChecklist.CheckNameExists(ctx, db, req.Name, req.ChecklistID)
-			if err != nil {
-				return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
-					Success: false,
-					Message: "ตรวจสอบข้อมูลไม่สำเร็จ",
-				})
-			}
-			if duplicate {
-				return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
-					Success: false,
-					Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว",
-				})
-			}
+		duplicate, err := serviceUpdateChecklist.CheckNameExists(ctx, db, req.Name, req.ChecklistID)
+		if err != nil {
+			return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
+				Success: false,
+				Message: "ตรวจสอบข้อมูลไม่สำเร็จ",
+			})
+		}
+		if duplicate {
+			return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
+				Success: false,
+				Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว",
+			})
 		}
 
-		if err := serviceUpdateChecklist.UpdateChecklist(ctx, db, req.ChecklistID, req.Name, req.Description, req.IsActive); err != nil {
+		if err := serviceUpdateChecklist.UpdateChecklist(ctx, db, req.ChecklistID, req.Name, req.IsActive); err != nil {
 			return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
 				Success: false,
 				Message: err.Error(),

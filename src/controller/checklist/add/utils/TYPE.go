@@ -1,8 +1,7 @@
 package addChecklistUtils
 
 type AddChecklistRequest struct {
-	Name        string  `json:"name" form:"name"`
-	Description *string `json:"description" form:"description"`
+	Name string `json:"name" form:"name"`
 }
 
 type AddChecklistResponse struct {

@@ -36,12 +36,11 @@ func ViewsChecklists(db *bun.DB) fiber.Handler {
 		checklistResponses := make([]viewsChecklistUtils.ChecklistResponse, len(checklists))
 		for i, checklist := range checklists {
 			checklistResponses[i] = viewsChecklistUtils.ChecklistResponse{
-				ID:          checklist.ID,
-				Name:        checklist.Name,
-				Description: checklist.Description,
-				IsActive:    checklist.IsActive,
-				CreatedAt:   checklist.CreatedAt,
-				UpdatedAt:   checklist.UpdatedAt,
+				ID:        checklist.ID,
+				Name:      checklist.Name,
+				IsActive:  checklist.IsActive,
+				CreatedAt: checklist.CreatedAt,
+				UpdatedAt: checklist.UpdatedAt,
 			}
 		}
 

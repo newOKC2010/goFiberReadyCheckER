@@ -30,19 +30,12 @@ func CheckNameExists(ctx context.Context, db *bun.DB, name string, excludeID int
 	return count > 0, err
 }
 
-func UpdateChecklist(ctx context.Context, db *bun.DB, checklistID int64, name string, description *string, isActive *bool) error {
+func UpdateChecklist(ctx context.Context, db *bun.DB, checklistID int64, name string, isActive *bool) error {
 	query := db.NewUpdate().
 		Model((*modelCheckAmbu.Checklist)(nil)).
 		Where("id = ?", checklistID).
-		Where("deleted_at IS NULL")
-
-	if name != "" {
-		query = query.Set("name = ?", name)
-	}
-
-	if description != nil {
-		query = query.Set("description = ?", description)
-	}
+		Where("deleted_at IS NULL").
+		Set("name = ?", name)
 
 	if isActive != nil {
 		query = query.Set("is_active = ?", *isActive)
