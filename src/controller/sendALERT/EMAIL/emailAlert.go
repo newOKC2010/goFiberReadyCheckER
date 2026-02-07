@@ -1,4 +1,4 @@
-package emailAlert
+package emailAlertSend
 
 import (
 	"net/smtp"
