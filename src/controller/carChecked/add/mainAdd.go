@@ -89,6 +89,8 @@ func AddCarChecked(db *bun.DB) fiber.Handler {
 
 		log.Printf("✅ เพิ่มข้อมูลการตรวจสอบรถสำเร็จ: ID=%d, Car=%s", carCheckedID, car.LicensePlateName)
 
+		handlerAdd.SendCarCheckedAlert(ctx, db, user.ID, car.LicensePlateName, *checklistItems)
+
 		return c.Status(201).JSON(addUtils.AddCarCheckedResponse{
 			Success: true,
 			Message: "บันทึกข้อมูลสำเร็จ",
