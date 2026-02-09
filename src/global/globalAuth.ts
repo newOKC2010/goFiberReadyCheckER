@@ -1,4 +1,4 @@
-import { API_BASE_URL, API_ENDPOINTS } from './globalApi';
+import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 
 export const USER_ROLES = {
   USER: 'user',
@@ -13,12 +13,26 @@ export interface UserStaffInfo {
   department_name?: string;
 }
 
+function parseTimeToSeconds(time: string): number {
+  const value = parseInt(time);
+  const unit = time.slice(-1);
+  
+  if (unit === 'm') return value * 60;
+  if (unit === 'h') return value * 3600;
+  if (unit === 'd') return value * 86400;
+  
+  return 86400;
+}
+
 export class AuthToken {
   private static key = 'auth_token';
-  private static maxAge = 86400; // 1 วัน
+  private static getMaxAge = () => {
+    const envTime = process.env.NEXT_PUBLIC_TOKEN_EXPIRE || '1d';
+    return parseTimeToSeconds(envTime);
+  };
   
   static storeToken = (token: string) => {
-    document.cookie = `${this.key}=${token}; path=/; max-age=${this.maxAge}`;
+    document.cookie = `${this.key}=${token}; path=/; max-age=${this.getMaxAge()}`;
   };
   
   static getToken = () => {

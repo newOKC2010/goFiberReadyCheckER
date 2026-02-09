@@ -62,7 +62,7 @@ export function showAlert(
         text: text,
         icon: icon,
         confirmButtonText: 'ตกลง',
-        confirmButtonColor: buttonColors?.confirm || '#667eea',
+        confirmButtonColor: buttonColors?.confirm || '#dc2626',
         cancelButtonColor: buttonColors?.cancel,
         allowOutsideClick: finalOptions.allowOutsideClick,
         allowEscapeKey: finalOptions.allowEscapeKey,

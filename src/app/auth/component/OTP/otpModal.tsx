@@ -37,20 +37,22 @@ export const OtpModal = ({ isOpen, onClose, email, onVerify, loading = false }: 
       title="ยืนยัน OTP"
       contentClassName="!bg-white/80 !backdrop-blur-xl !border !border-white/50"
       icon={
-        <span className="material-symbols-outlined text-5xl text-blue-400"
+        <span className="material-symbols-outlined text-5xl text-red-500"
           style={{
             fontVariationSettings: "'wght' 700",
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             transition: 'all 0.3s ease'
           }}>
-          lock
+          shield_lock
         </span>
       }
     >
       <div className="space-y-6">
         <p className="text-center text-gray-600 text-sm font-bold">
-          กรุณากรอกรหัส OTP 6 หลักที่ส่งไปยัง line หมอพร้อม หรือ email ที่คุณลงทะเบียน<br />
+          กรอกรหัส OTP 6 หลัก ที่ส่งไปยัง<br />
           <span className="font-bold text-gray-800">{email}</span>
+          <br />
+          หรือ line หมอพร้อมของคุณ
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -71,15 +73,23 @@ export const OtpModal = ({ isOpen, onClose, email, onVerify, loading = false }: 
               customWidth={200}
               loading={loading}
               disabled={loading || otp.length !== 6}
-              className="rounded-2xl text-white"
+              className="rounded-2xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white"
               icon="check_circle"
             >
               ยืนยัน
             </Button>
           </div>
 
-          <p className="text-center text-red-400 text-xs font-bold">
-            รหัส OTP มีอายุ 2 นาที ทุกครั้งที่ทำการขอ
+          <p className="text-center text-red-500 text-xs font-bold flex items-center justify-center gap-1">
+            <span className="material-symbols-outlined text-sm"
+              style={{
+                fontVariationSettings: "'wght' 700",
+                fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+                transition: 'all 0.3s ease'
+              }}>
+              schedule
+            </span>
+            รหัส OTP มีอายุ 2 นาที
           </p>
         </form>
       </div>
