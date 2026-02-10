@@ -24,15 +24,15 @@ export default function SidebarHeader({ user, onClose }: SidebarHeaderProps) {
         </span>
       </button>
 
-      <div className="flex items-center gap-3">
-        <span className="material-symbols-outlined text-blue-500 text-3xl" style={{ fontVariationSettings: "'wght' 700" }}>
-          Clinical_Notes
+      <div className="flex items-center gap-3 pr-12 lg:pr-0">
+        <span className="material-symbols-outlined text-red-500 text-3xl" style={{ fontVariationSettings: "'wght' 700" }}>
+          ambulance
         </span>
-        <h1 className="text-xl font-bold text-gray-800">REQ-FORM</h1>
+        <h1 className="text-xl font-bold text-gray-800">ER Ready Check</h1>
       </div>
       
       {user && (
-        <div className="mt-4 space-y-1">
+        <div className="mt-4 space-y-1 pr-12 lg:pr-0">
           <p className="text-sm font-bold text-gray-800 truncate">{user.email}</p>
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-gray-500 text-sm" style={{ fontVariationSettings: "'wght' 700" }}>

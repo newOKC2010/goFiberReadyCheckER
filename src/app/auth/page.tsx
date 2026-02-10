@@ -8,7 +8,6 @@ import { OtpModal } from '@/app/auth/component/OTP/otpModal';
 import { handleLoginRequest } from '@/app/auth/request/handler/handlerReq';
 import { handleVerifyOtp } from '@/app/auth/verify/handler/handlerVerify';
 import { useErrorAlert } from '@/hooks/useErrorAlert';
-import { USER_ROLES, checkAuth } from '@/global/globalAuth';
 
 import Loading from '@/components/loading/mainLoading';
 
@@ -25,7 +24,7 @@ export default function AuthPage() {
   const [verifiedEmail, setVerifiedEmail] = useState('');
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
-  const [mousePosition] = useState({ x: 0, y: 0 });
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -6,5 +6,17 @@ export const API_ENDPOINTS = {
     LOGIN_VERIFY: '/auth/verify',
     REGISTER: '/auth/register',
     STATUS: '/auth/status',
+  },
+  CAR: {
+    VIEWS: '/car/views',
+  },
+  CAR_CHECKED: {
+    VIEWS: '/car-checked/views',
+    ADD: '/car-checked/add',
+    UPDATE: '/car-checked/update',
+    DELETE: '/car-checked/delete',
+  },
+  USER: {
+    LIST: '/user/list',
   }
 }
