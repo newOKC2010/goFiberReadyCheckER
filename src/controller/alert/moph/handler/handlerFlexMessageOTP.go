@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	mophAlertUtils "go-fiber-check-ambu/src/controller/sendALERT/MOPH/utils"
+	mophAlertUtils "go-fiber-check-ambu/src/controller/alert/moph/utils"
 )
 
 // CreateOTPFlexMessage - สร้าง Flex Message สำหรับส่ง OTP

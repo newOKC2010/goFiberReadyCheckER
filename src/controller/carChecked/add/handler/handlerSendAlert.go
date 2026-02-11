@@ -5,11 +5,11 @@ import (
 	"log"
 	"time"
 
-	addUtils "go-fiber-check-ambu/src/controller/carChecked/add/utils"
+	mophAlert "go-fiber-check-ambu/src/controller/alert/moph"
+	handlerMophAlert "go-fiber-check-ambu/src/controller/alert/moph/handler"
+	mophAlertUtils "go-fiber-check-ambu/src/controller/alert/moph/utils"
 	serviceAdd "go-fiber-check-ambu/src/controller/carChecked/add/service"
-	handlerMophAlert "go-fiber-check-ambu/src/controller/sendALERT/MOPH/handler"
-	mophAlert "go-fiber-check-ambu/src/controller/sendALERT/MOPH"
-	mophAlertUtils "go-fiber-check-ambu/src/controller/sendALERT/MOPH/utils"
+	addUtils "go-fiber-check-ambu/src/controller/carChecked/add/utils"
 
 	"github.com/uptrace/bun"
 )

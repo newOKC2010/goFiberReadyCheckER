@@ -3,8 +3,8 @@ package handlerLogin
 import (
 	"log"
 
-	mophAlert "go-fiber-check-ambu/src/controller/sendALERT/MOPH"
-	emailAlert "go-fiber-check-ambu/src/controller/sendALERT/email"
+	emailAlert "go-fiber-check-ambu/src/controller/alert/email"
+	mophAlert "go-fiber-check-ambu/src/controller/alert/moph"
 	modelAuth "go-fiber-check-ambu/src/database/models/auth"
 )
 

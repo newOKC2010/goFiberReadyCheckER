@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	handlerMophAlert "go-fiber-check-ambu/src/controller/sendALERT/MOPH/handler"
-	mophAlertUtils "go-fiber-check-ambu/src/controller/sendALERT/MOPH/utils"
+	handlerMophAlert "go-fiber-check-ambu/src/controller/alert/moph/handler"
+	mophAlertUtils "go-fiber-check-ambu/src/controller/alert/moph/utils"
 	loadEnv "go-fiber-check-ambu/src/loadEnv"
 )
 

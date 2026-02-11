@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	mophAlertUtils "go-fiber-check-ambu/src/controller/alert/moph/utils"
 	addUtils "go-fiber-check-ambu/src/controller/carChecked/add/utils"
-	mophAlertUtils "go-fiber-check-ambu/src/controller/sendALERT/MOPH/utils"
 )
 
 func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate string, items []addUtils.ChecklistItem) mophAlertUtils.FlexMessage {

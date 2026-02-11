@@ -3,7 +3,7 @@ package emailAlertSend
 import (
 	"net/smtp"
 
-	handlerEmailAlert "go-fiber-check-ambu/src/controller/sendALERT/EMAIL/handler"
+	handlerEmailAlert "go-fiber-check-ambu/src/controller/alert/email/handler"
 	loadEnv "go-fiber-check-ambu/src/loadEnv"
 )
 
