@@ -1,5 +1,12 @@
 package viewsUtils
 
+type FilterParams struct {
+	DateFrom string `json:"date_from"`
+	DateTo   string `json:"date_to"`
+	CarID    string `json:"car_id"`
+	StaffID  string `json:"staff_id"`
+}
+
 type ChecklistItem struct {
 	Name        string   `json:"name"`
 	Note        string   `json:"note"`

@@ -9,7 +9,7 @@ import (
 	modelCheckAmbu "go-fiber-check-ambu/src/database/models/checkAmbu"
 )
 
-func GetAllCarChecked(ctx context.Context, db *bun.DB) ([]viewsUtils.CarCheckedData, error) {
+func GetAllCarChecked(ctx context.Context, db *bun.DB, filters viewsUtils.FilterParams) ([]viewsUtils.CarCheckedData, error) {
 	var data []viewsUtils.CarCheckedData
 
 	query := db.NewSelect().
@@ -18,24 +18,49 @@ func GetAllCarChecked(ctx context.Context, db *bun.DB) ([]viewsUtils.CarCheckedD
 		ColumnExpr("user_er.full_name AS full_name").
 		Join("LEFT JOIN user_er ON user_er.id = car_checked.checked_by").
 		Where("car_checked.is_active = ?", true).
-		Where("car_checked.deleted_at IS NULL").
-		Order("car_checked.checked_date DESC")
+		Where("car_checked.deleted_at IS NULL")
 
+	if filters.DateFrom != "" {
+		query = query.Where("car_checked.checked_date >= ?", filters.DateFrom)
+	}
+	if filters.DateTo != "" {
+		query = query.Where("car_checked.checked_date <= ?", filters.DateTo)
+	}
+	if filters.CarID != "" {
+		query = query.Where("car_checked.car_id = ?", filters.CarID)
+	}
+	if filters.StaffID != "" {
+		query = query.Where("car_checked.checked_by = ?", filters.StaffID)
+	}
+
+	query = query.Order("car_checked.checked_date DESC")
 	err := query.Scan(ctx, &data)
 
 	return data, err
 }
 
-func GetCarCheckedByUserID(ctx context.Context, db *bun.DB, userID int64) ([]viewsUtils.CarCheckedData, error) {
+func GetCarCheckedByUserID(ctx context.Context, db *bun.DB, userID int64, filters viewsUtils.FilterParams) ([]viewsUtils.CarCheckedData, error) {
 	var data []viewsUtils.CarCheckedData
-	err := db.NewSelect().
+
+	query := db.NewSelect().
 		Model((*modelCheckAmbu.CarChecked)(nil)).
 		Column("id", "license_plate_name", "checked_date", "checked_by", "checklist_items").
 		Where("car_checked.checked_by = ?", userID).
 		Where("car_checked.is_active = ?", true).
-		Where("car_checked.deleted_at IS NULL").
-		Order("car_checked.checked_date DESC").
-		Scan(ctx, &data)
+		Where("car_checked.deleted_at IS NULL")
+
+	if filters.DateFrom != "" {
+		query = query.Where("car_checked.checked_date >= ?", filters.DateFrom)
+	}
+	if filters.DateTo != "" {
+		query = query.Where("car_checked.checked_date <= ?", filters.DateTo)
+	}
+	if filters.CarID != "" {
+		query = query.Where("car_checked.car_id = ?", filters.CarID)
+	}
+
+	query = query.Order("car_checked.checked_date DESC")
+	err := query.Scan(ctx, &data)
 
 	return data, err
 }

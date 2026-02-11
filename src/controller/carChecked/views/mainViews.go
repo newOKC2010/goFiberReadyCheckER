@@ -17,13 +17,27 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 		user := c.Locals("user_er").(*middleware.UserERInfo)
 		ctx := context.Background()
 
+		filters := viewsUtils.FilterParams{
+			DateFrom: c.Query("date_from"),
+			DateTo:   c.Query("date_to"),
+			CarID:    c.Query("car_id"),
+			StaffID:  c.Query("staff_id"),
+		}
+
+		if err := handlerViews.ValidateFilters(filters); err != nil {
+			return c.Status(400).JSON(viewsUtils.ViewCarCheckedResponse{
+				Success: false,
+				Message: err.Error(),
+			})
+		}
+
 		var data []viewsUtils.CarCheckedData
 		var err error
 
 		if user.Role == "user" {
-			data, err = serviceViews.GetCarCheckedByUserID(ctx, db, user.ID)
+			data, err = serviceViews.GetCarCheckedByUserID(ctx, db, user.ID, filters)
 		} else {
-			data, err = serviceViews.GetAllCarChecked(ctx, db)
+			data, err = serviceViews.GetAllCarChecked(ctx, db, filters)
 		}
 
 		if err != nil {
