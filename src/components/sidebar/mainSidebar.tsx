@@ -16,7 +16,7 @@ interface SidebarProps {
 
 const ALL_MENUS = [
   { 
-    name: 'ตรวจสอบรถ', 
+    name: 'ตรวจสอบรถฉุกเฉิน', 
     icon: 'local_shipping', 
     path: '/main/carChecked',
     excludeRoles: [] as string[]
@@ -28,7 +28,7 @@ const ALL_MENUS = [
     excludeRoles: [USER_ROLES.USER] as string[]
   },
   { 
-    name: 'รายชื่อรถฉุกเฉิน', 
+    name: 'รายชื่อทะเบียนรถฉุกเฉิน', 
     icon: 'list_alt', 
     path: '/main/carList',
     excludeRoles: [USER_ROLES.USER] as string[]
