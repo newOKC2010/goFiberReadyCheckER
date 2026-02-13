@@ -26,22 +26,19 @@ export default function ImageModal({ images, currentIndex, isOpen, onClose, onNe
     setImageSrc('');
     try {
       const token = AuthToken.getToken();
-      console.log('🔍 Debug Modal Image:', { imageUrl, token: token?.substring(0, 20) + '...' });
       const response = await fetch(imageUrl, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log('📥 Modal Response:', response.status, response.statusText);
       if (!response.ok) {
-        console.error('❌ Failed to load modal image:', response.status, response.statusText);
         setLoading(false);
         return;
       }
       const blob = await response.blob();
       setImageSrc(URL.createObjectURL(blob));
     } catch (error) {
-      console.error('❌ Error loading modal image:', error);
+      setLoading(false);
     } finally {
       setLoading(false);
     }

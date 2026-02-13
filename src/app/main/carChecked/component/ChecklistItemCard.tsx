@@ -84,13 +84,8 @@ export default function ChecklistItemCard({ item, index }: ChecklistItemCardProp
                 <ImageWithToken
                   src={`${API_BASE_URL}/car-checked/view-image/${image.startsWith('/') ? image.substring(1) : image}`}
                   alt={`รูปภาพ ${idx + 1}`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 transition-opacity text-3xl">
-                    zoom_in
-                  </span>
-                </div>
               </div>
             ))}
           </div>
@@ -115,53 +110,75 @@ function ImageWithToken({ src, alt, className }: { src: string; alt: string; cla
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    let isCancelled = false;
+    
     const fetchImage = async () => {
       setLoading(true);
       setError(false);
+      setImageSrc('');
+      
       try {
         const token = AuthToken.getToken();
-        console.log('🖼️ Loading thumbnail:', src);
         const response = await fetch(src, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        console.log('📸 Thumbnail response:', response.status);
+        
         if (!response.ok) {
-          console.error('❌ Failed to load thumbnail:', response.status, response.statusText, src);
-          setError(true);
-          setLoading(false);
+          if (!isCancelled) setError(true);
           return;
         }
+        
         const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        console.log('✅ Thumbnail loaded:', url);
-        setImageSrc(url);
-        setLoading(false);
+        
+        if (blob.size === 0 || !blob.type.startsWith('image/')) {
+          if (!isCancelled) setError(true);
+          return;
+        }
+        
+        if (!isCancelled) {
+          const objectUrl = URL.createObjectURL(blob);
+          setImageSrc(objectUrl);
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('❌ Error loading thumbnail:', error, src);
-        setError(true);
-        setLoading(false);
+        if (!isCancelled) {
+          setError(true);
+          setLoading(false);
+        }
       }
     };
+    
     fetchImage();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [src]);
 
   if (loading) {
     return (
-      <div className={`${className} bg-gray-100 flex items-center justify-center`}>
-        <span className="material-symbols-outlined text-gray-400 animate-pulse">image</span>
+      <div className={`${className} bg-gray-200 flex items-center justify-center`}>
+        <span className="material-symbols-outlined text-gray-400 animate-pulse text-4xl">image</span>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !imageSrc) {
     return (
-      <div className={`${className} bg-red-50 flex items-center justify-center`}>
-        <span className="material-symbols-outlined text-red-400">broken_image</span>
+      <div className={`${className} bg-red-100 flex items-center justify-center`}>
+        <span className="material-symbols-outlined text-red-500 text-4xl">broken_image</span>
       </div>
     );
   }
 
-  return imageSrc ? <img src={imageSrc} alt={alt} className={className} /> : null;
+  return (
+    <img 
+      src={imageSrc} 
+      alt={alt} 
+      className={className}
+      style={{ backgroundColor: '#ffffff' }}
+    />
+  );
 }
