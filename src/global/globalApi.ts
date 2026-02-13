@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   },
   CAR_CHECKED: {
     VIEWS: '/car-checked/views',
+    VIEW_IMAGE: '/car-checked/view-image',
     ADD: '/car-checked/add',
     UPDATE: '/car-checked/update',
     DELETE: '/car-checked/delete',

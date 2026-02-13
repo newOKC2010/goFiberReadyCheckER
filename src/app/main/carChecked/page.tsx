@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import PageHeader from '@/app/main/carChecked/component/PageHeader';
 import FilterSection from '@/app/main/carChecked/component/FilterSection';
 import TableSection from '@/app/main/carChecked/component/TableSection';
+import ViewModal from '@/app/main/carChecked/component/ViewModal';
 import { showAlert } from '@/global/globalSwal';
 import { CarCheckedItem, CarOption, StaffOption, FilterParams } from '@/app/main/carChecked/utils/types';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
@@ -18,6 +19,8 @@ export default function CarCheckedPage() {
   const [userRole, setUserRole] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<CarCheckedItem | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -101,7 +104,13 @@ export default function CarCheckedPage() {
   };
 
   const handleView = (item: CarCheckedItem) => {
-    showAlert('ดูรายละเอียด', `รายการ: ${item.license_plate_name}`, 'info');
+    setSelectedItem(item);
+    setViewModalOpen(true);
+  };
+
+  const handleCloseViewModal = () => {
+    setViewModalOpen(false);
+    setSelectedItem(null);
   };
 
   const handleEdit = (item: CarCheckedItem) => {
@@ -145,6 +154,12 @@ export default function CarCheckedPage() {
         onView={handleView}
         onEdit={handleEdit}
         onDelete={(item) => handler.handleDelete(item, fetchData)}
+      />
+
+      <ViewModal
+        item={selectedItem}
+        isOpen={viewModalOpen}
+        onClose={handleCloseViewModal}
       />
       </div>
     </div>
