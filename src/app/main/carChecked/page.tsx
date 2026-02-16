@@ -16,7 +16,7 @@ import { usePrintEffect } from '@/app/main/carChecked/hooks/usePrintEffect';
 import { handleSearch, handleReset } from '@/app/main/carChecked/utils/searchHandlers';
 
 export default function CarCheckedPage() {
-  const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData } = useCarCheckedData();
+  const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData, reloadDropdownData } = useCarCheckedData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
   const { viewModalOpen, addModalOpen, selectedItem, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openPrint, setPrintItem } = useModals();
 
@@ -24,6 +24,11 @@ export default function CarCheckedPage() {
 
   const handleEdit = (item: any) => {
     showAlert('แก้ไข', `แก้ไขรายการ: ${item.license_plate_name}`, 'info');
+  };
+
+  const handleOpenAddModal = async () => {
+    await reloadDropdownData();
+    openAddModal();
   };
 
   const handleAddSuccess = () => {
@@ -64,8 +69,8 @@ export default function CarCheckedPage() {
       <div className="no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
           <PageHeader 
-            onAdd={openAddModal}
-            showAddButton={handler.isAdminOrSuperAdmin(userRole)}
+            onAdd={handleOpenAddModal}
+            showAddButton={true}
           />
       
           <FilterSection

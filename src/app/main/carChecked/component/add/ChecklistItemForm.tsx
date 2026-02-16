@@ -6,12 +6,15 @@ import { ChecklistItem } from './utils/types';
 interface ChecklistItemFormProps {
   item: ChecklistItem;
   index: number;
+  hasError?: boolean;
   onUpdate: (field: keyof ChecklistItem, value: any) => void;
 }
 
-export default function ChecklistItemForm({ item, index, onUpdate }: ChecklistItemFormProps) {
+export default function ChecklistItemForm({ item, index, hasError = false, onUpdate }: ChecklistItemFormProps) {
   return (
-    <div className="border rounded-lg p-4 bg-gray-50">
+    <div className={`border rounded-lg p-4 bg-gray-50 transition-all ${
+      hasError ? 'border-red-500 border-2 shadow-lg shadow-red-200' : 'border-gray-300'
+    }`}>
       <div className="flex items-center gap-3 mb-3">
         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">
           {index + 1}

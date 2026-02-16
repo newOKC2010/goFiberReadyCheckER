@@ -57,7 +57,6 @@ export default function PrintContent({ item }: PrintContentProps) {
         <p className="font-bold text-lg mb-2">สรุปผลการตรวจสอบ</p>
         <div className="p-4">
           <p className="font-bold">รายการที่ผ่านการตรวจสอบ: {passedItems}/{totalItems} รายการ</p>
-          <p className="font-bold">ผลการประเมิน: {passedItems === totalItems ? 'ผ่าน' : 'ไม่ผ่าน'}</p>
         </div>
       </div>
 

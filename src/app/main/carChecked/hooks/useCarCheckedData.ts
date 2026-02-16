@@ -53,6 +53,14 @@ export function useCarCheckedData() {
     }
   };
 
+  const reloadDropdownData = async () => {
+    const carsData = await handler.loadCars();
+    setCars(carsData);
+    
+    const checklistData = await addHandler.loadChecklists();
+    setChecklists(checklistData);
+  };
+
   return {
     data,
     setData,
@@ -65,6 +73,7 @@ export function useCarCheckedData() {
     staff,
     checklists,
     userRole,
-    reloadData
+    reloadData,
+    reloadDropdownData
   };
 }

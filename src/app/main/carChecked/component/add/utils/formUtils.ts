@@ -1,7 +1,7 @@
 import { showAlert } from '@/global/globalSwal';
 import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 import { AuthToken } from '@/global/globalAuth';
-import { ChecklistItem } from './types';
+import { ChecklistItem } from '@/app/main/carChecked/component/add/utils/types';
 import { ChecklistOption } from '@/app/main/carChecked/utils/types';
 
 export const initializeChecklistItems = (checklists: ChecklistOption[]): ChecklistItem[] => {
@@ -14,38 +14,42 @@ export const initializeChecklistItems = (checklists: ChecklistOption[]): Checkli
   }));
 };
 
-export const validateForm = (selectedCarId: string, checklistItems: ChecklistItem[]): boolean => {
+export const validateForm = (selectedCarId: string, checklistItems: ChecklistItem[]): { isValid: boolean; errorField?: string } => {
   if (!selectedCarId) {
-    showAlert('ข้อผิดพลาด', 'กรุณาเลือกรถ', 'error');
-    return false;
+    showAlert('ข้อผิดพลาด', 'กรุณาเลือกทะเบียนรถ', 'error');
+    return { isValid: false, errorField: 'car' };
   }
 
   const hasEmptyStatus = checklistItems.some(item => item.status === null);
   if (hasEmptyStatus) {
     showAlert('ข้อผิดพลาด', 'กรุณาเลือกสถานะการตรวจสอบทุกรายการ', 'error');
-    return false;
+    return { isValid: false, errorField: 'checklist' };
   }
 
-  return true;
+  return { isValid: true };
 };
 
 export const prepareFormData = (selectedCarId: string, checklistItems: ChecklistItem[]): FormData => {
   const formData = new FormData();
   formData.append('car_id', selectedCarId);
+  
+  // ส่ง checklist_items เป็น JSON โดยไม่มี images field
   formData.append('checklist_items', JSON.stringify({ 
-    items: checklistItems.map((item, itemIndex) => ({
+    items: checklistItems.map((item) => ({
       checklist_id: item.checklist_id,
       name: item.name,
       note: item.note,
-      status: item.status,
-      images: item.images.map(() => `images_${itemIndex + 1}`)
+      status: item.status
     })) 
   }));
 
-  checklistItems.forEach((item, itemIndex) => {
-    item.images.forEach((file) => {
-      formData.append(`images_${itemIndex + 1}`, file);
-    });
+  // ส่งไฟล์รูปแยกเป็น field images_{checklist_id}
+  checklistItems.forEach((item) => {
+    if (item.images.length > 0) {
+      item.images.forEach((file) => {
+        formData.append(`images_${item.checklist_id}`, file);
+      });
+    }
   });
 
   return formData;

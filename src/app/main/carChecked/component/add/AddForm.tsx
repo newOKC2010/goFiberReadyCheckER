@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Dropdown from '@/components/dropdown/mainDropdown';
 import { Button } from '@/components/buttonClick/mainButton';
 import { showAlert } from '@/global/globalSwal';
@@ -11,6 +11,9 @@ import { initializeChecklistItems, validateForm, prepareFormData, submitForm } f
 export default function AddForm({ cars, checklists, loading, setLoading, onSuccess, onCancel }: AddFormProps) {
   const [selectedCarId, setSelectedCarId] = useState<string>('');
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>([]);
+  const [errorItems, setErrorItems] = useState<number[]>([]);
+  const carDropdownRef = useRef<HTMLDivElement>(null);
+  const checklistItemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useState(() => {
     if (checklists.length > 0 && checklistItems.length === 0) {
@@ -25,7 +28,30 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
   };
 
   const handleSubmit = async () => {
-    if (!validateForm(selectedCarId, checklistItems)) return;
+    // ตรวจสอบทะเบียนรถ
+    if (!selectedCarId) {
+      showAlert('ข้อผิดพลาด', 'กรุณาเลือกทะเบียนรถ', 'error');
+      carDropdownRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // ตรวจสอบสถานะของแต่ละ checklist item
+    const errors: number[] = [];
+    checklistItems.forEach((item, index) => {
+      if (item.status === null) {
+        errors.push(index);
+      }
+    });
+
+    if (errors.length > 0) {
+      setErrorItems(errors);
+      showAlert('ข้อผิดพลาด', 'กรุณาเลือกสถานะการตรวจสอบทุกรายการ', 'error');
+      // Focus ไปที่ item แรกที่มี error
+      checklistItemRefs.current[errors[0]]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    setErrorItems([]);
 
     setLoading(true);
     const formData = prepareFormData(selectedCarId, checklistItems);
@@ -49,7 +75,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
   return (
     <div className="space-y-6">
       {/* เลือกทะเบียนรถ */}
-      <div>
+      <div ref={carDropdownRef}>
         <label className="block text-sm font-bold text-gray-700 mb-2">
           เลือกทะเบียนรถ <span className="text-red-500">*</span>
         </label>
@@ -67,36 +93,33 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
         <h3 className="text-lg font-bold text-gray-800 mb-4">รายการตรวจสอบ</h3>
         <div className="space-y-4 max-h-96 overflow-y-auto">
           {checklistItems.map((item, index) => (
-            <ChecklistItemForm
-              key={item.checklist_id}
-              item={item}
-              index={index}
-              onUpdate={(field, value) => updateChecklistItem(index, field, value)}
-            />
+            <div key={item.checklist_id} ref={(el) => { checklistItemRefs.current[index] = el; }}>
+              <ChecklistItemForm
+                item={item}
+                index={index}
+                hasError={errorItems.includes(index)}
+                onUpdate={(field, value) => {
+                  updateChecklistItem(index, field, value);
+                  // ลบ error เมื่อมีการเลือกสถานะ
+                  if (field === 'status' && value !== null) {
+                    setErrorItems(prev => prev.filter(i => i !== index));
+                  }
+                }}
+              />
+            </div>
           ))}
         </div>
       </div>
 
-      {/* ปุ่มควบคุม */}
-      <div className="flex gap-2 sm:gap-3 justify-end pt-4 border-t">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-          disabled={loading}
-          size="sm"
-          className="sm:!px-4 sm:!py-2"
-        >
-          ยกเลิก
-        </Button>
+      {/* ปุ่มบันทึก */}
+      <div className="flex justify-center pt-4 border-t">
         <Button
           type="button"
           variant="pastel"
           onClick={handleSubmit}
           loading={loading}
-          disabled={loading || !selectedCarId}
-          size="sm"
-          className="bg-blue-600 hover:bg-blue-700 text-white sm:!px-4 sm:!py-2"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base font-bold"
         >
           บันทึกข้อมูล
         </Button>
