@@ -5,13 +5,6 @@ import (
 	"strings"
 )
 
-func ValidateAdminRole(role string) error {
-	if role != "admin" && role != "super_admin" {
-		return fmt.Errorf("ไม่มีสิทธิ์แก้ไขข้อมูล (เฉพาะ admin)")
-	}
-	return nil
-}
-
 func ValidateChecklistID(checklistID int64) error {
 	if checklistID <= 0 {
 		return fmt.Errorf("checklist_id ไม่ถูกต้อง")

@@ -6,7 +6,6 @@ import (
 	handlerUpdateChecklist "go-fiber-check-ambu/src/controller/checklist/update/handler"
 	serviceUpdateChecklist "go-fiber-check-ambu/src/controller/checklist/update/service"
 	updateChecklistUtils "go-fiber-check-ambu/src/controller/checklist/update/utils"
-	"go-fiber-check-ambu/src/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/uptrace/bun"
@@ -14,15 +13,6 @@ import (
 
 func UpdateChecklist(db *bun.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		user := c.Locals("user_er").(*middleware.UserERInfo)
-
-		if err := handlerUpdateChecklist.ValidateAdminRole(user.Role); err != nil {
-			return c.Status(403).JSON(updateChecklistUtils.UpdateChecklistResponse{
-				Success: false,
-				Message: err.Error(),
-			})
-		}
-
 		var req updateChecklistUtils.UpdateChecklistRequest
 		if err := c.BodyParser(&req); err != nil {
 			return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{

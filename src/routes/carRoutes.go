@@ -13,7 +13,7 @@ import (
 func SetupCarRoutes(app fiber.Router, db *bun.DB) {
 	prefix := app.Group("/car")
 
-	prefix.Post("/add", middleware.AuthGuards(db, nil), mainAddCar.AddCar(db))
-	prefix.Put("/update", middleware.AuthGuards(db, nil), mainUpdateCar.UpdateCar(db))
+	prefix.Post("/add", middleware.AuthGuards(db, []string{"admin", "super_admin"}), mainAddCar.AddCar(db))
+	prefix.Put("/update", middleware.AuthGuards(db, []string{"admin", "super_admin"}), mainUpdateCar.UpdateCar(db))
 	prefix.Get("/views", middleware.AuthGuards(db, nil), mainViewsCar.ViewsCars(db))
 }

@@ -13,7 +13,7 @@ import (
 func SetupChecklistRoutes(app fiber.Router, db *bun.DB) {
 	prefix := app.Group("/checklist")
 
-	prefix.Post("/add", middleware.AuthGuards(db, nil), mainAddChecklist.AddChecklist(db))
-	prefix.Put("/update", middleware.AuthGuards(db, nil), mainUpdateChecklist.UpdateChecklist(db))
+	prefix.Post("/add", middleware.AuthGuards(db, []string{"admin", "super_admin"}), mainAddChecklist.AddChecklist(db))
+	prefix.Put("/update", middleware.AuthGuards(db, []string{"admin", "super_admin"}), mainUpdateChecklist.UpdateChecklist(db))
 	prefix.Get("/views", middleware.AuthGuards(db, nil), mainViewsChecklist.ViewsChecklists(db))
 }
