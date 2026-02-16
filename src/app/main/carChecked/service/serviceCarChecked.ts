@@ -28,7 +28,17 @@ export async function getCarList(): Promise<{ success: boolean; data: CarOption[
 
 export async function getStaffList(): Promise<{ success: boolean; data: StaffOption[] }> {
   const url = `${API_BASE_URL}${API_ENDPOINTS.USER.LIST}`;
-  return fetchWithAuth(url);
+  const result = await fetchWithAuth(url);
+  
+  if (result.success && result.data) {
+    // Map จาก { id, full_name } เป็น { value, label }
+    result.data = result.data.map((staff: any) => ({
+      value: staff.id.toString(),
+      label: staff.full_name
+    }));
+  }
+  
+  return result;
 }
 
 export async function deleteCarChecked(id: number): Promise<{ success: boolean; message: string }> {

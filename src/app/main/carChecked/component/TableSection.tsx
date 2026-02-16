@@ -44,7 +44,7 @@ export default function TableSection({
   onDelete
 }: TableSectionProps) {
   const columns = [
-    { key: 'license_plate_name', label: 'ชื่อรถ' },
+    { key: 'license_plate_name', label: 'ทะเบียนรถ' },
     { key: 'checked_date', label: 'วันที่ตรวจสอบ' },
     ...(showStaffColumn ? [{ key: 'checked_by', label: 'ผู้ตรวจสอบ' }] : []),
     { 

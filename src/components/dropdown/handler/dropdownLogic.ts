@@ -73,7 +73,7 @@ export const useOutsideClick = (
 // Hook สำหรับ filter options
 export const useFilteredOptions = (options: DropdownOption[], searchTerm: string) => {
   return options.filter(option =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    option.label && option.label.toLowerCase().includes(searchTerm.toLowerCase())
   )
 }
 

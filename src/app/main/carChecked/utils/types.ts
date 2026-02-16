@@ -22,8 +22,14 @@ export interface CarOption {
 }
 
 export interface StaffOption {
+  value: string;
+  label: string;
+}
+
+export interface ChecklistOption {
   id: number;
-  full_name: string;
+  name: string;
+  is_active: boolean;
 }
 
 export interface FilterParams {

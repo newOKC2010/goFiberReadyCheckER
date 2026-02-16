@@ -6,9 +6,6 @@ interface SearchInputProps {
 }
 
 export default function SearchInput({ searchTerm, onChange, isMobile }: SearchInputProps) {
-  // แสดงเฉพาะใน desktop
-  if (isMobile) return null
-
   return (
     <div className="p-3 border-b border-gray-100">
       <input

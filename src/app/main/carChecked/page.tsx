@@ -1,144 +1,38 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import PageHeader from '@/app/main/carChecked/component/PageHeader';
 import FilterSection from '@/app/main/carChecked/component/FilterSection';
 import TableSection from '@/app/main/carChecked/component/TableSection';
 import ViewModal from '@/app/main/carChecked/component/ViewModal';
 import PrintContent from '@/app/main/carChecked/component/PrintContent';
-import Loading from '@/components/loading/mainLoading';
+import PrintLoader from '@/app/main/carChecked/component/PrintLoader';
+import AddModal from '@/app/main/carChecked/component/add/AddModal';
 import { showAlert } from '@/global/globalSwal';
-import { CarCheckedItem, CarOption, StaffOption, FilterParams } from '@/app/main/carChecked/utils/types';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
+import { useCarCheckedData } from '@/app/main/carChecked/hooks/useCarCheckedData';
+import { usePagination } from '@/app/main/carChecked/hooks/usePagination';
+import { useModals } from '@/app/main/carChecked/hooks/useModals';
+import { usePrintEffect } from '@/app/main/carChecked/hooks/usePrintEffect';
+import { handleSearch, handleReset } from '@/app/main/carChecked/utils/searchHandlers';
 
 export default function CarCheckedPage() {
-  const [data, setData] = useState<CarCheckedItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [filters, setFilters] = useState<FilterParams>({});
-  const [cars, setCars] = useState<CarOption[]>([]);
-  const [staff, setStaff] = useState<StaffOption[]>([]);
-  const [userRole, setUserRole] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<CarCheckedItem | null>(null);
-  const [printItem, setPrintItem] = useState<CarCheckedItem | null>(null);
-  const [printLoading, setPrintLoading] = useState(false);
+  const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData } = useCarCheckedData();
+  const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
+  const { viewModalOpen, addModalOpen, selectedItem, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openPrint, setPrintItem } = useModals();
 
-  useEffect(() => {
-    const init = async () => {
-      setLoading(true);
-      await initData();
-      await initialFetchData();
-      setLoading(false);
-    };
-    init();
-  }, []);
+  usePrintEffect(printItem, setPrintLoading, setPrintItem);
 
-  useEffect(() => {
-    if (printItem) {
-      setPrintLoading(true);
-      const timer = setTimeout(() => {
-        window.print();
-        setPrintItem(null);
-        setPrintLoading(false);
-      }, 500);
-      return () => {
-        clearTimeout(timer);
-        setPrintLoading(false);
-      };
-    }
-  }, [printItem]);
-
-  const initData = async () => {
-    const role = await handler.loadUserRole();
-    setUserRole(role);
-    
-    const carsData = await handler.loadCars();
-    setCars(carsData);
-    
-    if (handler.isAdminOrSuperAdmin(role)) {
-      const staffData = await handler.loadStaff();
-      setStaff(staffData);
-    }
-  };
-
-  const initialFetchData = async () => {
-    const result = await handler.loadData({});
-    if (result.success) {
-      setData(result.data);
-    }
-  };
-
-  const fetchData = async () => {
-    setSearchLoading(true);
-    const result = await handler.loadData(filters);
-    
-    if (result.success) {
-      setData(result.data);
-      setCurrentPage(1);
-    } else {
-      setData([]);
-    }
-    
-    setTimeout(() => {
-      setSearchLoading(false);
-      if (result.success) {
-        if (result.data.length === 0) {
-          showAlert('แจ้งเตือน', 'ไม่พบข้อมูล', 'info');
-        } else {
-          showAlert('สำเร็จ', `พบข้อมูล ${result.data.length} รายการ`, 'success');
-        }
-      } else {
-        showAlert('ผิดพลาด', result.message || 'ไม่สามารถค้นหาข้อมูลได้', 'error');
-      }
-    }, 3000);
-  };
-
-  const handleReset = async () => {
-    setSearchLoading(true);
-    setFilters({});
-    setCurrentPage(1);
-    const result = await handler.loadData({});
-    
-    if (result.success) {
-      setData(result.data);
-    } else {
-      setData([]);
-    }
-    
-    setTimeout(() => {
-      setSearchLoading(false);
-      if (result.success) {
-        if (result.data.length === 0) {
-          showAlert('แจ้งเตือน', 'รีเซ็ตเสร็จ แต่ไม่พบข้อมูล', 'info');
-        } else {
-          showAlert('สำเร็จ', `รีเซ็ตเสร็จ แสดงข้อมูลทั้งหมด ${result.data.length} รายการ`, 'success');
-        }
-      } else {
-        showAlert('ผิดพลาด', result.message || 'ไม่สามารถรีเซ็ตข้อมูลได้', 'error');
-      }
-    }, 3000);
-  };
-
-  const handleView = (item: CarCheckedItem) => {
-    setSelectedItem(item);
-    setViewModalOpen(true);
-  };
-
-  const handleCloseViewModal = () => {
-    setViewModalOpen(false);
-    setSelectedItem(null);
-  };
-
-  const handlePrint = (item: CarCheckedItem) => {
-    setPrintItem(item);
-  };
-
-  const handleEdit = (item: CarCheckedItem) => {
+  const handleEdit = (item: any) => {
     showAlert('แก้ไข', `แก้ไขรายการ: ${item.license_plate_name}`, 'info');
   };
+
+  const handleAddSuccess = () => {
+    reloadData(filters);
+  };
+
+  const onSearch = () => handleSearch(filters, setSearchLoading, setData, setCurrentPage);
+  const onReset = () => handleReset(setFilters, setSearchLoading, setData, setCurrentPage);
+  const onDelete = (item: any) => handler.handleDelete(item, onSearch);
 
   const { carOptions, staffOptions, itemsPerPageOptions } = handler.createDropdownOptions(cars, staff);
   const { paginatedData, totalPages } = handler.paginateData(data, currentPage, itemsPerPage);
@@ -169,13 +63,16 @@ export default function CarCheckedPage() {
       
       <div className="no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-          <PageHeader />
+          <PageHeader 
+            onAdd={openAddModal}
+            showAddButton={handler.isAdminOrSuperAdmin(userRole)}
+          />
       
           <FilterSection
             filters={filters}
             onFilterChange={setFilters}
-            onSearch={fetchData}
-            onReset={handleReset}
+            onSearch={onSearch}
+            onReset={onReset}
             loading={searchLoading}
             carOptions={carOptions}
             staffOptions={staffOptions}
@@ -193,21 +90,26 @@ export default function CarCheckedPage() {
             showStaffColumn={handler.isAdminOrSuperAdmin(userRole)}
             showDeleteButton={handler.isAdminOrSuperAdmin(userRole)}
             showPrintButton={handler.isAdminOrSuperAdmin(userRole)}
-            onItemsPerPageChange={(val) => {
-              setItemsPerPage(val);
-              setCurrentPage(1);
-            }}
+            onItemsPerPageChange={handleItemsPerPageChange}
             onPageChange={setCurrentPage}
-            onView={handleView}
-            onPrint={handlePrint}
+            onView={openViewModal}
+            onPrint={openPrint}
             onEdit={handleEdit}
-            onDelete={(item) => handler.handleDelete(item, fetchData)}
+            onDelete={onDelete}
           />
 
           <ViewModal
             item={selectedItem}
             isOpen={viewModalOpen}
-            onClose={handleCloseViewModal}
+            onClose={closeViewModal}
+          />
+
+          <AddModal
+            isOpen={addModalOpen}
+            onClose={closeAddModal}
+            onSuccess={handleAddSuccess}
+            cars={cars}
+            checklists={checklists}
           />
         </div>
       </div>
@@ -218,14 +120,7 @@ export default function CarCheckedPage() {
         </div>
       )}
 
-      {printLoading && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center no-print">
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 border-4 border-gray-300 border-t-white rounded-full animate-spin"></div>
-            <p className="text-white font-medium text-lg">กำลังเตรียมข้อมูลสำหรับพิมพ์...</p>
-          </div>
-        </div>
-      )}
+      <PrintLoader loading={printLoading} />
     </div>
   );
 }

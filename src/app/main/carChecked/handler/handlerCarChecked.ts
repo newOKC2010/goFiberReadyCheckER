@@ -45,7 +45,7 @@ export async function handleDelete(item: CarCheckedItem, onSuccess: () => void) 
 export function createDropdownOptions(cars: CarOption[], staff: StaffOption[]) {
   return {
     carOptions: [{ value: '', label: 'ทั้งหมด' }, ...cars.map(c => ({ value: String(c.id), label: c.license_plate_name }))],
-    staffOptions: [{ value: '', label: 'ทั้งหมด' }, ...staff.map(s => ({ value: String(s.id), label: s.full_name }))],
+    staffOptions: [{ value: '', label: 'ทั้งหมด' }, ...staff.map(s => ({ value: s.value, label: s.label }))],
     itemsPerPageOptions: [
       { value: '5', label: '5 รายการ' },
       { value: '10', label: '10 รายการ' }

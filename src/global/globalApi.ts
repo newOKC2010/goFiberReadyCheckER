@@ -7,6 +7,9 @@ export const API_ENDPOINTS = {
     REGISTER: '/auth/register',
     STATUS: '/auth/status',
   },
+  CHECKLIST: {
+    VIEWS: '/checklist/views',
+  },
   CAR: {
     VIEWS: '/car/views',
   },
