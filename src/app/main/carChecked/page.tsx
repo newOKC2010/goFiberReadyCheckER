@@ -5,6 +5,8 @@ import PageHeader from '@/app/main/carChecked/component/PageHeader';
 import FilterSection from '@/app/main/carChecked/component/FilterSection';
 import TableSection from '@/app/main/carChecked/component/TableSection';
 import ViewModal from '@/app/main/carChecked/component/ViewModal';
+import PrintContent from '@/app/main/carChecked/component/PrintContent';
+import Loading from '@/components/loading/mainLoading';
 import { showAlert } from '@/global/globalSwal';
 import { CarCheckedItem, CarOption, StaffOption, FilterParams } from '@/app/main/carChecked/utils/types';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
@@ -21,6 +23,8 @@ export default function CarCheckedPage() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<CarCheckedItem | null>(null);
+  const [printItem, setPrintItem] = useState<CarCheckedItem | null>(null);
+  const [printLoading, setPrintLoading] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -31,6 +35,21 @@ export default function CarCheckedPage() {
     };
     init();
   }, []);
+
+  useEffect(() => {
+    if (printItem) {
+      setPrintLoading(true);
+      const timer = setTimeout(() => {
+        window.print();
+        setPrintItem(null);
+        setPrintLoading(false);
+      }, 500);
+      return () => {
+        clearTimeout(timer);
+        setPrintLoading(false);
+      };
+    }
+  }, [printItem]);
 
   const initData = async () => {
     const role = await handler.loadUserRole();
@@ -113,6 +132,10 @@ export default function CarCheckedPage() {
     setSelectedItem(null);
   };
 
+  const handlePrint = (item: CarCheckedItem) => {
+    setPrintItem(item);
+  };
+
   const handleEdit = (item: CarCheckedItem) => {
     showAlert('แก้ไข', `แก้ไขรายการ: ${item.license_plate_name}`, 'info');
   };
@@ -122,46 +145,87 @@ export default function CarCheckedPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        <PageHeader />
+      <style>{`
+        @media print {
+          .no-print { display: none !important; }
+          .print-only { display: block !important; }
+          body { 
+            overflow: visible !important; 
+            height: auto !important;
+            width: auto !important;
+          }
+          * { 
+            overflow: visible !important; 
+          }
+          html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        }
+        @media screen {
+          .print-only { display: none !important; }
+        }
+      `}</style>
       
-      <FilterSection
-        filters={filters}
-        onFilterChange={setFilters}
-        onSearch={fetchData}
-        onReset={handleReset}
-        loading={searchLoading}
-        carOptions={carOptions}
-        staffOptions={staffOptions}
-        showStaffFilter={handler.isAdminOrSuperAdmin(userRole)}
-      />
+      <div className="no-print">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+          <PageHeader />
       
-      <TableSection
-        data={paginatedData}
-        loading={searchLoading || loading}
-        totalCount={data.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        itemsPerPageOptions={itemsPerPageOptions}
-        showStaffColumn={handler.isAdminOrSuperAdmin(userRole)}
-        showDeleteButton={handler.isAdminOrSuperAdmin(userRole)}
-        onItemsPerPageChange={(val) => {
-          setItemsPerPage(val);
-          setCurrentPage(1);
-        }}
-        onPageChange={setCurrentPage}
-        onView={handleView}
-        onEdit={handleEdit}
-        onDelete={(item) => handler.handleDelete(item, fetchData)}
-      />
+          <FilterSection
+            filters={filters}
+            onFilterChange={setFilters}
+            onSearch={fetchData}
+            onReset={handleReset}
+            loading={searchLoading}
+            carOptions={carOptions}
+            staffOptions={staffOptions}
+            showStaffFilter={handler.isAdminOrSuperAdmin(userRole)}
+          />
+          
+          <TableSection
+            data={paginatedData}
+            loading={searchLoading || loading}
+            totalCount={data.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            itemsPerPageOptions={itemsPerPageOptions}
+            showStaffColumn={handler.isAdminOrSuperAdmin(userRole)}
+            showDeleteButton={handler.isAdminOrSuperAdmin(userRole)}
+            showPrintButton={handler.isAdminOrSuperAdmin(userRole)}
+            onItemsPerPageChange={(val) => {
+              setItemsPerPage(val);
+              setCurrentPage(1);
+            }}
+            onPageChange={setCurrentPage}
+            onView={handleView}
+            onPrint={handlePrint}
+            onEdit={handleEdit}
+            onDelete={(item) => handler.handleDelete(item, fetchData)}
+          />
 
-      <ViewModal
-        item={selectedItem}
-        isOpen={viewModalOpen}
-        onClose={handleCloseViewModal}
-      />
+          <ViewModal
+            item={selectedItem}
+            isOpen={viewModalOpen}
+            onClose={handleCloseViewModal}
+          />
+        </div>
       </div>
+
+      {printItem && (
+        <div className="print-only">
+          <PrintContent item={printItem} />
+        </div>
+      )}
+
+      {printLoading && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center no-print">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 border-4 border-gray-300 border-t-white rounded-full animate-spin"></div>
+            <p className="text-white font-medium text-lg">กำลังเตรียมข้อมูลสำหรับพิมพ์...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

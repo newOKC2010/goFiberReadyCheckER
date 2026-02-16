@@ -30,26 +30,27 @@ export default function ChecklistItemCard({ item, index }: ChecklistItemCardProp
     }
   };
 
-  const imageUrls = item.images.map(img => {
-    const cleanPath = img.startsWith('/') ? img.substring(1) : img;
-    return `${API_BASE_URL}/car-checked/view-image/${cleanPath}`;
-  });
+  const imageUrls = (item.images && Array.isArray(item.images)) 
+    ? item.images.map(img => {
+        const cleanPath = img.startsWith('/') ? img.substring(1) : img;
+        return `${API_BASE_URL}/car-checked/view-image/${cleanPath}`;
+      })
+    : [];
 
   return (
     <div className={`p-4 rounded-xl ${item.status ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
       <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3 flex-1">
-          <span className={`material-symbols-outlined text-2xl ${item.status ? 'text-green-500' : 'text-red-500'}`} style={{ fontVariationSettings: "'wght' 700" }}>
-            {item.status ? 'check_circle' : 'cancel'}
-          </span>
-          <div>
-            <h4 className="font-bold text-gray-800">{item.name}</h4>
-            <div className="flex items-center gap-2 mt-1">
+        <div className="flex items-start gap-3 flex-1">
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-white font-bold text-lg flex-shrink-0 mt-0.5">
+            {index + 1}
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h4 className="font-bold text-gray-800">{item.name}</h4>
+            </div>
+            <div className="flex items-center gap-2">
               <span className={`px-3 py-1 rounded-full text-sm font-bold ${item.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                 {item.status ? 'ผ่าน' : 'ไม่ผ่าน'}
-              </span>
-              <span className={`px-2 py-1 rounded-lg text-xs font-bold ${item.status ? 'bg-white text-green-700' : 'bg-white text-red-700'}`}>
-                #{index + 1}
               </span>
             </div>
           </div>
@@ -68,14 +69,14 @@ export default function ChecklistItemCard({ item, index }: ChecklistItemCardProp
         </div>
       )}
 
-      {item.images.length > 0 && (
+      {imageUrls.length > 0 ? (
         <div className="mt-3">
           <div className="flex items-center gap-2 mb-2">
             <span className="material-symbols-outlined text-blue-600 text-lg" style={{ fontVariationSettings: "'wght' 700" }}>image</span>
-            <p className="text-sm font-bold text-gray-800">รูปภาพการตรวจสอบ ({item.images.length} รูป)</p>
+            <p className="text-sm font-bold text-gray-800">รูปภาพการตรวจสอบ ({imageUrls.length} รูป)</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {item.images.map((image, idx) => (
+            {(item.images || []).map((image, idx) => (
               <div
                 key={idx}
                 onClick={() => handleImageClick(idx)}
@@ -88,6 +89,13 @@ export default function ChecklistItemCard({ item, index }: ChecklistItemCardProp
                 />
               </div>
             ))}
+          </div>
+        </div>
+      ) : (
+        <div className="mt-3">
+          <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
+            <span className="material-symbols-outlined text-gray-400 text-lg">image_not_supported</span>
+            <p className="text-sm font-bold text-gray-600">ไม่มีรูปภาพการตรวจสอบ</p>
           </div>
         </div>
       )}

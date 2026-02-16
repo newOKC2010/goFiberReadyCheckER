@@ -16,9 +16,11 @@ interface TableSectionProps {
   itemsPerPageOptions: DropdownOption[];
   showStaffColumn: boolean;
   showDeleteButton: boolean;
+  showPrintButton: boolean;
   onItemsPerPageChange: (value: number) => void;
   onPageChange: (page: number) => void;
   onView: (item: CarCheckedItem) => void;
+  onPrint: (item: CarCheckedItem) => void;
   onEdit: (item: CarCheckedItem) => void;
   onDelete: (item: CarCheckedItem) => void;
 }
@@ -33,9 +35,11 @@ export default function TableSection({
   itemsPerPageOptions,
   showStaffColumn,
   showDeleteButton,
+  showPrintButton,
   onItemsPerPageChange,
   onPageChange,
   onView,
+  onPrint,
   onEdit,
   onDelete
 }: TableSectionProps) {
@@ -50,7 +54,9 @@ export default function TableSection({
         <ActionButtons
           item={item}
           showDelete={showDeleteButton}
+          showPrint={showPrintButton}
           onView={onView}
+          onPrint={onPrint}
           onEdit={onEdit}
           onDelete={onDelete}
         />
