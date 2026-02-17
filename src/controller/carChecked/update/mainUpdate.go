@@ -74,13 +74,8 @@ func UpdateCarChecked(db *bun.DB) fiber.Handler {
 			}
 		}
 
-		if !hasImagesField {
-			return c.Status(400).JSON(updateUtils.UpdateResponse{
-				Success: false,
-				Message: "ต้องส่ง images field ทุกครั้ง",
-			})
-		}
-
+		// ถ้าไม่ส่ง images field มา → ลบรูปทั้งหมด
+		// ถ้าส่ง images field มา → แทนที่รูปทั้งหมด
 		err = serviceUpdate.UpdateChecklistItem(ctx, db, req.CarCheckedID, req.ChecklistID, req.Note, req.Status, images, hasImagesField)
 		if err != nil {
 			return c.Status(500).JSON(updateUtils.UpdateResponse{

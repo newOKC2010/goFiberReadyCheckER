@@ -18,6 +18,7 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 		ctx := context.Background()
 
 		filters := viewsUtils.FilterParams{
+			ID:       c.Query("id"),
 			DateFrom: c.Query("date_from"),
 			DateTo:   c.Query("date_to"),
 			CarID:    c.Query("car_id"),

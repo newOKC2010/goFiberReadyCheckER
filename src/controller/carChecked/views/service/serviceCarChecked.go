@@ -20,6 +20,9 @@ func GetAllCarChecked(ctx context.Context, db *bun.DB, filters viewsUtils.Filter
 		Where("car_checked.is_active = ?", true).
 		Where("car_checked.deleted_at IS NULL")
 
+	if filters.ID != "" {
+		query = query.Where("car_checked.id = ?", filters.ID)
+	}
 	if filters.DateFrom != "" {
 		query = query.Where("car_checked.checked_date >= ?", filters.DateFrom)
 	}
@@ -49,6 +52,9 @@ func GetCarCheckedByUserID(ctx context.Context, db *bun.DB, userID int64, filter
 		Where("car_checked.is_active = ?", true).
 		Where("car_checked.deleted_at IS NULL")
 
+	if filters.ID != "" {
+		query = query.Where("car_checked.id = ?", filters.ID)
+	}
 	if filters.DateFrom != "" {
 		query = query.Where("car_checked.checked_date >= ?", filters.DateFrom)
 	}

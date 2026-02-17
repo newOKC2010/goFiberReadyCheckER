@@ -33,17 +33,31 @@ func ProcessUpdateImages(c *fiber.Ctx, form *multipart.Form, checklistID string,
 		return nil, false, nil
 	}
 
-	if len(files) == 0 {
+	// ถ้าไม่มี files หรือ file แรกเป็น empty file (size = 0) → ลบรูปทั้งหมด
+	if len(files) == 0 || (len(files) == 1 && files[0].Size == 0) {
+		return []string{}, true, nil
+	}
+
+	// กรอง empty files ออก
+	var validFiles []*multipart.FileHeader
+	for _, file := range files {
+		if file.Size > 0 {
+			validFiles = append(validFiles, file)
+		}
+	}
+
+	// ถ้าไม่มี valid files เลย → ลบรูปทั้งหมด
+	if len(validFiles) == 0 {
 		return []string{}, true, nil
 	}
 
 	folder := "images_" + checklistID
-	results, err := addHandler.SaveMultipleFiles(files, folder, userID)
+	results, err := addHandler.SaveMultipleFiles(validFiles, folder, userID)
 	if err != nil {
 		return nil, true, err
 	}
 
-	for i, file := range files {
+	for i, file := range validFiles {
 		if err := c.SaveFile(file, results[i].FullPath); err != nil {
 			return nil, true, err
 		}

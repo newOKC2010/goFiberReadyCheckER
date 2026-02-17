@@ -35,7 +35,14 @@ func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, ch
 			oldImages = items.Items[i].Images
 			items.Items[i].Note = note
 			items.Items[i].Status = status
-			items.Items[i].Images = images
+
+			// ถ้าไม่ส่ง images field มา → ลบรูปทั้งหมด
+			if !hasImagesField {
+				items.Items[i].Images = []string{}
+			} else {
+				// ถ้าส่ง images field มา → แทนที่รูปทั้งหมด
+				items.Items[i].Images = images
+			}
 
 			found = true
 			break
@@ -56,6 +63,7 @@ func UpdateChecklistItem(ctx context.Context, db *bun.DB, carCheckedID int64, ch
 		return err
 	}
 
+	// ลบรูปเก่าทั้งหมด (ถ้ามี)
 	if len(oldImages) > 0 {
 		uploadPath := loadEnv.LoadUploadPath()
 		for _, oldImage := range oldImages {

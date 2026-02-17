@@ -1,6 +1,7 @@
 package viewsUtils
 
 type FilterParams struct {
+	ID       string `json:"id"`
 	DateFrom string `json:"date_from"`
 	DateTo   string `json:"date_to"`
 	CarID    string `json:"car_id"`
