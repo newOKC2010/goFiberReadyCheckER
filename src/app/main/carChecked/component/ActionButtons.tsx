@@ -5,12 +5,11 @@ interface ActionButtonsProps {
   showDelete: boolean;
   showPrint: boolean;
   onView: (item: CarCheckedItem) => void;
-  onEdit: (item: CarCheckedItem) => void;
   onDelete: (item: CarCheckedItem) => void;
   onPrint: (item: CarCheckedItem) => void;
 }
 
-export default function ActionButtons({ item, showDelete, showPrint, onView, onEdit, onDelete, onPrint }: ActionButtonsProps) {
+export default function ActionButtons({ item, showDelete, showPrint, onView, onDelete, onPrint }: ActionButtonsProps) {
   return (
     <div className="flex gap-1.5 justify-center">
       <button
@@ -30,14 +29,6 @@ export default function ActionButtons({ item, showDelete, showPrint, onView, onE
           <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'wght' 600" }}>print</span>
         </button>
       )}
-      
-      <button
-        onClick={() => onEdit(item)}
-        className="p-1 text-yellow-500 hover:opacity-70 transition-opacity cursor-pointer"
-        title="แก้ไข"
-      >
-        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'wght' 600" }}>edit</span>
-      </button>
       
       {showDelete && (
         <button

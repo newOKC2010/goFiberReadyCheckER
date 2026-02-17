@@ -7,6 +7,7 @@ import ViewModal from '@/app/main/carChecked/component/ViewModal';
 import PrintContent from '@/app/main/carChecked/component/PrintContent';
 import PrintLoader from '@/app/main/carChecked/component/PrintLoader';
 import AddModal from '@/app/main/carChecked/component/add/AddModal';
+import UpdateModal from '@/app/main/carChecked/component/update/UpdateModal';
 import { showAlert } from '@/global/globalSwal';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
 import { useCarCheckedData } from '@/app/main/carChecked/hooks/useCarCheckedData';
@@ -18,12 +19,19 @@ import { handleSearch, handleReset } from '@/app/main/carChecked/utils/searchHan
 export default function CarCheckedPage() {
   const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData, reloadDropdownData } = useCarCheckedData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
-  const { viewModalOpen, addModalOpen, selectedItem, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openPrint, setPrintItem } = useModals();
+  const { viewModalOpen, addModalOpen, updateModalOpen, selectedItem, updateData, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal, openPrint, setPrintItem, refreshSelectedItem } = useModals();
 
   usePrintEffect(printItem, setPrintLoading, setPrintItem);
 
-  const handleEdit = (item: any) => {
-    showAlert('แก้ไข', `แก้ไขรายการ: ${item.license_plate_name}`, 'info');
+  const handleEditItem = (carCheckedId: number, checklistItem: any) => {
+    openUpdateModal(carCheckedId, checklistItem);
+  };
+
+  const handleUpdateSuccess = async () => {
+    // Reload data จาก backend เพื่ออัพเดท table
+    await reloadData(filters);
+    // Refresh selectedItem เพื่อให้เห็นข้อมูลใหม่ใน modal ทันที
+    await refreshSelectedItem();
   };
 
   const handleOpenAddModal = async () => {
@@ -99,7 +107,6 @@ export default function CarCheckedPage() {
             onPageChange={setCurrentPage}
             onView={openViewModal}
             onPrint={openPrint}
-            onEdit={handleEdit}
             onDelete={onDelete}
           />
 
@@ -107,6 +114,7 @@ export default function CarCheckedPage() {
             item={selectedItem}
             isOpen={viewModalOpen}
             onClose={closeViewModal}
+            onEditItem={handleEditItem}
           />
 
           <AddModal
@@ -116,6 +124,16 @@ export default function CarCheckedPage() {
             cars={cars}
             checklists={checklists}
           />
+
+          {updateData && (
+            <UpdateModal
+              isOpen={updateModalOpen}
+              onClose={closeUpdateModal}
+              onSuccess={handleUpdateSuccess}
+              carCheckedId={updateData.carCheckedId}
+              checklistItem={updateData.item}
+            />
+          )}
         </div>
       </div>
 

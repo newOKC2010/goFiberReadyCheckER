@@ -21,7 +21,6 @@ interface TableSectionProps {
   onPageChange: (page: number) => void;
   onView: (item: CarCheckedItem) => void;
   onPrint: (item: CarCheckedItem) => void;
-  onEdit: (item: CarCheckedItem) => void;
   onDelete: (item: CarCheckedItem) => void;
 }
 
@@ -40,7 +39,6 @@ export default function TableSection({
   onPageChange,
   onView,
   onPrint,
-  onEdit,
   onDelete
 }: TableSectionProps) {
   const columns = [
@@ -57,7 +55,6 @@ export default function TableSection({
           showPrint={showPrintButton}
           onView={onView}
           onPrint={onPrint}
-          onEdit={onEdit}
           onDelete={onDelete}
         />
       )

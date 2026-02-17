@@ -53,3 +53,13 @@ export async function deleteCarChecked(id: number): Promise<{ success: boolean; 
   });
   return res.json();
 }
+
+export async function getCarCheckedById(id: number): Promise<{ success: boolean; data?: CarCheckedItem; message?: string }> {
+  const url = `${API_BASE_URL}${API_ENDPOINTS.CAR_CHECKED.VIEWS}?id=${id}`;
+  const result = await fetchWithAuth(url);
+  
+  if (result.success && result.data && result.data.length > 0) {
+    return { success: true, data: result.data[0] };
+  }
+  return { success: false, message: 'ไม่พบข้อมูล' };
+}

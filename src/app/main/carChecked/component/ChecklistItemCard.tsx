@@ -7,9 +7,10 @@ import { API_BASE_URL } from '@/global/globalApi';
 interface ChecklistItemCardProps {
   item: ChecklistItem;
   index: number;
+  onEdit?: () => void;
 }
 
-export default function ChecklistItemCard({ item, index }: ChecklistItemCardProps) {
+export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItemCardProps) {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -55,6 +56,16 @@ export default function ChecklistItemCard({ item, index }: ChecklistItemCardProp
             </div>
           </div>
         </div>
+        {onEdit && (
+          <button
+            onClick={onEdit}
+            className="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-xs sm:text-sm font-bold cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-base sm:text-lg">edit</span>
+            <span className="hidden sm:inline">แก้ไข</span>
+            <span className="sm:hidden">แก้ไข</span>
+          </button>
+        )}
       </div>
 
       {item.note && (
