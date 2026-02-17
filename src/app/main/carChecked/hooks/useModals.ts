@@ -7,7 +7,9 @@ export function useModals() {
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<CarCheckedItem | null>(null);
+  const [deleteItem, setDeleteItem] = useState<CarCheckedItem | null>(null);
   const [updateData, setUpdateData] = useState<{ carCheckedId: number; item: ChecklistItemData } | null>(null);
   const [printItem, setPrintItem] = useState<CarCheckedItem | null>(null);
   const [printLoading, setPrintLoading] = useState(false);
@@ -52,6 +54,16 @@ export function useModals() {
     }
   };
 
+  const openDeleteModal = (item: CarCheckedItem) => {
+    setDeleteItem(item);
+    setDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteModalOpen(false);
+    setDeleteItem(null);
+  };
+
   const refreshSelectedItem = async () => {
     if (selectedItem) {
       const result = await getCarCheckedById(selectedItem.id);
@@ -65,7 +77,9 @@ export function useModals() {
     viewModalOpen,
     addModalOpen,
     updateModalOpen,
+    deleteModalOpen,
     selectedItem,
+    deleteItem,
     updateData,
     printItem,
     printLoading,
@@ -76,6 +90,8 @@ export function useModals() {
     closeAddModal,
     openUpdateModal,
     closeUpdateModal,
+    openDeleteModal,
+    closeDeleteModal,
     openPrint,
     setPrintItem,
     refreshSelectedItem

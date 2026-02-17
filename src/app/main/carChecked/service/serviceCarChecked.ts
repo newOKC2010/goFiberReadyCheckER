@@ -41,7 +41,7 @@ export async function getStaffList(): Promise<{ success: boolean; data: StaffOpt
   return result;
 }
 
-export async function deleteCarChecked(id: number): Promise<{ success: boolean; message: string }> {
+export async function deleteCarChecked(carCheckedId: number): Promise<{ success: boolean; message: string }> {
   const token = AuthToken.getToken();
   const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.CAR_CHECKED.DELETE}`, {
     method: 'DELETE',
@@ -49,7 +49,7 @@ export async function deleteCarChecked(id: number): Promise<{ success: boolean; 
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify({ id })
+    body: JSON.stringify({ car_checked_id: carCheckedId })
   });
   return res.json();
 }

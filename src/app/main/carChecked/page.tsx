@@ -8,7 +8,7 @@ import PrintContent from '@/app/main/carChecked/component/PrintContent';
 import PrintLoader from '@/app/main/carChecked/component/PrintLoader';
 import AddModal from '@/app/main/carChecked/component/add/AddModal';
 import UpdateModal from '@/app/main/carChecked/component/update/UpdateModal';
-import { showAlert } from '@/global/globalSwal';
+import DeleteModal from '@/app/main/carChecked/component/delete/DeleteModal';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
 import { useCarCheckedData } from '@/app/main/carChecked/hooks/useCarCheckedData';
 import { usePagination } from '@/app/main/carChecked/hooks/usePagination';
@@ -19,7 +19,7 @@ import { handleSearch, handleReset } from '@/app/main/carChecked/utils/searchHan
 export default function CarCheckedPage() {
   const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData, reloadDropdownData } = useCarCheckedData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
-  const { viewModalOpen, addModalOpen, updateModalOpen, selectedItem, updateData, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal, openPrint, setPrintItem, refreshSelectedItem } = useModals();
+  const { viewModalOpen, addModalOpen, updateModalOpen, deleteModalOpen, selectedItem, deleteItem, updateData, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal, openDeleteModal, closeDeleteModal, openPrint, setPrintItem, refreshSelectedItem } = useModals();
 
   usePrintEffect(printItem, setPrintLoading, setPrintItem);
 
@@ -43,9 +43,12 @@ export default function CarCheckedPage() {
     reloadData(filters);
   };
 
+  const handleDeleteSuccess = () => {
+    reloadData(filters);
+  };
+
   const onSearch = () => handleSearch(filters, setSearchLoading, setData, setCurrentPage);
   const onReset = () => handleReset(setFilters, setSearchLoading, setData, setCurrentPage);
-  const onDelete = (item: any) => handler.handleDelete(item, onSearch);
 
   const { carOptions, staffOptions, itemsPerPageOptions } = handler.createDropdownOptions(cars, staff);
   const { paginatedData, totalPages } = handler.paginateData(data, currentPage, itemsPerPage);
@@ -107,7 +110,7 @@ export default function CarCheckedPage() {
             onPageChange={setCurrentPage}
             onView={openViewModal}
             onPrint={openPrint}
-            onDelete={onDelete}
+            onDelete={openDeleteModal}
           />
 
           <ViewModal
@@ -134,6 +137,13 @@ export default function CarCheckedPage() {
               checklistItem={updateData.item}
             />
           )}
+
+          <DeleteModal
+            isOpen={deleteModalOpen}
+            onClose={closeDeleteModal}
+            onSuccess={handleDeleteSuccess}
+            item={deleteItem}
+          />
         </div>
       </div>
 
