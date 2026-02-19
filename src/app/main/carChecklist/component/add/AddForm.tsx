@@ -16,7 +16,7 @@ export default function AddForm({ loading, onSubmit, onCancel }: AddFormProps) {
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-bold text-gray-700 mb-2">
-          ชื่อ Checklist <span className="text-red-500">*</span>
+          ชื่อ รายการตรวจสอบ <span className="text-red-500">*</span>
         </label>
         <input
           type="text"

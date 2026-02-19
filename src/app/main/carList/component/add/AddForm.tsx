@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/buttonClick/mainButton';
 import { AddFormProps } from '@/app/main/carList/component/add/utils/types';
 
-export default function AddForm({ loading, onSubmit, onCancel }: AddFormProps) {
+export default function AddForm({ loading, onSubmit }: AddFormProps) {
   const [licensePlateName, setLicensePlateName] = useState('');
 
   const handleSubmit = () => {

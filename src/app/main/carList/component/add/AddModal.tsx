@@ -27,7 +27,7 @@ export default function AddModal({ isOpen, onClose, onSuccess }: AddModalProps) 
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="เพิ่มรถพยาบาล"
+      title="เพิ่มทะเบียนรถพยาบาล"
       showCloseButton={!loading}
     >
       <AddForm

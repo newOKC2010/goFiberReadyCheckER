@@ -29,7 +29,7 @@ export default function AddModal({ isOpen, onClose, onSuccess }: AddModalProps) 
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="เพิ่ม Checklist"
+      title="เพิ่มรายการตรวจสอบรถพยาบาล"
       showCloseButton={true}
       contentClassName="!max-w-lg"
     >
