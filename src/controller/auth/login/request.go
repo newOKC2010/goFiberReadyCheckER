@@ -64,7 +64,7 @@ func RequestOTP(db *bun.DB) fiber.Handler {
 		}
 
 		// ส่ง OTP ผ่าน MOPH และ Email
-		//handlerLogin.SendOTPToUser(user, otpCode)
+		handlerLogin.SendOTPToUser(user, otpCode)
 
 		return c.JSON(loginUtils.Response{
 			Success: true,
