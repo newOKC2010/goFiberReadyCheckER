@@ -26,5 +26,8 @@ export const API_ENDPOINTS = {
   },
   USER: {
     LIST: '/user/list',
+  },
+  DASHBOARD: {
+    VIEWS: '/dashboard',
   }
 }

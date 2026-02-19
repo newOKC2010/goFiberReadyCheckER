@@ -16,6 +16,12 @@ interface SidebarProps {
 
 const ALL_MENUS = [
   { 
+    name: 'Dashboard', 
+    icon: 'dashboard', 
+    path: '/main/dashboard',
+    excludeRoles: [USER_ROLES.USER] as string[]
+  },
+  { 
     name: 'ตรวจสอบรถฉุกเฉิน', 
     icon: 'local_shipping', 
     path: '/main/carChecked',
