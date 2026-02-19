@@ -9,9 +9,13 @@ export const API_ENDPOINTS = {
   },
   CHECKLIST: {
     VIEWS: '/checklist/views',
+    ADD: '/checklist/add',
+    UPDATE: '/checklist/update',
   },
   CAR: {
     VIEWS: '/car/views',
+    ADD: '/car/add',
+    UPDATE: '/car/update',
   },
   CAR_CHECKED: {
     VIEWS: '/car-checked/views',

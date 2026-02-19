@@ -12,7 +12,7 @@ interface LoadingProps {
 export default function Loading({ 
   message = 'กำลังโหลด...', 
   size = 'md',
-  fullScreen = true,
+  fullScreen = false,
   delay = 3000 
 }: LoadingProps) {
   const [showLoading, setShowLoading] = useState(true);

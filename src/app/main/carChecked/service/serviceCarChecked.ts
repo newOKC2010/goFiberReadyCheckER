@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 import { AuthToken } from '@/global/globalAuth';
-import { CarCheckedItem, CarOption, StaffOption, FilterParams } from '@/app/main/carChecked/utils/types';
+import { CarCheckedItem, CarOption, StaffOption, FilterParams, ChecklistOption } from '@/app/main/carChecked/utils/types';
 
 async function fetchWithAuth(url: string) {
   const token = AuthToken.getToken();
@@ -62,4 +62,20 @@ export async function getCarCheckedById(id: number): Promise<{ success: boolean;
     return { success: true, data: result.data[0] };
   }
   return { success: false, message: 'ไม่พบข้อมูล' };
+}
+
+export async function loadChecklists(): Promise<ChecklistOption[]> {
+  try {
+    const url = `${API_BASE_URL}${API_ENDPOINTS.CHECKLIST.VIEWS}`;
+    const result = await fetchWithAuth(url);
+    
+    if (result.success) {
+      return result.data || [];
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error loading checklists:', error);
+    return [];
+  }
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import ImageUploader from './ImageUploader';
-import { ChecklistItem } from './utils/types';
+import ImageUploader from '@/app/main/carChecked/component/add/ImageUploader';
+import { ChecklistItem } from '@/app/main/carChecked/component/add/utils/types';
 
 interface ChecklistItemFormProps {
   item: ChecklistItem;

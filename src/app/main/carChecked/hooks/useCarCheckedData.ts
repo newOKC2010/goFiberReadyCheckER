@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CarCheckedItem, CarOption, StaffOption, ChecklistOption, FilterParams } from '@/app/main/carChecked/utils/types';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
-import * as addHandler from '@/app/main/carChecked/handler/handlerAdd';
+import * as service from '@/app/main/carChecked/service/serviceCarChecked';
 
 export function useCarCheckedData() {
   const [data, setData] = useState<CarCheckedItem[]>([]);
@@ -30,7 +30,7 @@ export function useCarCheckedData() {
     const carsData = await handler.loadCars();
     setCars(carsData);
     
-    const checklistData = await addHandler.loadChecklists();
+    const checklistData = await service.loadChecklists();
     setChecklists(checklistData);
     
     if (handler.isAdminOrSuperAdmin(role)) {
@@ -57,7 +57,7 @@ export function useCarCheckedData() {
     const carsData = await handler.loadCars();
     setCars(carsData);
     
-    const checklistData = await addHandler.loadChecklists();
+    const checklistData = await service.loadChecklists();
     setChecklists(checklistData);
   };
 

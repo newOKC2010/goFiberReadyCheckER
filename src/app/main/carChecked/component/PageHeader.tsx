@@ -26,7 +26,12 @@ export default function PageHeader({ onAdd, showAddButton = false }: PageHeaderP
             icon="add"
             className="bg-green-600 hover:bg-green-700 text-white"
           >
-            เพิ่มข้อมูล
+            <span style={{
+              fontVariationSettings: "'wght' 700",
+              transition: 'all 0.3s ease'
+            }}>
+              เพิ่มข้อมูล
+            </span>
           </Button>
         )}
       </div>

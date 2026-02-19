@@ -6,7 +6,7 @@ import { Button } from '@/components/buttonClick/mainButton';
 import { showAlert } from '@/global/globalSwal';
 import ChecklistItemForm from '@/app/main/carChecked/component/add/ChecklistItemForm';
 import { ChecklistItem, AddFormProps } from '@/app/main/carChecked/component/add/utils/types';
-import { initializeChecklistItems, validateForm, prepareFormData, submitForm } from '@/app/main/carChecked/component/add/utils/formUtils';
+import { initializeChecklistItems, prepareFormData, submitForm } from '@/app/main/carChecked/component/add/utils/formUtils';
 
 export default function AddForm({ cars, checklists, loading, setLoading, onSuccess, onCancel }: AddFormProps) {
   const [selectedCarId, setSelectedCarId] = useState<string>('');
