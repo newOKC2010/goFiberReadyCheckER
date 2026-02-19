@@ -29,7 +29,6 @@ func main() {
 	routes.SetupCarCheckedRoutes(app, conn.Db)
 	routes.SetupChecklistRoutes(app, conn.Db)
 	routes.SetupUserERRoutes(app, conn.Db)
-	routes.SetupDashboardRoutes(app, conn.Db)
 
 	if err := app.Listen(":" + port); err != nil {
 		log.Fatal(err)

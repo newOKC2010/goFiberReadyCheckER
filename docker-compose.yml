@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: image-go-fiber-check-ambulance-backend
+    container_name: container-go-fiber-check-ambulance-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./.env:/app/.env:ro
+      - ../uploads/files:/app/uploads/files
+    ports:
+      - "${PORT:-8080}:${PORT:-8080}"
