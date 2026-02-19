@@ -40,13 +40,13 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     verify();
   }, [pathname, router]);
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-white/60 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
-        <Loading message="กำลังตรวจสอบสิทธิ์" delay={2000} fullScreen={false} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="fixed inset-0 bg-white/60 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
+  //       <Loading message="กำลังตรวจสอบสิทธิ์" delay={2000} fullScreen={false} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex h-screen overflow-hidden">
