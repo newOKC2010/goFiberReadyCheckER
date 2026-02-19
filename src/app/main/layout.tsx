@@ -46,7 +46,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   //       <Loading message="กำลังตรวจสอบสิทธิ์" delay={2000} fullScreen={false} />
   //     </div>
   //   );
-  // }
+  //}
 
   return (
     <div className="flex h-screen overflow-hidden">
