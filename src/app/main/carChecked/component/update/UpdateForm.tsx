@@ -17,7 +17,7 @@ export default function UpdateForm({
 }: UpdateFormProps) {
   const [note, setNote] = useState(checklistItem.note);
   const [status, setStatus] = useState(checklistItem.status);
-  const [existingImages, setExistingImages] = useState<string[]>(checklistItem.images);
+  const [existingImages, setExistingImages] = useState<string[]>(checklistItem.images ?? []);
   const [newImages, setNewImages] = useState<File[]>([]);
 
   const handleSubmit = async () => {
