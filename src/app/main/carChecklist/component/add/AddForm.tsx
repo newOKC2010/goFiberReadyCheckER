@@ -24,7 +24,7 @@ export default function AddForm({ loading, onSubmit, onCancel }: AddFormProps) {
           onChange={(e) => setName(e.target.value)}
           placeholder="กรอกชื่อ Checklist"
           disabled={loading}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 font-bold"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 font-bold text-gray-900"
         />
       </div>
 
