@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/buttonClick/mainButton';
 import { InputText } from '@/components/input/text/mainInputText';
 import { OtpModal } from '@/app/auth/component/OTP/otpModal';
+import { RegisterModal } from '@/app/auth/component/register/RegisterModal';
 import { handleLoginRequest } from '@/app/auth/request/handler/handlerReq';
 import { handleVerifyOtp } from '@/app/auth/verify/handler/handlerVerify';
 import { useErrorAlert } from '@/hooks/useErrorAlert';
@@ -24,7 +25,7 @@ export default function AuthPage() {
   const [verifiedEmail, setVerifiedEmail] = useState('');
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [showLoginSuccess, setShowLoginSuccess] = useState(false);
-
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +52,6 @@ export default function AuthPage() {
       }, 2000);
     }
   };
-
 
   return (
     <>
@@ -123,8 +123,22 @@ export default function AuthPage() {
               </div>
             </form>
 
+            {/* Register Link */}
+            <div className="mt-6 text-center animate-fade-in delay-700">
+              <p className="text-xs text-gray-500 font-bold">
+                ยังไม่มีบัญชี?{' '}
+                <button
+                  type="button"
+                  onClick={() => setShowRegisterModal(true)}
+                  className="text-red-500 hover:text-red-600 font-bold cursor-pointer underline"
+                >
+                  สมัครใช้งาน
+                </button>
+              </p>
+            </div>
+
             {/* Footer */}
-            <div className="mt-8 text-center animate-fade-in delay-700">
+            <div className="mt-4 text-center animate-fade-in delay-700">
               <p className="text-xs text-slate-400 font-bold">
                 ระบบจัดทำโดย ทีมสารสนเทศโรงพยาบาลบางเลน
               </p>
@@ -140,6 +154,10 @@ export default function AuthPage() {
           loading={verifyLoading}
         />
 
+        <RegisterModal
+          isOpen={showRegisterModal}
+          onClose={() => setShowRegisterModal(false)}
+        />
 
         {showLoginSuccess && (
           <div className="fixed inset-0 bg-white/60 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">

@@ -40,7 +40,7 @@ export const InputText = ({
 
             <div className="relative hover:scale-105 transition-all duration-300">
                 {icon && (
-                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg sm:text-xl"
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-lg sm:text-xl"
                         style={{
                             fontVariationSettings: "'wght' 700",
                             transition: 'all 0.3s ease'
@@ -50,7 +50,7 @@ export const InputText = ({
                 )}
 
                 <input
-                    className={`w-full ${icon ? 'pl-10' : 'pl-3'} pr-3 py-2 text-center font-bold text-black bg-transparent border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 placeholder:text-gray-400 ${error ? 'border-red-400' : ''} ${className}`}
+                    className={`w-full ${icon ? 'pl-10' : 'pl-3'} pr-3 py-2 text-center font-bold text-black bg-transparent border border-gray-400 rounded-lg focus:outline-none focus:border-gray-600 placeholder:text-gray-400 caret-black ${error ? 'border-red-400' : ''} ${className}`}
                     {...props}
                 />
             </div>
