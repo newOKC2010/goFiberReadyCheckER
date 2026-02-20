@@ -6,7 +6,8 @@ import (
 )
 
 func CreateOTPEmailHTML(otpCode, fullName string) string {
-	currentTime := time.Now().Format("15:04:05")
+	loc, _ := time.LoadLocation("Asia/Bangkok")
+	currentTime := time.Now().In(loc).Format("02/01/2006 15:04:05")
 	return fmt.Sprintf(`
 <!DOCTYPE html>
 <html>
@@ -43,7 +44,7 @@ func CreateOTPEmailHTML(otpCode, fullName string) string {
             <!-- Warning -->
             <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
                 <p style="margin: 0; color: #856404; font-size: 13px;">
-                    ⏱️ <strong>รหัสนี้มีอายุ 5 นาที</strong><br>
+                    ⏱️ <strong>รหัสนี้มีอายุ 2 นาที</strong><br>
                     🕐 ส่งเมื่อ: <strong>%s</strong><br>
                     หากหมดอายุ กรุณาขอรหัสใหม่อีกครั้ง
                 </p>

@@ -9,7 +9,8 @@ import (
 
 // CreateOTPFlexMessage - สร้าง Flex Message สำหรับส่ง OTP
 func CreateOTPFlexMessage(otpCode, fullName string) mophAlertUtils.FlexMessage {
-	currentTime := time.Now().Format("15:04:05")
+	loc, _ := time.LoadLocation("Asia/Bangkok")
+	currentTime := time.Now().In(loc).Format("02/01/2006 15:04:05")
 	return mophAlertUtils.FlexMessage{
 		Type:    "flex",
 		AltText: "รหัส OTP สำหรับเข้าใช้งานระบบตรวจสอบรถพยาบาล",
