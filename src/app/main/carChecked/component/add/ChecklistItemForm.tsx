@@ -57,7 +57,7 @@ export default function ChecklistItemForm({ item, index, hasError = false, onUpd
         <textarea
           value={item.note}
           onChange={(e) => onUpdate('note', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-bold"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-bold text-gray-900"
           rows={2}
           placeholder="เพิ่มหมายเหตุ (ถ้ามี)"
         />
