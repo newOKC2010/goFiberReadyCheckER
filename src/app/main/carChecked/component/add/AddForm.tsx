@@ -63,7 +63,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
     } else {
       showAlert('ข้อผิดพลาด', result.message || 'เกิดข้อผิดพลาด', 'error');
     }
-    
+
     setLoading(false);
   };
 
@@ -76,7 +76,13 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
     <div className="space-y-6">
       {/* เลือกทะเบียนรถ */}
       <div ref={carDropdownRef}>
-        <label className="block text-sm text-gray-700 mb-2">
+        <label className="flex items-center gap-2 text-sm text-gray-700 mb-2 font-bold">
+          <span className="material-symbols-outlined text-red-500 text-lg"
+            style={{
+              fontVariationSettings: "'wght' 700",
+              fontSize: 'clamp(1rem, 5vw, 2rem)',
+              transition: 'all 0.3s ease'
+            }}>local_shipping</span>
           เลือกทะเบียนรถ <span className="text-red-500">*</span>
         </label>
         <Dropdown
@@ -90,7 +96,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
 
       {/* รายการตรวจสอบ */}
       <div>
-        <h3 className="text-lg text-gray-800 mb-4">รายการตรวจสอบ</h3>
+        <h3 className="text-lg font-bold text-gray-800 mb-4">รายการตรวจสอบ</h3>
         <div className="space-y-4 max-h-96 overflow-y-auto">
           {checklistItems.map((item, index) => (
             <div key={item.checklist_id} ref={(el) => { checklistItemRefs.current[index] = el; }}>

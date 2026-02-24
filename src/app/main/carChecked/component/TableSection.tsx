@@ -64,7 +64,7 @@ export default function TableSection({
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg text-gray-800">รายการตรวจสอบ ({totalCount} รายการ)</h2>
+        <h2 className="text-lg font-bold text-gray-800">รายการตรวจสอบ ({totalCount} รายการ)</h2>
         <Dropdown
           options={itemsPerPageOptions}
           value={String(itemsPerPage)}
