@@ -14,7 +14,10 @@ func ViewsCars(db *bun.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		ctx := context.Background()
 
-		cars, err := serviceViewsCar.GetAllCars(ctx, db)
+		offset := c.QueryInt("offset", 0)
+		limit := c.QueryInt("limit", 0)
+
+		cars, totalCount, err := serviceViewsCar.GetAllCars(ctx, db, offset, limit)
 		if err != nil {
 			return c.Status(500).JSON(viewsCarUtils.ViewsCarsResponse{
 				Success: false,
@@ -33,10 +36,20 @@ func ViewsCars(db *bun.DB) fiber.Handler {
 			}
 		}
 
+		totalPages := 0
+		currentPage := 0
+		if limit > 0 {
+			totalPages = (totalCount + limit - 1) / limit
+			currentPage = (offset / limit) + 1
+		}
+
 		return c.Status(200).JSON(viewsCarUtils.ViewsCarsResponse{
-			Success: true,
-			Message: "ดึงข้อมูลสำเร็จ",
-			Data:    carResponses,
+			Success:     true,
+			Message:     "ดึงข้อมูลสำเร็จ",
+			Data:        carResponses,
+			TotalCount:  totalCount,
+			TotalPages:  totalPages,
+			CurrentPage: currentPage,
 		})
 	}
 }

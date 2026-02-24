@@ -15,7 +15,10 @@ func ViewsChecklists(db *bun.DB) fiber.Handler {
 
 		ctx := context.Background()
 
-		checklists, err := serviceViewsChecklist.GetAllChecklists(ctx, db)
+		offset := c.QueryInt("offset", 0)
+		limit := c.QueryInt("limit", 0)
+
+		checklists, totalCount, err := serviceViewsChecklist.GetAllChecklists(ctx, db, offset, limit)
 		if err != nil {
 			return c.Status(500).JSON(viewsChecklistUtils.ViewsChecklistsResponse{
 				Success: false,
@@ -34,10 +37,20 @@ func ViewsChecklists(db *bun.DB) fiber.Handler {
 			}
 		}
 
+		totalPages := 0
+		currentPage := 0
+		if limit > 0 {
+			totalPages = (totalCount + limit - 1) / limit
+			currentPage = (offset / limit) + 1
+		}
+
 		return c.Status(200).JSON(viewsChecklistUtils.ViewsChecklistsResponse{
-			Success: true,
-			Message: "ดึงข้อมูลสำเร็จ",
-			Data:    checklistResponses,
+			Success:     true,
+			Message:     "ดึงข้อมูลสำเร็จ",
+			Data:        checklistResponses,
+			TotalCount:  totalCount,
+			TotalPages:  totalPages,
+			CurrentPage: currentPage,
 		})
 	}
 }

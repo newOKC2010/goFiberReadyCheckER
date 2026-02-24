@@ -11,7 +11,10 @@ type ChecklistResponse struct {
 }
 
 type ViewsChecklistsResponse struct {
-	Success bool                `json:"success"`
-	Message string              `json:"message"`
-	Data    []ChecklistResponse `json:"data,omitempty"`
+	Success     bool                `json:"success"`
+	Message     string              `json:"message"`
+	Data        []ChecklistResponse `json:"data,omitempty"`
+	TotalCount  int                 `json:"total_count,omitempty"`
+	TotalPages  int                 `json:"total_pages,omitempty"`
+	CurrentPage int                 `json:"current_page,omitempty"`
 }

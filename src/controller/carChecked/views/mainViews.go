@@ -17,12 +17,17 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 		user := c.Locals("user_er").(*middleware.UserERInfo)
 		ctx := context.Background()
 
+		offset := c.QueryInt("offset", 0)
+		limit := c.QueryInt("limit", 0)
+
 		filters := viewsUtils.FilterParams{
 			ID:       c.Query("id"),
 			DateFrom: c.Query("date_from"),
 			DateTo:   c.Query("date_to"),
 			CarID:    c.Query("car_id"),
 			StaffID:  c.Query("staff_id"),
+			Offset:   offset,
+			Limit:    limit,
 		}
 
 		if err := handlerViews.ValidateFilters(filters); err != nil {
@@ -33,12 +38,13 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 		}
 
 		var data []viewsUtils.CarCheckedData
+		var totalCount int
 		var err error
 
 		if user.Role == "user" {
-			data, err = serviceViews.GetCarCheckedByUserID(ctx, db, user.ID, filters)
+			data, totalCount, err = serviceViews.GetCarCheckedByUserID(ctx, db, user.ID, filters)
 		} else {
-			data, err = serviceViews.GetAllCarChecked(ctx, db, filters)
+			data, totalCount, err = serviceViews.GetAllCarChecked(ctx, db, filters)
 		}
 
 		if err != nil {
@@ -63,10 +69,20 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 			})
 		}
 
+		totalPages := 0
+		currentPage := 0
+		if limit > 0 {
+			totalPages = (totalCount + limit - 1) / limit
+			currentPage = (offset / limit) + 1
+		}
+
 		return c.Status(200).JSON(viewsUtils.ViewCarCheckedResponse{
-			Success: true,
-			Message: "ดึงข้อมูลสำเร็จ",
-			Data:    response,
+			Success:     true,
+			Message:     "ดึงข้อมูลสำเร็จ",
+			Data:        response,
+			TotalCount:  totalCount,
+			TotalPages:  totalPages,
+			CurrentPage: currentPage,
 		})
 	}
 }

@@ -6,6 +6,8 @@ type FilterParams struct {
 	DateTo   string `json:"date_to"`
 	CarID    string `json:"car_id"`
 	StaffID  string `json:"staff_id"`
+	Offset   int    `json:"offset"`
+	Limit    int    `json:"limit"`
 }
 
 type ChecklistItem struct {
@@ -29,9 +31,12 @@ type CarCheckedResponse struct {
 }
 
 type ViewCarCheckedResponse struct {
-	Success bool                 `json:"success"`
-	Message string               `json:"message"`
-	Data    []CarCheckedResponse `json:"data,omitempty"`
+	Success     bool                 `json:"success"`
+	Message     string               `json:"message"`
+	Data        []CarCheckedResponse `json:"data,omitempty"`
+	TotalCount  int                  `json:"total_count,omitempty"`
+	TotalPages  int                  `json:"total_pages,omitempty"`
+	CurrentPage int                  `json:"current_page,omitempty"`
 }
 
 type CarCheckedData struct {

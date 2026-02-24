@@ -8,13 +8,20 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func GetAllChecklists(ctx context.Context, db *bun.DB) ([]modelCheckAmbu.Checklist, error) {
+func GetAllChecklists(ctx context.Context, db *bun.DB, offset, limit int) ([]modelCheckAmbu.Checklist, int, error) {
 	var checklists []modelCheckAmbu.Checklist
-	err := db.NewSelect().
-		Model(&checklists).
-		Where("deleted_at IS NULL").
-		Order("id ASC").
-		Scan(ctx)
 
-	return checklists, err
+	baseQuery := db.NewSelect().
+		Model(&checklists).
+		Where("deleted_at IS NULL")
+
+	totalCount, _ := baseQuery.Count(ctx)
+
+	query := baseQuery.Order("id ASC")
+	if limit > 0 {
+		query = query.Limit(limit).Offset(offset)
+	}
+
+	err := query.Scan(ctx)
+	return checklists, totalCount, err
 }
