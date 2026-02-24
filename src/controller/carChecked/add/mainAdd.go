@@ -34,12 +34,12 @@ func AddCarChecked(db *bun.DB) fiber.Handler {
 
 		ctx := context.Background()
 
-		// if err := handlerAdd.ValidateCarNotCheckedToday(ctx, db, req.CarID); err != nil {
-		// 	return c.Status(400).JSON(addUtils.AddCarCheckedResponse{
-		// 		Success: false,
-		// 		Message: err.Error(),
-		// 	})
-		// }
+		if err := handlerAdd.ValidateCarNotCheckedToday(ctx, db, req.CarID); err != nil {
+			return c.Status(400).JSON(addUtils.AddCarCheckedResponse{
+				Success: false,
+				Message: err.Error(),
+			})
+		}
 
 		car, err := serviceAdd.GetCarByID(ctx, db, req.CarID)
 		if err != nil {
@@ -89,7 +89,7 @@ func AddCarChecked(db *bun.DB) fiber.Handler {
 
 		log.Printf("✅ เพิ่มข้อมูลการตรวจสอบรถสำเร็จ: ID=%d, Car=%s", carCheckedID, car.LicensePlateName)
 
-		// handlerAdd.SendCarCheckedAlert(ctx, db, user.ID, car.LicensePlateName, *checklistItems)
+		handlerAdd.SendCarCheckedAlert(ctx, db, user.ID, car.LicensePlateName, *checklistItems)
 
 		return c.Status(201).JSON(addUtils.AddCarCheckedResponse{
 			Success: true,
