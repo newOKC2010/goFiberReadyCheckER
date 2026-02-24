@@ -73,7 +73,7 @@ export default function ViewModal({ item, isOpen, onClose, onEditItem }: ViewMod
               local_shipping
             </span>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">{item.license_plate_name}</h2>
+              <h2 className="text-xl text-gray-800">{item.license_plate_name}</h2>
               <p className="text-sm text-gray-600 flex items-center gap-1 mt-1">
                 <span 
                   className="material-symbols-outlined text-base"
@@ -85,21 +85,21 @@ export default function ViewModal({ item, isOpen, onClose, onEditItem }: ViewMod
                 >
                   calendar_today
                 </span>
-                <span className="font-bold">{item.checked_date}</span>
+                <span>{item.checked_date}</span>
               </p>
             </div>
           </div>
         </div>
 
-        <div className="px-6 py-3 bg-gray-50 border-b font-bold">
+        <div className="px-6 py-3 bg-gray-50 border-b">
           <p className="text-sm text-gray-600">
             สถานะ: ผ่าน {passedItems}/{totalItems} รายการ ({percentage}%)
           </p>
         </div>
 
         <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6">
-          <h3 className="text-base font-bold text-gray-800 mb-2">รายการตรวจสอบ</h3>
-          <p className="text-xs text-gray-500 mb-4 flex items-center gap-1 font-bold">
+          <h3 className="text-base text-gray-800 mb-2">รายการตรวจสอบ</h3>
+          <p className="text-xs text-gray-500 mb-4 flex items-center gap-1">
             <span className="material-symbols-outlined text-sm">info</span>
             หากต้องการแก้ไขข้อมูล ให้กดที่ปุ่มแก้ไขของรายการนั้นๆ
           </p>

@@ -76,7 +76,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
     <div className="space-y-6">
       {/* เลือกทะเบียนรถ */}
       <div ref={carDropdownRef}>
-        <label className="block text-sm font-bold text-gray-700 mb-2">
+        <label className="block text-sm text-gray-700 mb-2">
           เลือกทะเบียนรถ <span className="text-red-500">*</span>
         </label>
         <Dropdown
@@ -90,7 +90,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
 
       {/* รายการตรวจสอบ */}
       <div>
-        <h3 className="text-lg font-bold text-gray-800 mb-4">รายการตรวจสอบ</h3>
+        <h3 className="text-lg text-gray-800 mb-4">รายการตรวจสอบ</h3>
         <div className="space-y-4 max-h-96 overflow-y-auto">
           {checklistItems.map((item, index) => (
             <div key={item.checklist_id} ref={(el) => { checklistItemRefs.current[index] = el; }}>
@@ -119,7 +119,7 @@ export default function AddForm({ cars, checklists, loading, setLoading, onSucce
           onClick={handleSubmit}
           loading={loading}
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base"
         >
           บันทึกข้อมูล
         </Button>

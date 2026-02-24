@@ -16,15 +16,15 @@ export default function ChecklistItemForm({ item, index, hasError = false, onUpd
       hasError ? 'border-red-500 border-2 shadow-lg shadow-red-200' : 'border-gray-300'
     }`}>
       <div className="flex items-center gap-3 mb-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm">
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white text-sm">
           {index + 1}
         </div>
-        <h4 className="font-bold text-gray-800">{item.name}</h4>
+        <h4 className="text-gray-800">{item.name}</h4>
       </div>
 
       {/* สถานะ */}
       <div className="mb-3">
-        <label className="block text-sm font-bold text-gray-700 mb-2">
+        <label className="block text-sm text-gray-700 mb-2">
           สถานะการตรวจสอบ <span className="text-red-500">*</span>
         </label>
         <div className="flex gap-4">
@@ -36,7 +36,7 @@ export default function ChecklistItemForm({ item, index, hasError = false, onUpd
               onChange={() => onUpdate('status', true)}
               className="w-4 h-4 text-green-600 cursor-pointer"
             />
-            <span className="text-sm font-bold text-green-600">ผ่าน</span>
+            <span className="text-sm text-green-600">ผ่าน</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -46,18 +46,18 @@ export default function ChecklistItemForm({ item, index, hasError = false, onUpd
               onChange={() => onUpdate('status', false)}
               className="w-4 h-4 text-red-600 cursor-pointer"
             />
-            <span className="text-sm font-bold text-red-600">ไม่ผ่าน</span>
+            <span className="text-sm text-red-600">ไม่ผ่าน</span>
           </label>
         </div>
       </div>
 
       {/* หมายเหตุ */}
       <div className="mb-3">
-        <label className="block text-sm font-bold text-gray-700 mb-1">หมายเหตุ</label>
+        <label className="block text-sm text-gray-700 mb-1">หมายเหตุ</label>
         <textarea
           value={item.note}
           onChange={(e) => onUpdate('note', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-bold text-gray-900"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900"
           rows={2}
           placeholder="เพิ่มหมายเหตุ (ถ้ามี)"
         />

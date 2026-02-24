@@ -52,17 +52,17 @@ export default function UpdateForm({
     <div className="space-y-6">
       {/* ชื่อรายการ */}
       <div>
-        <label className="block text-sm font-bold text-gray-700 mb-2">
+        <label className="block text-sm text-gray-700 mb-2">
           รายการตรวจสอบ
         </label>
         <div className="px-4 py-3 bg-gray-100 rounded-lg border border-gray-300">
-          <p className="font-bold text-gray-800">{checklistItem.name}</p>
+          <p className="text-gray-800">{checklistItem.name}</p>
         </div>
       </div>
 
       {/* สถานะ */}
       <div>
-        <label className="block text-sm font-bold text-gray-700 mb-2">
+        <label className="block text-sm text-gray-700 mb-2">
           สถานะการตรวจสอบ
         </label>
         <div className="flex gap-4">
@@ -73,7 +73,7 @@ export default function UpdateForm({
               onChange={() => setStatus(true)}
               className="w-4 h-4 text-green-600 cursor-pointer"
             />
-            <span className="text-sm font-bold text-green-600">ผ่าน</span>
+            <span className="text-sm text-green-600">ผ่าน</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -82,18 +82,18 @@ export default function UpdateForm({
               onChange={() => setStatus(false)}
               className="w-4 h-4 text-red-600 cursor-pointer"
             />
-            <span className="text-sm font-bold text-red-600">ไม่ผ่าน</span>
+            <span className="text-sm text-red-600">ไม่ผ่าน</span>
           </label>
         </div>
       </div>
 
       {/* หมายเหตุ */}
       <div>
-        <label className="block text-sm font-bold text-gray-700 mb-2">หมายเหตุ</label>
+        <label className="block text-sm text-gray-700 mb-2">หมายเหตุ</label>
         <textarea
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm font-bold text-gray-900"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900"
           rows={3}
           placeholder="เพิ่มหมายเหตุ (ถ้ามี)"
         />
@@ -116,7 +116,7 @@ export default function UpdateForm({
           onClick={handleSubmit}
           loading={loading}
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base font-bold"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base"
         >
           บันทึกการแก้ไข
         </Button>
