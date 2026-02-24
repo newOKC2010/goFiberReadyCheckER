@@ -21,13 +21,13 @@ export default function UpdateForm({ item, loading, onSubmit, onCancel }: Update
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-bold text-gray-700 mb-2">
-          ชื่อ Checklist <span className="text-red-500">*</span>
+          ชื่อรายการตรวจสอบ <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="กรอกชื่อ Checklist"
+          placeholder="กรอกชื่อรายการตรวจสอบ"
           disabled={loading}
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 font-bold text-gray-900"
         />

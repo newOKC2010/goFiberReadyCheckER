@@ -17,7 +17,7 @@ import { usePrintEffect } from '@/app/main/carChecked/hooks/usePrintEffect';
 import { handleSearch, handleReset } from '@/app/main/carChecked/utils/searchHandlers';
 
 export default function CarCheckedPage() {
-  const { data, setData, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData, reloadDropdownData } = useCarCheckedData();
+  const { data, setData, pagination, setPagination, loading, searchLoading, setSearchLoading, filters, setFilters, cars, staff, checklists, userRole, reloadData, reloadDropdownData } = useCarCheckedData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
   const { viewModalOpen, addModalOpen, updateModalOpen, deleteModalOpen, selectedItem, deleteItem, updateData, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal, openDeleteModal, closeDeleteModal, openPrint, setPrintItem, refreshSelectedItem } = useModals();
 
@@ -29,7 +29,7 @@ export default function CarCheckedPage() {
 
   const handleUpdateSuccess = async () => {
     // Reload data จาก backend เพื่ออัพเดท table
-    await reloadData(filters);
+    await reloadData({ ...filters, offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage });
     // Refresh selectedItem เพื่อให้เห็นข้อมูลใหม่ใน modal ทันที
     await refreshSelectedItem();
   };
@@ -40,18 +40,28 @@ export default function CarCheckedPage() {
   };
 
   const handleAddSuccess = () => {
-    reloadData(filters);
+    reloadData({ ...filters, offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage });
   };
 
   const handleDeleteSuccess = () => {
-    reloadData(filters);
+    reloadData({ ...filters, offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage });
   };
 
-  const onSearch = () => handleSearch(filters, setSearchLoading, setData, setCurrentPage);
-  const onReset = () => handleReset(setFilters, setSearchLoading, setData, setCurrentPage);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    reloadData({ ...filters, offset: (page - 1) * itemsPerPage, limit: itemsPerPage });
+  };
+
+  const handleItemsChange = (value: number) => {
+    handleItemsPerPageChange(value);
+    setCurrentPage(1);
+    reloadData({ ...filters, offset: 0, limit: value });
+  };
+
+  const onSearch = () => handleSearch({ ...filters, offset: 0, limit: itemsPerPage }, setSearchLoading, setData, setPagination, setCurrentPage);
+  const onReset = () => handleReset(setFilters, setSearchLoading, setData, setPagination, setCurrentPage);
 
   const { carOptions, staffOptions, itemsPerPageOptions } = handler.createDropdownOptions(cars, staff);
-  const { paginatedData, totalPages } = handler.paginateData(data, currentPage, itemsPerPage);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -96,18 +106,18 @@ export default function CarCheckedPage() {
           />
           
           <TableSection
-            data={paginatedData}
+            data={data}
             loading={searchLoading || loading}
-            totalCount={data.length}
+            totalCount={pagination.total_count}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={pagination.total_pages}
             itemsPerPageOptions={itemsPerPageOptions}
             showStaffColumn={handler.isAdminOrSuperAdmin(userRole)}
             showDeleteButton={handler.isAdminOrSuperAdmin(userRole)}
             showPrintButton={handler.isAdminOrSuperAdmin(userRole)}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            onPageChange={setCurrentPage}
+            onItemsPerPageChange={handleItemsChange}
+            onPageChange={handlePageChange}
             onView={openViewModal}
             onPrint={openPrint}
             onDelete={openDeleteModal}

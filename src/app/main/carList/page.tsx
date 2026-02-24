@@ -10,15 +10,25 @@ import { useModals } from '@/app/main/carList/hooks/useModals';
 import * as handler from '@/app/main/carList/handler/handlerCarList';
 
 export default function CarListPage() {
-  const { data, loading, reloadData } = useCarListData();
+  const { data, pagination, loading, reloadData } = useCarListData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
   const { addModalOpen, updateModalOpen, selectedItem, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal } = useModals();
 
   const handleSuccess = () => {
-    reloadData();
+    reloadData((currentPage - 1) * itemsPerPage, itemsPerPage);
   };
 
-  const { paginatedData, totalPages } = handler.paginateData(data, currentPage, itemsPerPage);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    reloadData((page - 1) * itemsPerPage, itemsPerPage);
+  };
+
+  const handleItemsChange = (value: number) => {
+    handleItemsPerPageChange(value);
+    setCurrentPage(1);
+    reloadData(0, value);
+  };
+
   const itemsPerPageOptions = handler.createItemsPerPageOptions();
 
   return (
@@ -30,16 +40,16 @@ export default function CarListPage() {
         />
 
         <TableSection
-          data={paginatedData}
+          data={data}
           loading={loading}
-          totalCount={data.length}
+          totalCount={pagination.total_count}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={pagination.total_pages}
           itemsPerPageOptions={itemsPerPageOptions}
           showActions={true}
-          onItemsPerPageChange={handleItemsPerPageChange}
-          onPageChange={setCurrentPage}
+          onItemsPerPageChange={handleItemsChange}
+          onPageChange={handlePageChange}
           onEdit={openUpdateModal}
         />
 

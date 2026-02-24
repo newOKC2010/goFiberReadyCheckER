@@ -36,7 +36,7 @@ export default function Table<T>({
   statusButtonText
 }: TableProps<T>) {
   if (loading) return <TableLoading />;
-  if (data.length === 0) return <TableEmpty />;
+  if (!data || data.length === 0) return <TableEmpty />;
 
   return (
     <>

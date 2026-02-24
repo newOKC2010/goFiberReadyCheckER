@@ -5,3 +5,9 @@ export interface CarItem {
   created_at: string;
   updated_at: string;
 }
+
+export interface PaginationResponse {
+  total_count: number;
+  total_pages: number;
+  current_page: number;
+}

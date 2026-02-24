@@ -1,12 +1,13 @@
 import { showAlert } from '@/global/globalSwal';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
-import { FilterParams, CarCheckedItem } from '@/app/main/carChecked/utils/types';
+import { FilterParams, CarCheckedItem, PaginationResponse } from '@/app/main/carChecked/utils/types';
 import { validateDateFilters } from '@/app/main/carChecked/utils/validation';
 
 export async function handleSearch(
   filters: FilterParams,
   setSearchLoading: (loading: boolean) => void,
   setData: (data: CarCheckedItem[]) => void,
+  setPagination: (pagination: PaginationResponse) => void,
   setCurrentPage: (page: number) => void
 ) {
   // Validate วันที่
@@ -21,6 +22,7 @@ export async function handleSearch(
   
   if (result.success) {
     setData(result.data);
+    if (result.pagination) setPagination(result.pagination);
     setCurrentPage(1);
   } else {
     setData([]);
@@ -44,6 +46,7 @@ export async function handleReset(
   setFilters: (filters: FilterParams) => void,
   setSearchLoading: (loading: boolean) => void,
   setData: (data: CarCheckedItem[]) => void,
+  setPagination: (pagination: PaginationResponse) => void,
   setCurrentPage: (page: number) => void
 ) {
   setSearchLoading(true);
@@ -53,6 +56,7 @@ export async function handleReset(
   
   if (result.success) {
     setData(result.data);
+    if (result.pagination) setPagination(result.pagination);
   } else {
     setData([]);
   }

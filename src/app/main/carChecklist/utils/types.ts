@@ -10,3 +10,9 @@ export interface ChecklistOption {
   value: string;
   label: string;
 }
+
+export interface PaginationResponse {
+  total_count: number;
+  total_pages: number;
+  current_page: number;
+}

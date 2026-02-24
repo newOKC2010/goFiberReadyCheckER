@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 import { AuthToken } from '@/global/globalAuth';
-import { CarItem } from '@/app/main/carList/utils/types';
+import { CarItem, PaginationResponse } from '@/app/main/carList/utils/types';
 
 async function fetchWithAuth(url: string, options?: RequestInit) {
   const token = AuthToken.getToken();
@@ -14,9 +14,26 @@ async function fetchWithAuth(url: string, options?: RequestInit) {
   return res.json();
 }
 
-export async function getCarListData(): Promise<{ success: boolean; data: CarItem[]; message?: string }> {
-  const url = `${API_BASE_URL}${API_ENDPOINTS.CAR.VIEWS}`;
-  return fetchWithAuth(url);
+export async function getCarListData(offset?: number, limit?: number): Promise<{ success: boolean; data: CarItem[]; message?: string; pagination?: PaginationResponse }> {
+  const params = new URLSearchParams();
+  if (offset !== undefined) params.append('offset', offset.toString());
+  if (limit !== undefined) params.append('limit', limit.toString());
+  
+  const url = `${API_BASE_URL}${API_ENDPOINTS.CAR.VIEWS}${params.toString() ? `?${params.toString()}` : ''}`;
+  const result = await fetchWithAuth(url);
+  
+  if (result.success && result.total_count !== undefined) {
+    return {
+      ...result,
+      pagination: {
+        total_count: result.total_count,
+        total_pages: result.total_pages,
+        current_page: result.current_page
+      }
+    };
+  }
+  
+  return result;
 }
 
 export async function addCar(licensePlateName: string): Promise<{ success: boolean; message: string; car_id?: number }> {

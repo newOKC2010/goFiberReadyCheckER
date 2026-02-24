@@ -37,4 +37,12 @@ export interface FilterParams {
   date_to?: string;
   car_id?: string;
   staff_id?: string;
+  offset?: number;
+  limit?: number;
+}
+
+export interface PaginationResponse {
+  total_count: number;
+  total_pages: number;
+  current_page: number;
 }

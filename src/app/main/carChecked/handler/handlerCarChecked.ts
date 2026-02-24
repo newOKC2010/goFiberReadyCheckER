@@ -1,7 +1,7 @@
 import { showAlert, showConfirm } from '@/global/globalSwal';
 import { checkAuth, USER_ROLES } from '@/global/globalAuth';
 import { getCarCheckedData, getCarList, getStaffList, deleteCarChecked } from '@/app/main/carChecked/service/serviceCarChecked';
-import { CarCheckedItem, CarOption, StaffOption, FilterParams } from '@/app/main/carChecked/utils/types';
+import { CarCheckedItem, CarOption, StaffOption, FilterParams, PaginationResponse } from '@/app/main/carChecked/utils/types';
 
 export async function loadUserRole(): Promise<string> {
   const auth = await checkAuth();
@@ -18,9 +18,8 @@ export async function loadStaff(): Promise<StaffOption[]> {
   return res.success ? res.data : [];
 }
 
-export async function loadData(filters: FilterParams): Promise<{ success: boolean; data: CarCheckedItem[]; message?: string }> {
-  const res = await getCarCheckedData(filters);
-  return { success: res.success, data: res.success ? res.data : [], message: res.message };
+export async function loadData(filters: FilterParams): Promise<{ success: boolean; data: CarCheckedItem[]; message?: string; pagination?: PaginationResponse }> {
+  return await getCarCheckedData(filters);
 }
 
 export async function handleDelete(item: CarCheckedItem, onSuccess: () => void) {

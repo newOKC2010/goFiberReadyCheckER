@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Modal } from '@/components/modal/mainModal';
-import UpdateForm from './UpdateForm';
-import { handleUpdateSubmit } from './utils/submitHandler';
+import UpdateForm from '@/app/main/carChecklist/component/update/UpdateForm';
+import { handleUpdateSubmit } from '@/app/main/carChecklist/component/update/utils/submitHandler';
 import { ChecklistItem } from '@/app/main/carChecklist/utils/types';
 
 interface UpdateModalProps {
@@ -33,7 +33,7 @@ export default function UpdateModal({ isOpen, onClose, onSuccess, item }: Update
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="แก้ไข Checklist"
+      title="แก้ไขรายการตรวจสอบ"
       showCloseButton={true}
       contentClassName="!max-w-lg"
     >

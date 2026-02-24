@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { CarCheckedItem, CarOption, StaffOption, ChecklistOption, FilterParams } from '@/app/main/carChecked/utils/types';
+import { CarCheckedItem, CarOption, StaffOption, ChecklistOption, FilterParams, PaginationResponse } from '@/app/main/carChecked/utils/types';
 import * as handler from '@/app/main/carChecked/handler/handlerCarChecked';
 import * as service from '@/app/main/carChecked/service/serviceCarChecked';
 
 export function useCarCheckedData() {
   const [data, setData] = useState<CarCheckedItem[]>([]);
+  const [pagination, setPagination] = useState<PaginationResponse>({ total_count: 0, total_pages: 0, current_page: 0 });
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
   const [filters, setFilters] = useState<FilterParams>({});
@@ -40,9 +41,10 @@ export function useCarCheckedData() {
   };
 
   const initialFetchData = async () => {
-    const result = await handler.loadData({});
+    const result = await handler.loadData({ offset: 0, limit: 5 });
     if (result.success) {
       setData(result.data);
+      if (result.pagination) setPagination(result.pagination);
     }
   };
 
@@ -50,6 +52,7 @@ export function useCarCheckedData() {
     const result = await handler.loadData(currentFilters);
     if (result.success) {
       setData(result.data);
+      if (result.pagination) setPagination(result.pagination);
     }
   };
 
@@ -64,6 +67,8 @@ export function useCarCheckedData() {
   return {
     data,
     setData,
+    pagination,
+    setPagination,
     loading,
     searchLoading,
     setSearchLoading,

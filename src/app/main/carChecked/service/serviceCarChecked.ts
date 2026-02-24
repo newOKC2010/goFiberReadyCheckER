@@ -1,6 +1,6 @@
 import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 import { AuthToken } from '@/global/globalAuth';
-import { CarCheckedItem, CarOption, StaffOption, FilterParams, ChecklistOption } from '@/app/main/carChecked/utils/types';
+import { CarCheckedItem, CarOption, StaffOption, FilterParams, ChecklistOption, PaginationResponse } from '@/app/main/carChecked/utils/types';
 
 async function fetchWithAuth(url: string) {
   const token = AuthToken.getToken();
@@ -10,15 +10,30 @@ async function fetchWithAuth(url: string) {
   return res.json();
 }
 
-export async function getCarCheckedData(filters: FilterParams): Promise<{ success: boolean; data: CarCheckedItem[]; message?: string }> {
+export async function getCarCheckedData(filters: FilterParams): Promise<{ success: boolean; data: CarCheckedItem[]; message?: string; pagination?: PaginationResponse }> {
   const params = new URLSearchParams();
   if (filters.date_from) params.append('date_from', filters.date_from);
   if (filters.date_to) params.append('date_to', filters.date_to);
   if (filters.car_id) params.append('car_id', filters.car_id);
   if (filters.staff_id) params.append('staff_id', filters.staff_id);
+  if (filters.offset !== undefined) params.append('offset', filters.offset.toString());
+  if (filters.limit !== undefined) params.append('limit', filters.limit.toString());
 
   const url = `${API_BASE_URL}${API_ENDPOINTS.CAR_CHECKED.VIEWS}?${params.toString()}`;
-  return fetchWithAuth(url);
+  const result = await fetchWithAuth(url);
+  
+  if (result.success && result.total_count !== undefined) {
+    return {
+      ...result,
+      pagination: {
+        total_count: result.total_count,
+        total_pages: result.total_pages,
+        current_page: result.current_page
+      }
+    };
+  }
+  
+  return result;
 }
 
 export async function getCarList(): Promise<{ success: boolean; data: CarOption[] }> {
