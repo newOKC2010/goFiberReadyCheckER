@@ -22,7 +22,7 @@ func CreateOTPFlexMessage(otpCode, fullName string) mophAlertUtils.FlexMessage {
 				Contents: []interface{}{
 					mophAlertUtils.FlexText{
 						Type:   "text",
-						Text:   "� ระบบตรวจสอบรถพยาบาล",
+						Text:   "🚑 ระบบตรวจสอบรถพยาบาล",
 						Weight: "bold",
 						Size:   "md",
 						Color:  "#dc3545",

@@ -20,7 +20,7 @@ func CreateOTPEmailHTML(otpCode, fullName string) string {
         
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #dc3545 0%%, #c82333 100%%); padding: 30px; text-align: center;">
-            <h1 style="margin: 0; color: white; font-size: 24px;">� ระบบตรวจสอบรถพยาบาล</h1>
+            <h1 style="margin: 0; color: white; font-size: 24px;">🚑 ระบบตรวจสอบรถพยาบาล</h1>
             <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Ambulance Check System</p>
         </div>
         
