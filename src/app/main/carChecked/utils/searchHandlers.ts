@@ -52,7 +52,7 @@ export async function handleReset(
   setSearchLoading(true);
   setFilters({});
   setCurrentPage(1);
-  const result = await handler.loadData({});
+  const result = await handler.loadData({ offset: 0, limit: 5 });
   
   if (result.success) {
     setData(result.data);
@@ -67,7 +67,7 @@ export async function handleReset(
       if (result.data.length === 0) {
         showAlert('แจ้งเตือน', 'รีเซ็ตเสร็จ แต่ไม่พบข้อมูล', 'info');
       } else {
-        showAlert('สำเร็จ', `รีเซ็ตเสร็จ แสดงข้อมูลทั้งหมด ${result.data.length} รายการ`, 'success');
+        showAlert('สำเร็จ', `รีเซ็ตเสร็จ พบข้อมูล ${result.pagination?.total_count || result.data.length} รายการ`, 'success');
       }
     } else {
       showAlert('ผิดพลาด', result.message || 'ไม่สามารถรีเซ็ตข้อมูลได้', 'error');
