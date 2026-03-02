@@ -28,7 +28,8 @@ func SendCarCheckedAlert(ctx context.Context, db *bun.DB, userID int64, vehicleN
 			return
 		}
 
-		checkedDate := time.Now().Format("2/1/2006 15:04:05")
+		loc, _ := time.LoadLocation("Asia/Bangkok")
+		checkedDate := time.Now().In(loc).Format("2/1/2006 15:04:05")
 		flexMsg := handlerMophAlert.CreateCarCheckedFlexMessage(
 			vehicleName,
 			username,
