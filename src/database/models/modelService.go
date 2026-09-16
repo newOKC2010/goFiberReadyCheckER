@@ -4,6 +4,7 @@ import (
 	"context"
 	modelAuth "go-fiber-check-ambu/src/database/models/auth"
 	modelCheckAmbu "go-fiber-check-ambu/src/database/models/checkAmbu"
+	modelEmergency "go-fiber-check-ambu/src/database/models/emergency"
 
 	"fmt"
 	"log"
@@ -14,6 +15,7 @@ import (
 func CreateTables(db *bun.DB) (int, error) {
 	ctx := context.Background()
 	allModels := append(modelAuth.GetModelsAuth(), modelCheckAmbu.GetModelsCheckAmbu()...)
+	allModels = append(allModels, modelEmergency.GetModelsEmergency()...)
 
 	var created int
 	for _, m := range allModels {
