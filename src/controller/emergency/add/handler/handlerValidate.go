@@ -28,11 +28,7 @@ func ValidateLicensePlateName(name string) error {
 }
 
 func ValidateType(t string) error {
-	t = strings.ToUpper(strings.TrimSpace(t))
-	if t == "" {
-		return fmt.Errorf("กรุณาระบุประเภทรถฉุกเฉิน")
-	}
-	if !validTypes[t] {
+	if !validTypes[strings.ToUpper(strings.TrimSpace(t))] {
 		return fmt.Errorf("ประเภทรถไม่ถูกต้อง (ALS, BLS, FR)")
 	}
 	return nil

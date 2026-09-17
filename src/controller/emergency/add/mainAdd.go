@@ -28,8 +28,10 @@ func AddEmergency(db *bun.DB) fiber.Handler {
 		if err := handlerAdd.ValidateLicensePlateName(req.LicensePlateName); err != nil {
 			return c.Status(400).JSON(addUtils.AddEmergencyResponse{Success: false, Message: err.Error()})
 		}
-		if err := handlerAdd.ValidateType(req.Type); err != nil {
-			return c.Status(400).JSON(addUtils.AddEmergencyResponse{Success: false, Message: err.Error()})
+		if req.Type != "" {
+			if err := handlerAdd.ValidateType(req.Type); err != nil {
+				return c.Status(400).JSON(addUtils.AddEmergencyResponse{Success: false, Message: err.Error()})
+			}
 		}
 
 		ctx := context.Background()

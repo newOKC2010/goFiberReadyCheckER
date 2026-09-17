@@ -26,6 +26,13 @@ func ViewsEmergencies(db *bun.DB) fiber.Handler {
 			})
 		}
 
+		if totalCount == 0 {
+			return c.Status(200).JSON(viewsUtils.ViewsEmergencyResponse{
+				Success: false,
+				Message: "ไม่พบข้อมูลรถฉุกเฉิน",
+			})
+		}
+
 		data := make([]viewsUtils.EmergencyResponse, len(items))
 		for i, em := range items {
 			data[i] = viewsUtils.EmergencyResponse{

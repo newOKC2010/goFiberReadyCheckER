@@ -13,7 +13,8 @@ func GetAllEmergencyLists(ctx context.Context, db *bun.DB, offset, limit int) ([
 
 	baseQuery := db.NewSelect().
 		Model(&items).
-		Where("deleted_at IS NULL")
+		Where("deleted_at IS NULL").
+		Where("is_active = true")
 
 	totalCount, _ := baseQuery.Count(ctx)
 

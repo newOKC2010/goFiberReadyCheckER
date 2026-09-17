@@ -14,7 +14,8 @@ func GetAllEmergencies(ctx context.Context, db *bun.DB, emergencyType string, of
 
 	baseQuery := db.NewSelect().
 		Model(&items).
-		Where("deleted_at IS NULL")
+		Where("deleted_at IS NULL").
+		Where("active = true")
 
 	if t := strings.ToUpper(strings.TrimSpace(emergencyType)); t != "" {
 		baseQuery = baseQuery.Where("type = ?", t)
