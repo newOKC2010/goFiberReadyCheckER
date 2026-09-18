@@ -24,6 +24,23 @@ export const API_ENDPOINTS = {
     UPDATE: '/car-checked/update',
     DELETE: '/car-checked/delete',
   },
+  EMERGENCY: {
+    VIEWS: '/emergency/views',
+    ADD: '/emergency/add',
+    UPDATE: '/emergency/update',
+  },
+  EMERGENCY_LIST: {
+    VIEWS: '/emergency-list/views',
+    ADD: '/emergency-list/add',
+    UPDATE: '/emergency-list/update',
+  },
+  EMERGENCY_CHECKED: {
+    VIEWS: '/emergency-checked/views',
+    VIEW_IMAGE: '/emergency-checked/view-image',
+    ADD: '/emergency-checked/add',
+    UPDATE: '/emergency-checked/update',
+    DELETE: '/emergency-checked/delete',
+  },
   USER: {
     LIST: '/user/list',
   },

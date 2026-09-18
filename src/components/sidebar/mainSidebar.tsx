@@ -15,25 +15,33 @@ interface SidebarProps {
 }
 
 const ALL_MENUS = [
- 
-  { 
-    name: 'ตรวจสอบรถฉุกเฉิน', 
-    icon: 'local_shipping', 
-    path: '/main/carChecked',
-    excludeRoles: [] as string[]
+  {
+    name: 'ตรวจสอบรถ',
+    icon: 'local_shipping',
+    excludeRoles: [] as string[],
+    children: [
+      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carChecked', excludeRoles: [] as string[] },
+      { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerChecked', excludeRoles: [] as string[] },
+    ]
   },
-  { 
-    name: 'รายการตรวจสอบ', 
-    icon: 'checklist', 
-    path: '/main/carChecklist',
-    excludeRoles: [USER_ROLES.USER] as string[]
+  {
+    name: 'รายการตรวจสอบ',
+    icon: 'checklist',
+    excludeRoles: [USER_ROLES.USER] as string[],
+    children: [
+      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
+      { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
+    ]
   },
-  { 
-    name: 'รายชื่อทะเบียนรถฉุกเฉิน', 
-    icon: 'list_alt', 
-    path: '/main/carList',
-    excludeRoles: [USER_ROLES.USER] as string[]
-  }
+  {
+    name: 'รายชื่อทะเบียนรถ',
+    icon: 'list_alt',
+    excludeRoles: [USER_ROLES.USER] as string[],
+    children: [
+      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carList', excludeRoles: [USER_ROLES.USER] as string[] },
+      { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerList', excludeRoles: [USER_ROLES.USER] as string[] },
+    ]
+  },
 ];
 
 export default function Sidebar({ user }: SidebarProps) {
