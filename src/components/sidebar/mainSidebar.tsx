@@ -20,7 +20,7 @@ const ALL_MENUS = [
     icon: 'local_shipping',
     excludeRoles: [] as string[],
     children: [
-      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carChecked', excludeRoles: [] as string[] },
+      { name: 'Ambulance', icon: 'ambulance', path: '/main/carChecked', excludeRoles: [] as string[] },
       { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerChecked', excludeRoles: [] as string[] },
     ]
   },
@@ -29,7 +29,7 @@ const ALL_MENUS = [
     icon: 'checklist',
     excludeRoles: [USER_ROLES.USER] as string[],
     children: [
-      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
+      { name: 'Ambulance', icon: 'ambulance', path: '/main/carChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
       { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
     ]
   },
@@ -38,7 +38,7 @@ const ALL_MENUS = [
     icon: 'list_alt',
     excludeRoles: [USER_ROLES.USER] as string[],
     children: [
-      { name: 'รถฉุกเฉิน', icon: 'ambulance', path: '/main/carList', excludeRoles: [USER_ROLES.USER] as string[] },
+      { name: 'Ambulance', icon: 'ambulance', path: '/main/carList', excludeRoles: [USER_ROLES.USER] as string[] },
       { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerList', excludeRoles: [USER_ROLES.USER] as string[] },
     ]
   },
