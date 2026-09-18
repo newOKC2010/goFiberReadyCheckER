@@ -43,8 +43,12 @@ export default function SidebarMenu({ menus, currentPath, onMenuClick }: Sidebar
           <div key={menu.path || menu.name}>
             <button
               onClick={() => {
-                if (hasChildren) toggleMenu(menu.name);
-                else if (menu.path) onMenuClick(menu.path);
+                if (hasChildren) {
+                  toggleMenu(menu.name);
+                  // navigate ไปยัง child แรกเมื่อคลิก parent
+                  const firstChild = menu.children?.find(c => c.path);
+                  if (firstChild?.path && !isChildActive(menu.children)) onMenuClick(firstChild.path);
+                } else if (menu.path) onMenuClick(menu.path);
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all duration-200 cursor-pointer
                 ${isActive(menu.path) || childActive
