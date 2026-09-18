@@ -16,6 +16,7 @@ type ChecklistItem struct {
 	Status      bool     `json:"status"`
 	Images      []string `json:"images"`
 	ChecklistID string   `json:"checklist_id"`
+	ItemType    string   `json:"item_type"`
 }
 
 type ChecklistItems struct {
