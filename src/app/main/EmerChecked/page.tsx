@@ -17,7 +17,7 @@ import { handleSearch, handleReset } from '@/app/main/EmerChecked/utils/searchHa
 import * as handler from '@/app/main/EmerChecked/handler/handlerEmerChecked';
 
 export default function EmerCheckedPage() {
-  const { data, setData, pagination, setPagination, loading, searchLoading, setSearchLoading, filters, setFilters, emergencies, staff, userRole, reloadData } = useEmerCheckedData();
+  const { data, setData, pagination, setPagination, loading, searchLoading, setSearchLoading, filters, setFilters, emergencies, checklists, staff, userRole, reloadData, reloadDropdownData } = useEmerCheckedData();
   const { currentPage, setCurrentPage, itemsPerPage, handleItemsPerPageChange } = usePagination(5);
   const { viewModalOpen, addModalOpen, updateModalOpen, deleteModalOpen, selectedItem, deleteItem, updateData, printItem, printLoading, setPrintLoading, openViewModal, closeViewModal, openAddModal, closeAddModal, openUpdateModal, closeUpdateModal, openDeleteModal, closeDeleteModal, openPrint, setPrintItem, refreshSelectedItem } = useModals();
 
@@ -30,6 +30,7 @@ export default function EmerCheckedPage() {
     await refreshSelectedItem();
   };
 
+  const handleOpenAddModal = async () => { await reloadDropdownData(); openAddModal(); };
   const handleAddSuccess = () => reloadData({ ...filters, offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage });
   const handleDeleteSuccess = () => reloadData({ ...filters, offset: (currentPage - 1) * itemsPerPage, limit: itemsPerPage });
 
@@ -50,7 +51,7 @@ export default function EmerCheckedPage() {
 
       <div className="no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-          <PageHeader onAdd={openAddModal} showAddButton={true} />
+          <PageHeader onAdd={handleOpenAddModal} showAddButton={true} />
 
           <FilterSection
             filters={filters} onFilterChange={setFilters} onSearch={onSearch} onReset={onReset}
@@ -68,7 +69,7 @@ export default function EmerCheckedPage() {
           />
 
           <ViewModal item={selectedItem} isOpen={viewModalOpen} onClose={closeViewModal} onEditItem={handleEditItem} />
-          <AddModal isOpen={addModalOpen} onClose={closeAddModal} />
+          <AddModal isOpen={addModalOpen} onClose={closeAddModal} onSuccess={handleAddSuccess} emergencies={emergencies} checklists={checklists} />
 
           {updateData && (
             <UpdateModal isOpen={updateModalOpen} onClose={closeUpdateModal} onSuccess={handleUpdateSuccess} emerCheckedId={updateData.emerCheckedId} checklistItem={updateData.item} />

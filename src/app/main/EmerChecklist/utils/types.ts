@@ -3,6 +3,9 @@ export interface EmerChecklistItem {
   name: string;
   description: string;
   is_active: boolean;
+  item_type: string;
+  true_label: string;
+  false_label: string;
   created_at: string;
   updated_at: string;
 }

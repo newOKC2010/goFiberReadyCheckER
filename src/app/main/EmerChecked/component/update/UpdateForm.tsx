@@ -27,26 +27,35 @@ export default function UpdateForm({ emerCheckedId, checklistItem, loading, setL
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm text-gray-700 mb-2">รายการตรวจสอบ</label>
-        <div className="px-4 py-3 bg-gray-100 rounded-lg border border-gray-300"><p className="text-gray-800">{checklistItem.name}</p></div>
+        <label className="block text-sm text-gray-700 mb-2 font-bold">รายการตรวจสอบ</label>
+        <div className="px-4 py-3 bg-gray-100 rounded-lg border border-gray-300"><p className="text-gray-800 font-bold">{checklistItem.name}</p></div>
       </div>
-      <div>
-        <label className="block text-sm text-gray-700 mb-2">สถานะการตรวจสอบ</label>
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" checked={status === true} onChange={() => setStatus(true)} className="w-4 h-4 text-green-600 cursor-pointer" />
-            <span className="text-sm text-green-600">ผ่าน</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="radio" checked={status === false} onChange={() => setStatus(false)} className="w-4 h-4 text-red-600 cursor-pointer" />
-            <span className="text-sm text-red-600">ไม่ผ่าน</span>
-          </label>
+      {checklistItem.item_type === 'boolean' ? (
+        <>
+          <div>
+            <label className="block text-sm text-gray-700 mb-2 font-bold">สถานะการตรวจสอบ</label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="radio" checked={status === true} onChange={() => setStatus(true)} className="w-4 h-4 text-green-600 cursor-pointer" />
+                <span className="text-sm text-green-600 font-bold">ผ่าน</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="radio" checked={status === false} onChange={() => setStatus(false)} className="w-4 h-4 text-red-600 cursor-pointer" />
+                <span className="text-sm text-red-600 font-bold">ไม่ผ่าน</span>
+              </label>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm text-gray-700 mb-2 font-bold">หมายเหตุ</label>
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 placeholder:font-bold" rows={3} placeholder="เพิ่มหมายเหตุ (ถ้ามี)" />
+          </div>
+        </>
+      ) : (
+        <div>
+          <label className="block text-sm text-gray-700 mb-2 font-bold">ข้อมูล</label>
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900 placeholder:font-bold" rows={3} placeholder="กรอกข้อมูล..." />
         </div>
-      </div>
-      <div>
-        <label className="block text-sm text-gray-700 mb-2">หมายเหตุ</label>
-        <textarea value={note} onChange={(e) => setNote(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm text-gray-900" rows={3} placeholder="เพิ่มหมายเหตุ (ถ้ามี)" />
-      </div>
+      )}
       <UpdateImageManager checklistId={checklistItem.checklist_id} existingImages={existingImages} newImages={newImages} onExistingImagesChange={setExistingImages} onNewImagesChange={setNewImages} />
       <div className="flex justify-center gap-3 pt-4 border-t">
         <Button type="button" variant="pastel" onClick={handleSubmit} loading={loading} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-base">

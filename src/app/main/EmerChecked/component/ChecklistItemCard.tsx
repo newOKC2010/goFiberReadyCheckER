@@ -21,32 +21,43 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
     : [];
 
   return (
-    <div className={`p-4 rounded-xl ${item.status ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500'}`}>
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-start gap-3 flex-1">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-white text-lg flex-shrink-0 mt-0.5">{index + 1}</div>
-          <div className="flex-1">
-            <h4 className="text-gray-800 mb-1">{item.name}</h4>
-            <span className={`px-3 py-1 rounded-full text-sm ${item.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+    <div className={`p-4 rounded-xl ${item.item_type === 'boolean' ? (item.status ? 'bg-green-50 border-2 border-green-500' : 'bg-red-50 border-2 border-red-500') : 'bg-blue-50 border-2 border-blue-300'}`}>
+      <div className="flex items-start gap-2 mb-3">
+        {/* เลขลำดับ */}
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-white text-lg flex-shrink-0 mt-0.5">{index + 1}</div>
+
+        {/* ชื่อ + content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <h4 className="text-gray-800 font-bold break-words min-w-0">{item.name}</h4>
+            {onEdit && (
+              <button onClick={onEdit} className="flex items-center gap-1 px-2 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-xs flex-shrink-0 cursor-pointer">
+                <span className="material-symbols-outlined text-base">edit</span>
+                <span className="font-bold">แก้ไข</span>
+              </button>
+            )}
+          </div>
+          {item.item_type === 'boolean' ? (
+            <span className={`mt-1 inline-block px-3 py-1 rounded-full text-sm font-bold ${item.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
               {item.status ? 'ผ่าน' : 'ไม่ผ่าน'}
             </span>
-          </div>
+          ) : (
+            /* text type */
+            <div className="mt-2 px-3 py-2 bg-white rounded-lg border border-blue-200 break-words">
+              <p className="text-sm text-gray-800 font-bold whitespace-pre-wrap">{item.note || '-'}</p>
+            </div>
+          )}
         </div>
-        {onEdit && (
-          <button onClick={onEdit} className="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-xs sm:text-sm cursor-pointer">
-            <span className="material-symbols-outlined text-base sm:text-lg">edit</span>
-            <span>แก้ไข</span>
-          </button>
-        )}
       </div>
 
-      {item.note && (
+      {/* หมายเหตุ — แสดงเฉพาะ boolean type */}
+      {item.item_type === 'boolean' && item.note && (
         <div className="mb-3 bg-yellow-50 p-3 rounded-xl border-l-4 border-yellow-400">
           <div className="flex items-start gap-2">
             <span className="material-symbols-outlined text-yellow-600 text-lg" style={{ fontVariationSettings: "'wght' 700" }}>sticky_note_2</span>
             <div>
-              <p className="text-sm text-gray-700">หมายเหตุ:</p>
-              <p className="text-sm text-gray-800">{item.note}</p>
+              <p className="text-sm text-gray-700 font-bold">หมายเหตุ:</p>
+              <p className="text-sm text-gray-800 font-bold">{item.note}</p>
             </div>
           </div>
         </div>
@@ -56,7 +67,7 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
         <div className="mt-3">
           <div className="flex items-center gap-2 mb-2">
             <span className="material-symbols-outlined text-blue-600 text-lg" style={{ fontVariationSettings: "'wght' 700" }}>image</span>
-            <p className="text-sm text-gray-800">รูปภาพการตรวจสอบ ({imageUrls.length} รูป)</p>
+            <p className="text-sm text-gray-800 font-bold">รูปภาพการตรวจสอบ ({imageUrls.length} รูป)</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {item.images.map((img, idx) => (
@@ -69,7 +80,7 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
       ) : (
         <div className="mt-3 flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
           <span className="material-symbols-outlined text-gray-400 text-lg">image_not_supported</span>
-          <p className="text-sm text-gray-600">ไม่มีรูปภาพการตรวจสอบ</p>
+          <p className="text-sm text-gray-600 font-bold">ไม่มีรูปภาพการตรวจสอบ</p>
         </div>
       )}
 

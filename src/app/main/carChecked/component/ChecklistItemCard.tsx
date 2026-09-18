@@ -47,10 +47,10 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <h4 className="text-gray-800">{item.name}</h4>
+              <h4 className="text-gray-800 font-bold">{item.name}</h4>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`px-3 py-1 rounded-full text-sm ${item.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
+              <span className={`px-3 py-1 rounded-full text-sm font-bold ${item.status ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
                 {item.status ? 'ผ่าน' : 'ไม่ผ่าน'}
               </span>
             </div>
@@ -62,8 +62,8 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
             className="flex items-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-xs sm:text-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-base sm:text-lg">edit</span>
-            <span className="hidden sm:inline">แก้ไข</span>
-            <span className="sm:hidden">แก้ไข</span>
+            <span className="hidden sm:inline font-bold">แก้ไข</span>
+            <span className="sm:hidden font-bold">แก้ไข</span>
           </button>
         )}
       </div>
@@ -73,8 +73,8 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
           <div className="flex items-start gap-2">
             <span className="material-symbols-outlined text-yellow-600 text-lg" style={{ fontVariationSettings: "'wght' 700" }}>sticky_note_2</span>
             <div>
-              <p className="text-sm text-gray-700">หมายเหตุ:</p>
-              <p className="text-sm text-gray-800">{item.note}</p>
+              <p className="text-sm text-gray-700 font-bold">หมายเหตุ:</p>
+              <p className="text-sm text-gray-800 font-bold">{item.note}</p>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
         <div className="mt-3">
           <div className="flex items-center gap-2 mb-2">
             <span className="material-symbols-outlined text-blue-600 text-lg" style={{ fontVariationSettings: "'wght' 700" }}>image</span>
-            <p className="text-sm text-gray-800">รูปภาพการตรวจสอบ ({imageUrls.length} รูป)</p>
+            <p className="text-sm text-gray-800 font-bold">รูปภาพการตรวจสอบ ({imageUrls.length} รูป)</p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
             {(item.images || []).map((image, idx) => (
@@ -106,7 +106,7 @@ export default function ChecklistItemCard({ item, index, onEdit }: ChecklistItem
         <div className="mt-3">
           <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl">
             <span className="material-symbols-outlined text-gray-400 text-lg">image_not_supported</span>
-            <p className="text-sm text-gray-600">ไม่มีรูปภาพการตรวจสอบ</p>
+            <p className="text-sm text-gray-600 font-bold">ไม่มีรูปภาพการตรวจสอบ</p>
           </div>
         </div>
       )}

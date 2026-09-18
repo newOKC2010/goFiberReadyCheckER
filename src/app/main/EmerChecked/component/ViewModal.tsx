@@ -33,8 +33,9 @@ export default function ViewModal({ item, isOpen, onClose, onEditItem }: ViewMod
 
   if (!item) return null;
 
-  const total = item.checklist_items.items.length;
-  const passed = item.checklist_items.items.filter(i => i.status).length;
+  const boolItems = item.checklist_items.items.filter(i => i.item_type === 'boolean');
+  const total = boolItems.length;
+  const passed = boolItems.filter(i => i.status).length;
   const pct = total > 0 ? Math.round((passed / total) * 100) : 0;
 
   return (

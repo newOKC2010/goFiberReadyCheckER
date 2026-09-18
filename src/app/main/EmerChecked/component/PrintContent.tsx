@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { AuthToken } from '@/global/globalAuth';
 
 export default function PrintContent({ item }: { item: EmerCheckedItem }) {
-  const total = item.checklist_items.items.length;
-  const passed = item.checklist_items.items.filter(i => i.status).length;
+  const boolItems = item.checklist_items.items.filter(i => i.item_type === 'boolean');
+  const total = boolItems.length;
+  const passed = boolItems.filter(i => i.status).length;
 
   return (
     <div className="bg-white" style={{ fontWeight: 'bold', width: '100%', maxWidth: '210mm', padding: '20mm 15mm' }}>
@@ -46,10 +47,14 @@ function PrintChecklistItem({ item, index }: { item: any; index: number }) {
         <span className="font-bold">{index + 1}.</span>
         <div className="flex-1">
           <p className="font-bold text-base">{item.name}</p>
-          <p className="font-bold text-sm mt-1">สถานะ: <span className={item.status ? 'text-green-600' : 'text-red-600'}>{item.status ? 'ผ่าน' : 'ไม่ผ่าน'}</span></p>
+          {item.item_type === 'boolean' ? (
+            <p className="font-bold text-sm mt-1">สถานะ: <span className={item.status ? 'text-green-600' : 'text-red-600'}>{item.status ? 'ผ่าน' : 'ไม่ผ่าน'}</span></p>
+          ) : (
+            <p className="font-bold text-sm mt-1">ข้อมูล: {item.note || '-'}</p>
+          )}
         </div>
       </div>
-      {item.note && <div className="mb-3 pl-6"><p className="font-bold text-sm">หมายเหตุ: {item.note}</p></div>}
+      {item.item_type === 'boolean' && item.note && <div className="mb-3 pl-6"><p className="font-bold text-sm">หมายเหตุ: {item.note}</p></div>}
       {item.images?.length > 0 ? (
         <div className="pl-6">
           <p className="font-bold text-sm mb-2">รูปภาพประกอบ: ({item.images.length} รูป)</p>

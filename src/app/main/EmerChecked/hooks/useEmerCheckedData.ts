@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { EmerCheckedItem, EmerOption, StaffOption, FilterParams, PaginationResponse } from '@/app/main/EmerChecked/utils/types';
+import { EmerChecklistItem } from '@/app/main/EmerChecklist/utils/types';
 import * as handler from '@/app/main/EmerChecked/handler/handlerEmerChecked';
+import { loadEmerChecklists } from '@/app/main/EmerChecked/service/serviceEmerChecked';
 
 export function useEmerCheckedData() {
   const [data, setData] = useState<EmerCheckedItem[]>([]);
@@ -9,6 +11,7 @@ export function useEmerCheckedData() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [filters, setFilters] = useState<FilterParams>({});
   const [emergencies, setEmergencies] = useState<EmerOption[]>([]);
+  const [checklists, setChecklists] = useState<EmerChecklistItem[]>([]);
   const [staff, setStaff] = useState<StaffOption[]>([]);
   const [userRole, setUserRole] = useState('');
 
@@ -17,8 +20,9 @@ export function useEmerCheckedData() {
       setLoading(true);
       const role = await handler.loadUserRole();
       setUserRole(role);
-      const emerData = await handler.loadEmergencies();
+      const [emerData, checklistData] = await Promise.all([handler.loadEmergencies(), loadEmerChecklists()]);
       setEmergencies(emerData);
+      setChecklists(checklistData);
       if (handler.isAdminOrSuperAdmin(role)) {
         const staffData = await handler.loadStaff();
         setStaff(staffData);
@@ -36,9 +40,10 @@ export function useEmerCheckedData() {
   };
 
   const reloadDropdownData = async () => {
-    const emerData = await handler.loadEmergencies();
+    const [emerData, checklistData] = await Promise.all([handler.loadEmergencies(), loadEmerChecklists()]);
     setEmergencies(emerData);
+    setChecklists(checklistData);
   };
 
-  return { data, setData, pagination, setPagination, loading, searchLoading, setSearchLoading, filters, setFilters, emergencies, staff, userRole, reloadData, reloadDropdownData };
+  return { data, setData, pagination, setPagination, loading, searchLoading, setSearchLoading, filters, setFilters, emergencies, checklists, staff, userRole, reloadData, reloadDropdownData };
 }

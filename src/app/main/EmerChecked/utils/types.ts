@@ -4,6 +4,7 @@ export interface ChecklistItem {
   status: boolean;
   images: string[];
   checklist_id: string;
+  item_type: string;
 }
 
 export interface EmerCheckedItem {

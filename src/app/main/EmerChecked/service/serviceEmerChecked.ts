@@ -52,3 +52,10 @@ export async function getEmerCheckedById(id: number): Promise<{ success: boolean
   if (result.success && result.data?.length > 0) return { success: true, data: result.data[0] };
   return { success: false, message: 'ไม่พบข้อมูล' };
 }
+
+export async function loadEmerChecklists() {
+  try {
+    const result = await fetchWithAuth(`${API_BASE_URL}${API_ENDPOINTS.EMERGENCY_LIST.VIEWS}?limit=999`);
+    return result.success ? (result.data || []) : [];
+  } catch { return []; }
+}

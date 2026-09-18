@@ -13,6 +13,7 @@ export interface ChecklistItemData {
   note: string;
   status: boolean;
   images: string[];
+  item_type: string;
 }
 
 export interface UpdateImageManagerProps {
