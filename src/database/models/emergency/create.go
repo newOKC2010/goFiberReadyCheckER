@@ -24,6 +24,9 @@ type EmergencyList struct {
 	ID          int64      `bun:"id,pk,autoincrement"`
 	Name        string     `bun:"name,notnull"`
 	Description *string    `bun:"description"`
+	ItemType    string     `bun:"item_type,notnull,default:'boolean'"` // boolean | text
+	TrueLabel   string     `bun:"true_label,notnull,default:'มี'"`
+	FalseLabel  string     `bun:"false_label,notnull,default:'ไม่มี'"`
 	IsActive    bool       `bun:"is_active,default:true"`
 	DeletedAt   *time.Time `bun:"deleted_at"`
 	CreatedAt   time.Time  `bun:"created_at,nullzero,notnull,default:current_timestamp"`

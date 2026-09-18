@@ -35,7 +35,7 @@ func AddEmergencyList(db *bun.DB) fiber.Handler {
 			return c.Status(400).JSON(addUtils.AddEmergencyListResponse{Success: false, Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว"})
 		}
 
-		id, err := serviceAdd.CreateEmergencyList(ctx, db, req.Name, req.Description)
+		id, err := serviceAdd.CreateEmergencyList(ctx, db, req.Name, req.Description, req.ItemType, req.TrueLabel, req.FalseLabel)
 		if err != nil {
 			return c.Status(500).JSON(addUtils.AddEmergencyListResponse{Success: false, Message: err.Error()})
 		}

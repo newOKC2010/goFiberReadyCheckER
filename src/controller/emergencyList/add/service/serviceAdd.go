@@ -19,10 +19,22 @@ func CheckEmergencyListExists(ctx context.Context, db *bun.DB, name string) (boo
 	return count > 0, err
 }
 
-func CreateEmergencyList(ctx context.Context, db *bun.DB, name string, description *string) (int64, error) {
+func CreateEmergencyList(ctx context.Context, db *bun.DB, name string, description *string, itemType, trueLabel, falseLabel string) (int64, error) {
+	if itemType == "" {
+		itemType = "boolean"
+	}
+	if trueLabel == "" {
+		trueLabel = "มี"
+	}
+	if falseLabel == "" {
+		falseLabel = "ไม่มี"
+	}
 	item := &modelEmergency.EmergencyList{
 		Name:        name,
 		Description: description,
+		ItemType:    itemType,
+		TrueLabel:   trueLabel,
+		FalseLabel:  falseLabel,
 		IsActive:    true,
 	}
 

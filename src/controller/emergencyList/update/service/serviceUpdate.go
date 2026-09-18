@@ -30,7 +30,7 @@ func CheckNameExists(ctx context.Context, db *bun.DB, name string, excludeID int
 	return count > 0, err
 }
 
-func UpdateEmergencyList(ctx context.Context, db *bun.DB, id int64, name string, description *string, isActive *bool) error {
+func UpdateEmergencyList(ctx context.Context, db *bun.DB, id int64, name string, description, itemType, trueLabel, falseLabel *string, isActive *bool) error {
 	query := db.NewUpdate().
 		Model((*modelEmergency.EmergencyList)(nil)).
 		Where("id = ?", id).
@@ -40,6 +40,15 @@ func UpdateEmergencyList(ctx context.Context, db *bun.DB, id int64, name string,
 
 	if description != nil {
 		query = query.Set("description = ?", *description)
+	}
+	if itemType != nil {
+		query = query.Set("item_type = ?", *itemType)
+	}
+	if trueLabel != nil {
+		query = query.Set("true_label = ?", *trueLabel)
+	}
+	if falseLabel != nil {
+		query = query.Set("false_label = ?", *falseLabel)
 	}
 	if isActive != nil {
 		query = query.Set("is_active = ?", *isActive)

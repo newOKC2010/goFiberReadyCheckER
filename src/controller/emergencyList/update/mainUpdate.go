@@ -47,7 +47,7 @@ func UpdateEmergencyList(db *bun.DB) fiber.Handler {
 			return c.Status(400).JSON(updateUtils.UpdateEmergencyListResponse{Success: false, Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว"})
 		}
 
-		if err := serviceUpdate.UpdateEmergencyList(ctx, db, req.EmergencyListID, req.Name, req.Description, req.IsActive); err != nil {
+		if err := serviceUpdate.UpdateEmergencyList(ctx, db, req.EmergencyListID, req.Name, req.Description, req.ItemType, req.TrueLabel, req.FalseLabel, req.IsActive); err != nil {
 			return c.Status(500).JSON(updateUtils.UpdateEmergencyListResponse{Success: false, Message: err.Error()})
 		}
 
