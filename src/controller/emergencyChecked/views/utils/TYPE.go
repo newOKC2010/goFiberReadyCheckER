@@ -1,0 +1,49 @@
+package viewsEmergencyCheckedUtils
+
+type FilterParams struct {
+	ID          string `json:"id"`
+	DateFrom    string `json:"date_from"`
+	DateTo      string `json:"date_to"`
+	EmergencyID string `json:"emergency_id"`
+	StaffID     string `json:"staff_id"`
+	Offset      int    `json:"offset"`
+	Limit       int    `json:"limit"`
+}
+
+type ChecklistItem struct {
+	Name        string   `json:"name"`
+	Note        string   `json:"note"`
+	Status      bool     `json:"status"`
+	Images      []string `json:"images"`
+	ChecklistID string   `json:"checklist_id"`
+}
+
+type ChecklistItems struct {
+	Items []ChecklistItem `json:"items"`
+}
+
+type EmergencyCheckedResponse struct {
+	ID               int64          `json:"id"`
+	LicensePlateName string         `json:"license_plate_name"`
+	CheckedDate      string         `json:"checked_date"`
+	CheckedBy        string         `json:"checked_by,omitempty"`
+	ChecklistItems   ChecklistItems `json:"checklist_items"`
+}
+
+type ViewEmergencyCheckedResponse struct {
+	Success     bool                       `json:"success"`
+	Message     string                     `json:"message"`
+	Data        []EmergencyCheckedResponse `json:"data,omitempty"`
+	TotalCount  int                        `json:"total_count,omitempty"`
+	TotalPages  int                        `json:"total_pages,omitempty"`
+	CurrentPage int                        `json:"current_page,omitempty"`
+}
+
+type EmergencyCheckedData struct {
+	ID               int64   `bun:"id"`
+	LicensePlateName string  `bun:"license_plate_name"`
+	CheckedDate      string  `bun:"checked_date"`
+	CheckedBy        *int64  `bun:"checked_by"`
+	ChecklistItems   []byte  `bun:"checklist_items,type:jsonb"`
+	FullName         *string `bun:"full_name"`
+}

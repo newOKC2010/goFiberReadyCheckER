@@ -36,6 +36,63 @@ Base URL: `http://localhost:8080` | Auth: `Authorization: Bearer <token>`
 
 ---
 
+## 📝 `/emergency-checked` — บันทึกผลการตรวจ
+
+| Method | Path | สิทธิ์ | คำอธิบาย |
+|--------|------|--------|----------|
+| POST | `/emergency-checked/add` | ทุก role | บันทึกผลตรวจ |
+| PUT | `/emergency-checked/update` | ทุก role | แก้ไข checklist item |
+| DELETE | `/emergency-checked/delete` | admin+ | ลบผลตรวจ (soft delete) |
+| GET | `/emergency-checked/views` | ทุก role | ดูผลตรวจ (เฉพาะ active) |
+| GET | `/emergency-checked/view-image/*` | ทุก role | ดูรูปภาพ |
+
+**POST /add** `multipart/form-data`
+| Field | Type | คำอธิบาย |
+|-------|------|----------|
+| `emergency_id` | int | ID รถฉุกเฉิน |
+| `checklist_items` | JSON string | รายการตรวจสอบ |
+| `images_<checklist_id>` | file(s) | รูปภาพ (optional) |
+
+```json
+// checklist_items format
+{
+  "items": [
+    { "checklist_id": "1", "name": "ตรวจออกซิเจน", "status": true, "note": "" }
+  ]
+}
+```
+
+> รถแต่ละคันตรวจได้วันละ 1 ครั้ง
+
+**PUT /update** `multipart/form-data`
+| Field | Type | คำอธิบาย |
+|-------|------|----------|
+| `emergency_checked_id` | int | ID ผลตรวจ |
+| `checklist_id` | string | ID รายการที่จะแก้ |
+| `note` | string | หมายเหตุ |
+| `status` | bool | ผ่าน/ไม่ผ่าน |
+| `images_<checklist_id>` | file(s) | รูปใหม่ (optional — ไม่ส่ง = ลบรูปเดิม) |
+
+> `user` — แก้ได้เฉพาะของตัวเอง | `admin+` — แก้ได้ทุกรายการ
+
+**DELETE /delete** `{ "emergency_checked_id": 1 }` (JSON body)
+
+**GET /views**
+| Param | คำอธิบาย |
+|-------|----------|
+| `emergency_id` | กรองตาม ID รถ |
+| `date_from` / `date_to` | ช่วงวันที่ (YYYY-MM-DD) |
+| `staff_id` | กรองตาม user (admin+ เท่านั้น) |
+| `offset` / `limit` | pagination |
+
+> `user` — เห็นเฉพาะข้อมูลตัวเอง | `admin+` — เห็นทั้งหมด + ชื่อผู้ตรวจ
+
+**GET /view-image/*** `path = emergency_checked/<checklist_id>/<filename>`
+
+> `user` — เข้าถึงได้เฉพาะรูปที่ตัวเองบันทึก | `admin+` — เข้าถึงได้ทุกรูป
+
+---
+
 ## Response
 
 **สำเร็จ** `{ "success": true, "message": "...", "data": [...] }`

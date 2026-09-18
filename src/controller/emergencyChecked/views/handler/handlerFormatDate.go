@@ -1,0 +1,43 @@
+package handlerViewsEmergencyChecked
+
+import (
+	"fmt"
+	"strings"
+	"time"
+)
+
+var thaiMonths = map[time.Month]string{
+	time.January:   "มกราคม",
+	time.February:  "กุมภาพันธ์",
+	time.March:     "มีนาคม",
+	time.April:     "เมษายน",
+	time.May:       "พฤษภาคม",
+	time.June:      "มิถุนายน",
+	time.July:      "กรกฎาคม",
+	time.August:    "สิงหาคม",
+	time.September: "กันยายน",
+	time.October:   "ตุลาคม",
+	time.November:  "พฤศจิกายน",
+	time.December:  "ธันวาคม",
+}
+
+func FormatDateThai(dateStr string) string {
+	if dateStr == "" {
+		return ""
+	}
+	dateStr = strings.TrimSpace(dateStr)
+
+	var date time.Time
+	var err error
+	for _, format := range []string{time.RFC3339, "2006-01-02T15:04:05Z", "2006-01-02"} {
+		date, err = time.Parse(format, dateStr)
+		if err == nil {
+			break
+		}
+	}
+	if err != nil {
+		return dateStr
+	}
+
+	return fmt.Sprintf("%d %s %d", date.Day(), thaiMonths[date.Month()], date.Year()+543)
+}
