@@ -34,6 +34,7 @@ func SendCarCheckedAlert(ctx context.Context, db *bun.DB, userID int64, vehicleN
 			vehicleName,
 			username,
 			checkedDate,
+			"ambulance",
 			checklistItems.Items,
 		)
 

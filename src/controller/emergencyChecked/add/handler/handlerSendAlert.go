@@ -47,6 +47,7 @@ func SendEmergencyCheckedAlert(ctx context.Context, db *bun.DB, userID int64, ve
 			vehicleName,
 			username,
 			checkedDate,
+			"Emergency",
 			converted,
 		)
 

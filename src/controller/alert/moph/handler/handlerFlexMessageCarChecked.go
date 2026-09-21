@@ -8,7 +8,7 @@ import (
 	addUtils "go-fiber-check-ambu/src/controller/carChecked/add/utils"
 )
 
-func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate string, items []addUtils.ChecklistItem) mophAlertUtils.FlexMessage {
+func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate, vehicleType string, items []addUtils.ChecklistItem) mophAlertUtils.FlexMessage {
 	failedItems := []addUtils.ChecklistItem{}
 	for _, item := range items {
 		if !item.Status {
@@ -73,9 +73,10 @@ func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate string, item
 
 	formattedFooterTime := time.Now().Format("2/1/2006 15:04:05")
 
+	title := fmt.Sprintf("✅ แจ้งเตือนการตรวจสอบรถ %s", vehicleType)
 	return mophAlertUtils.FlexMessage{
 		Type:    "flex",
-		AltText: "แจ้งเตือนการตรวจสอบรถ ambulance",
+		AltText: fmt.Sprintf("แจ้งเตือนการตรวจสอบรถ %s", vehicleType),
 		Contents: mophAlertUtils.FlexBubble{
 			Type: "bubble",
 			Header: &mophAlertUtils.FlexBox{
@@ -84,7 +85,7 @@ func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate string, item
 				Contents: []interface{}{
 					mophAlertUtils.FlexText{
 						Type:   "text",
-						Text:   "✅ แจ้งเตือนการตรวจสอบรถ ambulance",
+						Text:   title,
 						Weight: "bold",
 						Size:   "lg",
 						Color:  "#FF0000",
