@@ -8,7 +8,7 @@ export async function handleUpdateSubmit(
   onSuccess: () => void
 ) {
   setLoading(true);
-  const res = await updateEmerChecklist(data.emergency_list_id, data.name, '', data.is_active);
+  const res = await updateEmerChecklist(data.emergency_list_id, data.name, '', data.is_active, data.true_label, data.false_label);
   setLoading(false);
 
   if (res.success) {

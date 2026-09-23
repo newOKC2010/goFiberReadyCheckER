@@ -4,6 +4,8 @@ export interface UpdateEmerChecklistFormData {
   emergency_list_id: number;
   name: string;
   is_active: boolean;
+  true_label?: string;
+  false_label?: string;
 }
 
 export interface UpdateFormProps {

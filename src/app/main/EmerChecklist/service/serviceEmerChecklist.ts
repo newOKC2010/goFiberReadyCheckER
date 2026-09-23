@@ -42,12 +42,12 @@ export async function addEmerChecklist(name: string, description?: string, itemT
   return res.json();
 }
 
-export async function updateEmerChecklist(id: number, name: string, description: string, isActive: boolean): Promise<{ success: boolean; message: string }> {
+export async function updateEmerChecklist(id: number, name: string, description: string, isActive: boolean, trueLabel?: string, falseLabel?: string): Promise<{ success: boolean; message: string }> {
   const token = AuthToken.getToken();
   const res = await fetch(`${API_BASE_URL}${API_ENDPOINTS.EMERGENCY_LIST.UPDATE}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-    body: JSON.stringify({ emergency_list_id: id, name, description, is_active: isActive })
+    body: JSON.stringify({ emergency_list_id: id, name, description, is_active: isActive, true_label: trueLabel, false_label: falseLabel })
   });
   return res.json();
 }
