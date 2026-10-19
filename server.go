@@ -30,6 +30,7 @@ func main() {
 	routes.SetupChecklistRoutes(app, conn.Db)
 	routes.SetupUserERRoutes(app, conn.Db)
 	routes.SetupEmergencyRoutes(app, conn.Db)
+	routes.SetupParcelRoutes(app, conn.Db)
 
 	if err := app.Listen(":" + port); err != nil {
 		log.Fatal(err)
