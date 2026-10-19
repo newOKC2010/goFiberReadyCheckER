@@ -1,0 +1,30 @@
+import { ParcelCheckedItem } from '@/app/main/ParcelChecked/utils/types';
+
+interface ActionButtonsProps {
+  item: ParcelCheckedItem;
+  showDelete: boolean;
+  showPrint: boolean;
+  onView: (item: ParcelCheckedItem) => void;
+  onDelete: (item: ParcelCheckedItem) => void;
+  onPrint: (item: ParcelCheckedItem) => void;
+}
+
+export default function ActionButtons({ item, showDelete, showPrint, onView, onDelete, onPrint }: ActionButtonsProps) {
+  return (
+    <div className="flex gap-1.5 justify-center">
+      <button onClick={() => onView(item)} className="p-1 text-cyan-500 hover:opacity-70 transition-opacity cursor-pointer" title="ดูรายละเอียด">
+        <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'wght' 600" }}>visibility</span>
+      </button>
+      {showPrint && (
+        <button onClick={() => onPrint(item)} className="p-1 text-blue-600 hover:opacity-70 transition-opacity cursor-pointer" title="พิมพ์">
+          <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'wght' 600" }}>print</span>
+        </button>
+      )}
+      {showDelete && (
+        <button onClick={() => onDelete(item)} className="p-1 text-red-500 hover:opacity-70 transition-opacity cursor-pointer" title="ลบ">
+          <span className="material-symbols-outlined text-base" style={{ fontVariationSettings: "'wght' 600" }}>delete</span>
+        </button>
+      )}
+    </div>
+  );
+}

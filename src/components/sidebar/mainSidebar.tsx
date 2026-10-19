@@ -25,12 +25,21 @@ const ALL_MENUS = [
     ]
   },
   {
+    name: 'ตรวจสอบพัสดุ',
+    icon: 'inventory_2',
+    excludeRoles: [] as string[],
+    children: [
+      { name: 'พัสดุ', icon: 'package_2', path: '/main/ParcelChecked', excludeRoles: [] as string[] },
+    ]
+  },
+  {
     name: 'รายการตรวจสอบ',
     icon: 'checklist',
     excludeRoles: [USER_ROLES.USER] as string[],
     children: [
       { name: 'Ambulance', icon: 'ambulance', path: '/main/carChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
       { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
+      { name: 'พัสดุ', icon: 'package_2', path: '/main/ParcelChecklist', excludeRoles: [USER_ROLES.USER] as string[] },
     ]
   },
   {
@@ -40,6 +49,14 @@ const ALL_MENUS = [
     children: [
       { name: 'Ambulance', icon: 'ambulance', path: '/main/carList', excludeRoles: [USER_ROLES.USER] as string[] },
       { name: 'รถ Emergency', icon: 'emergency', path: '/main/EmerList', excludeRoles: [USER_ROLES.USER] as string[] },
+    ]
+  },
+  {
+    name: 'รายการพัสดุ',
+    icon: 'inventory',
+    excludeRoles: [USER_ROLES.USER] as string[],
+    children: [
+      { name: 'พัสดุ', icon: 'package_2', path: '/main/ParcelList', excludeRoles: [USER_ROLES.USER] as string[] },
     ]
   },
 ];

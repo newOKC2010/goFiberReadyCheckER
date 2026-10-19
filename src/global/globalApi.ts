@@ -41,6 +41,23 @@ export const API_ENDPOINTS = {
     UPDATE: '/emergency-checked/update',
     DELETE: '/emergency-checked/delete',
   },
+  PARCEL: {
+    VIEWS: '/parcel/views',
+    ADD: '/parcel/add',
+    UPDATE: '/parcel/update',
+  },
+  PARCEL_LIST: {
+    VIEWS: '/parcel-list/views',
+    ADD: '/parcel-list/add',
+    UPDATE: '/parcel-list/update',
+  },
+  PARCEL_CHECKED: {
+    VIEWS: '/parcel-checked/views',
+    VIEW_IMAGE: '/parcel-checked/view-image',
+    ADD: '/parcel-checked/add',
+    UPDATE: '/parcel-checked/update',
+    DELETE: '/parcel-checked/delete',
+  },
   USER: {
     LIST: '/user/list',
   },
