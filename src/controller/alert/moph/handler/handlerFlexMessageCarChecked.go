@@ -8,7 +8,15 @@ import (
 	addUtils "go-fiber-check-ambu/src/controller/carChecked/add/utils"
 )
 
+func vehicleLabel(vehicleType string) string {
+	if vehicleType == "Parcel" {
+		return "พัสดุ"
+	}
+	return "รถ"
+}
+
 func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate, vehicleType string, items []addUtils.ChecklistItem) mophAlertUtils.FlexMessage {
+	label := vehicleLabel(vehicleType)
 	failedItems := []addUtils.ChecklistItem{}
 	for _, item := range items {
 		if !item.Status {
@@ -19,7 +27,7 @@ func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate, vehicleType
 	bodyContents := []interface{}{
 		mophAlertUtils.FlexText{
 			Type:   "text",
-			Text:   fmt.Sprintf(`มีการตรวจสอบรถ "%s" เรียบร้อยแล้ว`, vehicleName),
+			Text:   fmt.Sprintf(`มีการตรวจสอบ%s "%s" เรียบร้อยแล้ว`, label, vehicleName),
 			Wrap:   true,
 			Size:   "md",
 			Weight: "bold",
@@ -73,10 +81,10 @@ func CreateCarCheckedFlexMessage(vehicleName, username, checkedDate, vehicleType
 
 	formattedFooterTime := time.Now().Format("2/1/2006 15:04:05")
 
-	title := fmt.Sprintf("✅ แจ้งเตือนการตรวจสอบรถ %s", vehicleType)
+	title := fmt.Sprintf("✅ แจ้งเตือนการตรวจสอบ%s %s", label, vehicleType)
 	return mophAlertUtils.FlexMessage{
 		Type:    "flex",
-		AltText: fmt.Sprintf("แจ้งเตือนการตรวจสอบรถ %s", vehicleType),
+		AltText: fmt.Sprintf("แจ้งเตือนการตรวจสอบ%s %s", label, vehicleType),
 		Contents: mophAlertUtils.FlexBubble{
 			Type: "bubble",
 			Header: &mophAlertUtils.FlexBox{
