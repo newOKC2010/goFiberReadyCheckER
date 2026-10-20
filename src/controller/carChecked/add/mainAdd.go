@@ -34,13 +34,6 @@ func AddCarChecked(db *bun.DB) fiber.Handler {
 
 		ctx := context.Background()
 
-		if err := handlerAdd.ValidateCarNotCheckedToday(ctx, db, req.CarID); err != nil {
-			return c.Status(400).JSON(addUtils.AddCarCheckedResponse{
-				Success: false,
-				Message: err.Error(),
-			})
-		}
-
 		car, err := serviceAdd.GetCarByID(ctx, db, req.CarID)
 		if err != nil {
 			return c.Status(404).JSON(addUtils.AddCarCheckedResponse{

@@ -44,10 +44,6 @@ func AddParcelChecked(db *bun.DB) fiber.Handler {
 
 		ctx := context.Background()
 
-		if err := handlerAdd.ValidateParcelNotCheckedToday(ctx, db, parcelID); err != nil {
-			return c.Status(400).JSON(addUtils.AddParcelCheckedResponse{Success: false, Message: err.Error()})
-		}
-
 		p, err := serviceAdd.GetParcelByID(ctx, db, parcelID)
 		if err != nil {
 			return c.Status(404).JSON(addUtils.AddParcelCheckedResponse{Success: false, Message: err.Error()})

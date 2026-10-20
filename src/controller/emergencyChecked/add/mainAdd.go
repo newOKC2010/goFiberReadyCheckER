@@ -46,10 +46,6 @@ func AddEmergencyChecked(db *bun.DB) fiber.Handler {
 
 		ctx := context.Background()
 
-		if err := handlerAdd.ValidateEmergencyNotCheckedToday(ctx, db, emergencyID); err != nil {
-			return c.Status(400).JSON(addUtils.AddEmergencyCheckedResponse{Success: false, Message: err.Error()})
-		}
-
 		em, err := serviceAdd.GetEmergencyByID(ctx, db, emergencyID)
 		if err != nil {
 			return c.Status(404).JSON(addUtils.AddEmergencyCheckedResponse{Success: false, Message: err.Error()})
