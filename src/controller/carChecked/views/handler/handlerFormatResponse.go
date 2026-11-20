@@ -20,8 +20,14 @@ func FormatResponse(data []viewsUtils.CarCheckedData, role string) ([]viewsUtils
 		}
 
 		checkedBy := ""
-		if isAdmin && item.FullName != nil {
-			checkedBy = *item.FullName
+		checkedByRole := ""
+		if isAdmin {
+			if item.FullName != nil {
+				checkedBy = *item.FullName
+			}
+			if item.StaffRole != nil {
+				checkedByRole = *item.StaffRole
+			}
 		}
 
 		response = append(response, viewsUtils.CarCheckedResponse{
@@ -29,6 +35,7 @@ func FormatResponse(data []viewsUtils.CarCheckedData, role string) ([]viewsUtils
 			LicensePlateName: item.LicensePlateName,
 			CheckedDate:      FormatDateThai(item.CheckedDate),
 			CheckedBy:        checkedBy,
+			CheckedByRole:    checkedByRole,
 			ChecklistItems:   checklistItems,
 		})
 	}

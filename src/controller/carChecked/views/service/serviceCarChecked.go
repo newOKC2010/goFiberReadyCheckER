@@ -32,13 +32,18 @@ func GetAllCarChecked(ctx context.Context, db *bun.DB, filters viewsUtils.Filter
 	if filters.StaffID != "" {
 		baseQuery = baseQuery.Where("car_checked.checked_by = ?", filters.StaffID)
 	}
+	if filters.StaffRole != "" {
+		baseQuery = baseQuery.Where("user_er.role = ?", filters.StaffRole)
+	}
+
+	baseQuery = baseQuery.Join("LEFT JOIN user_er ON user_er.id = car_checked.checked_by")
 
 	totalCount, _ := baseQuery.Count(ctx)
 
 	query := baseQuery.
 		Column("car_checked.id", "car_checked.license_plate_name", "car_checked.checked_date", "car_checked.checked_by", "car_checked.checklist_items").
 		ColumnExpr("user_er.full_name AS full_name").
-		Join("LEFT JOIN user_er ON user_er.id = car_checked.checked_by").
+		ColumnExpr("user_er.role AS staff_role").
 		Order("car_checked.checked_date DESC")
 
 	if filters.Limit > 0 {

@@ -24,10 +24,11 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 			ID:       c.Query("id"),
 			DateFrom: c.Query("date_from"),
 			DateTo:   c.Query("date_to"),
-			CarID:    c.Query("car_id"),
-			StaffID:  c.Query("staff_id"),
-			Offset:   offset,
-			Limit:    limit,
+			CarID:     c.Query("car_id"),
+			StaffID:   c.Query("staff_id"),
+			StaffRole: c.Query("staff_role"),
+			Offset:    offset,
+			Limit:     limit,
 		}
 
 		if err := handlerViews.ValidateFilters(filters); err != nil {

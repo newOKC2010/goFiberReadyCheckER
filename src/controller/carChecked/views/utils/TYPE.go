@@ -1,13 +1,14 @@
 package viewsUtils
 
 type FilterParams struct {
-	ID       string `json:"id"`
-	DateFrom string `json:"date_from"`
-	DateTo   string `json:"date_to"`
-	CarID    string `json:"car_id"`
-	StaffID  string `json:"staff_id"`
-	Offset   int    `json:"offset"`
-	Limit    int    `json:"limit"`
+	ID        string `json:"id"`
+	DateFrom  string `json:"date_from"`
+	DateTo    string `json:"date_to"`
+	CarID     string `json:"car_id"`
+	StaffID   string `json:"staff_id"`
+	StaffRole string `json:"staff_role"`
+	Offset    int    `json:"offset"`
+	Limit     int    `json:"limit"`
 }
 
 type ChecklistItem struct {
@@ -27,6 +28,7 @@ type CarCheckedResponse struct {
 	LicensePlateName string         `json:"license_plate_name"`
 	CheckedDate      string         `json:"checked_date"`
 	CheckedBy        string         `json:"checked_by,omitempty"`
+	CheckedByRole    string         `json:"checked_by_role,omitempty"`
 	ChecklistItems   ChecklistItems `json:"checklist_items"`
 }
 
@@ -46,4 +48,5 @@ type CarCheckedData struct {
 	CheckedBy        *int64  `bun:"checked_by"`
 	ChecklistItems   []byte  `bun:"checklist_items,type:jsonb"`
 	FullName         *string `bun:"full_name"`
+	StaffRole        *string `bun:"staff_role"`
 }
