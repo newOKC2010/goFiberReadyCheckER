@@ -23,7 +23,7 @@ func ListAllStaff(db *bun.DB) fiber.Handler {
 		}
 
 		ctx := context.Background()
-		staff, err := serviceList.GetAllStaff(ctx, db)
+		staff, err := serviceList.GetAllStaff(ctx, db, user.Role)
 
 		if err != nil {
 			return c.Status(500).JSON(listUtils.ListStaffResponse{

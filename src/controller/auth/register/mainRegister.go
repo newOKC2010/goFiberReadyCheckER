@@ -43,12 +43,12 @@ func Register(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		if err := handlerRegister.CheckCIDWithAPI(req.CID); err != nil {
-			return c.Status(400).JSON(registerUtils.RegisterResponse{
-				Success: false,
-				Message: err.Error(),
-			})
-		}
+		// if err := handlerRegister.CheckCIDWithAPI(req.CID); err != nil {
+		// 	return c.Status(400).JSON(registerUtils.RegisterResponse{
+		// 		Success: false,
+		// 		Message: err.Error(),
+		// 	})
+		// }
 
 		ctx := context.Background()
 
@@ -93,9 +93,11 @@ func Register(db *bun.DB) fiber.Handler {
 
 		log.Printf("✅ ลงทะเบียนสำเร็จ: %s - %s", user.CID, user.FullName)
 
+		handlerRegister.NotifyAdminsNewRegister(db, user.FullName)
+
 		return c.Status(201).JSON(registerUtils.RegisterResponse{
 			Success: true,
-			Message: "ลงทะเบียนสำเร็จ",
+			Message: "ลงทะเบียนสำเร็จ กรุณารอการอนุมัติจาก admin",
 		})
 	}
 }

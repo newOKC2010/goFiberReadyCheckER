@@ -18,8 +18,8 @@ func CreateUser(ctx context.Context, db *bun.DB, cid, fullName, email string) (*
 		HashCID:  hashCID,
 		FullName: fullName,
 		Email:    email,
-		Role:     modelAuth.RoleUser,
-		Status:   true,
+		Role:     modelAuth.RoleAnonymous,
+		Status:   false,
 	}
 
 	_, err := db.NewInsert().Model(user).Exec(ctx)
