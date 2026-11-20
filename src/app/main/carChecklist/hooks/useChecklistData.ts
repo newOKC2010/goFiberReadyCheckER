@@ -7,9 +7,9 @@ export function useChecklistData() {
   const [pagination, setPagination] = useState<PaginationResponse>({ total_count: 0, total_pages: 0, current_page: 0 });
   const [loading, setLoading] = useState(true);
 
-  const loadData = async (offset?: number, limit?: number) => {
+  const loadData = async (offset?: number, limit?: number, role?: string) => {
     setLoading(true);
-    const result = await getChecklistData(offset, limit);
+    const result = await getChecklistData(offset, limit, role);
     if (result.success) {
       setData(result.data);
       if (result.pagination) setPagination(result.pagination);

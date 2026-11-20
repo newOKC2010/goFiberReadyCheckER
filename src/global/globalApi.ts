@@ -60,6 +60,7 @@ export const API_ENDPOINTS = {
   },
   USER: {
     LIST: '/user/list',
+    UPDATE_STATUS: '/user/update-status',
   },
   DASHBOARD: {
     VIEWS: '/dashboard',

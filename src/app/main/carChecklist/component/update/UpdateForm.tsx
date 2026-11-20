@@ -1,18 +1,24 @@
 import { useState } from 'react';
 import { Button } from '@/components/buttonClick/mainButton';
+import Dropdown from '@/components/dropdown/mainDropdown';
 import { UpdateFormProps } from '@/app/main/carChecklist/component/update/utils/types';
+
+const ROLE_OPTIONS = [
+  { value: 'user',   label: 'ผู้ใช้งาน (user)' },
+  { value: 'driver', label: 'คนขับ (driver)' },
+];
 
 export default function UpdateForm({ item, loading, onSubmit, onCancel }: UpdateFormProps) {
   const [name, setName] = useState(item.name);
+  const [role, setRole] = useState(item.role || 'user');
   const [isActive, setIsActive] = useState(item.is_active);
 
   const handleSubmit = () => {
-    if (!name.trim()) {
-      return;
-    }
+    if (!name.trim()) return;
     onSubmit({
       checklist_id: item.id,
       name: name.trim(),
+      role,
       is_active: isActive
     });
   };
@@ -32,6 +38,16 @@ export default function UpdateForm({ item, loading, onSubmit, onCancel }: Update
           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 font-bold text-gray-900"
         />
       </div>
+
+      <Dropdown
+        options={ROLE_OPTIONS}
+        value={role}
+        onChange={setRole}
+        label="ใช้กับผู้ใช้ประเภท"
+        required={true}
+        inModal={true}
+        className="w-full"
+      />
 
       <div>
         <label className="block text-sm font-bold text-gray-700 mb-2">สถานะ</label>

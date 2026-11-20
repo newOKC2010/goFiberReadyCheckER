@@ -9,7 +9,7 @@ export async function handleAddSubmit(
 ) {
   setLoading(true);
   
-  const res = await addChecklist(data.name);
+  const res = await addChecklist(data.name, data.role);
   
   setLoading(false);
   

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Modal } from '@/components/modal/mainModal';
 import AddForm from '@/app/main/carChecklist/component/add/AddForm';
 import { handleAddSubmit } from '@/app/main/carChecklist/component/add/utils/submitHandler';
+import { AddFormData } from '@/app/main/carChecklist/component/add/utils/types';
 
 interface AddModalProps {
   isOpen: boolean;
@@ -14,7 +15,7 @@ interface AddModalProps {
 export default function AddModal({ isOpen, onClose, onSuccess }: AddModalProps) {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (data: { name: string }) => {
+  const handleSubmit = (data: AddFormData) => {
     handleAddSubmit(
       data,
       () => {

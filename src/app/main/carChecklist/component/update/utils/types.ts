@@ -3,6 +3,7 @@ import { ChecklistItem } from '@/app/main/carChecklist/utils/types';
 export interface UpdateFormData {
   checklist_id: number;
   name: string;
+  role: string;
   is_active: boolean;
 }
 

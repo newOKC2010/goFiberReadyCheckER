@@ -9,7 +9,7 @@ export async function handleUpdateSubmit(
 ) {
   setLoading(true);
   
-  const res = await updateChecklist(data.checklist_id, data.name, data.is_active);
+  const res = await updateChecklist(data.checklist_id, data.name, data.role, data.is_active);
   
   setLoading(false);
   

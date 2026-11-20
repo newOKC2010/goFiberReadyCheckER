@@ -1,7 +1,9 @@
 import { API_BASE_URL, API_ENDPOINTS } from '@/global/globalApi';
 
 export const USER_ROLES = {
+  ANONYMOUS: 'anonymous',
   USER: 'user',
+  DRIVER: 'driver',
   ADMIN: 'admin',
   SUPER_ADMIN: 'super_admin'
 } as const;

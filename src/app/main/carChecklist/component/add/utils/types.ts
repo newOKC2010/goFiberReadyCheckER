@@ -1,5 +1,6 @@
 export interface AddFormData {
   name: string;
+  role: string;
 }
 
 export interface AddFormProps {

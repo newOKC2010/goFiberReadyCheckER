@@ -48,8 +48,17 @@ export default function TableSection({
       }
     },
     { key: 'name', label: 'ชื่อ Checklist' },
-    { 
-      key: 'is_active', 
+    {
+      key: 'role',
+      label: 'ใช้กับ',
+      render: (item: ChecklistItem) => (
+        <span className={`px-3 py-1 rounded-full text-sm font-bold ${item.role === 'driver' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+          {item.role === 'driver' ? 'คนขับ (driver)' : 'ผู้ใช้งาน (user)'}
+        </span>
+      )
+    },
+    {
+      key: 'is_active',
       label: 'สถานะ',
       render: (item: ChecklistItem) => (
         <span className={`px-3 py-1 rounded-full text-sm font-bold ${item.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
