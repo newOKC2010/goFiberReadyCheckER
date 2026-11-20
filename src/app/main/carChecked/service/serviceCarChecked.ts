@@ -16,6 +16,7 @@ export async function getCarCheckedData(filters: FilterParams): Promise<{ succes
   if (filters.date_to) params.append('date_to', filters.date_to);
   if (filters.car_id) params.append('car_id', filters.car_id);
   if (filters.staff_id) params.append('staff_id', filters.staff_id);
+  if (filters.staff_role) params.append('staff_role', filters.staff_role);
   if (filters.offset !== undefined) params.append('offset', filters.offset.toString());
   if (filters.limit !== undefined) params.append('limit', filters.limit.toString());
 

@@ -44,7 +44,18 @@ export default function TableSection({
   const columns = [
     { key: 'license_plate_name', label: 'ทะเบียนรถ' },
     { key: 'checked_date', label: 'วันที่ตรวจสอบ' },
-    ...(showStaffColumn ? [{ key: 'checked_by', label: 'ผู้ตรวจสอบ' }] : []),
+    ...(showStaffColumn ? [
+      { key: 'checked_by', label: 'ผู้ตรวจสอบ' },
+      {
+        key: 'checked_by_role',
+        label: 'ประเภท',
+        render: (item: CarCheckedItem) => (
+          <span className={`px-3 py-1 rounded-full text-sm font-bold ${item.checked_by_role === 'driver' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+            {item.checked_by_role === 'driver' ? 'คนขับ' : 'พยาบาล'}
+          </span>
+        )
+      }
+    ] : []),
     { 
       key: 'actions', 
       label: 'จัดการ',

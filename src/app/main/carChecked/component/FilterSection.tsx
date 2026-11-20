@@ -14,20 +14,26 @@ interface FilterSectionProps {
   showStaffFilter: boolean;
 }
 
+const STAFF_ROLE_OPTIONS = [
+  { value: '',       label: 'ทั้งหมด' },
+  { value: 'user',   label: 'พยาบาล (user)' },
+  { value: 'driver', label: 'คนขับ (driver)' },
+];
+
 export default function FilterSection({ filters, onFilterChange, onSearch, onReset, loading, carOptions, staffOptions, showStaffFilter }: FilterSectionProps) {
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 overflow-visible relative z-10">
-      <div className="flex flex-col lg:flex-row lg:items-end gap-4 relative">
-        <div className="flex-[3]">
-          <HeaderFiltersDateRange
-            startDate={filters.date_from || ''}
-            endDate={filters.date_to}
-            onStartDateChange={(date) => onFilterChange({ ...filters, date_from: date })}
-            onEndDateChange={(date) => onFilterChange({ ...filters, date_to: date })}
-          />
-        </div>
+      <div className="mb-4">
+        <HeaderFiltersDateRange
+          startDate={filters.date_from || ''}
+          endDate={filters.date_to}
+          onStartDateChange={(date) => onFilterChange({ ...filters, date_from: date })}
+          onEndDateChange={(date) => onFilterChange({ ...filters, date_to: date })}
+        />
+      </div>
 
-        <div className="flex-1">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-4 relative">
+        <div className="w-full sm:min-w-[180px] sm:flex-1">
           <Dropdown
             label="รายการรถ"
             icon="local_shipping"
@@ -39,19 +45,30 @@ export default function FilterSection({ filters, onFilterChange, onSearch, onRes
         </div>
 
         {showStaffFilter && (
-          <div className="flex-1">
-            <Dropdown
-              label="เจ้าหน้าที่"
-              icon="person"
-              options={staffOptions}
-              value={filters.staff_id || ''}
-              onChange={(val) => onFilterChange({ ...filters, staff_id: val })}
-              searchable
-            />
-          </div>
+          <>
+            <div className="w-full sm:min-w-[180px] sm:flex-1">
+              <Dropdown
+                label="เจ้าหน้าที่"
+                icon="person"
+                options={staffOptions}
+                value={filters.staff_id || ''}
+                onChange={(val) => onFilterChange({ ...filters, staff_id: val })}
+                searchable
+              />
+            </div>
+            <div className="w-full sm:min-w-[180px] sm:flex-1">
+              <Dropdown
+                label="ประเภทเจ้าหน้าที่"
+                icon="badge"
+                options={STAFF_ROLE_OPTIONS}
+                value={filters.staff_role || ''}
+                onChange={(val) => onFilterChange({ ...filters, staff_role: val })}
+              />
+            </div>
+          </>
         )}
 
-        <div className="flex gap-2 lg:flex-none">
+        <div className="flex gap-2 sm:flex-none">
           <button
             onClick={onSearch}
             disabled={loading}

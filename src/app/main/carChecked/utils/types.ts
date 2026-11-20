@@ -11,6 +11,7 @@ export interface CarCheckedItem {
   license_plate_name: string;
   checked_date: string;
   checked_by: string;
+  checked_by_role?: string;
   checklist_items: {
     items: ChecklistItem[];
   };
@@ -37,6 +38,7 @@ export interface FilterParams {
   date_to?: string;
   car_id?: string;
   staff_id?: string;
+  staff_role?: string;
   offset?: number;
   limit?: number;
 }
