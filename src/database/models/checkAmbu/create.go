@@ -22,6 +22,7 @@ type Checklist struct {
 
 	ID          int64      `bun:"id,pk,autoincrement"`
 	Name        string     `bun:"name,notnull"`
+	Role        string     `bun:"role,notnull,default:'user'"` // user | driver
 	Description *string    `bun:"description"`
 	IsActive    bool       `bun:"is_active,default:true"`
 	DeletedAt   *time.Time `bun:"deleted_at"`

@@ -2,6 +2,7 @@ package addChecklistUtils
 
 type AddChecklistRequest struct {
 	Name string `json:"name" form:"name"`
+	Role string `json:"role" form:"role"` // user | driver (default: user)
 }
 
 type AddChecklistResponse struct {

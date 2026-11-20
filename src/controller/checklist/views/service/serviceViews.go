@@ -8,12 +8,19 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func GetAllChecklists(ctx context.Context, db *bun.DB, offset, limit int) ([]modelCheckAmbu.Checklist, int, error) {
+func GetAllChecklists(ctx context.Context, db *bun.DB, offset, limit int, callerRole, filterRole string) ([]modelCheckAmbu.Checklist, int, error) {
 	var checklists []modelCheckAmbu.Checklist
 
 	baseQuery := db.NewSelect().
 		Model(&checklists).
 		Where("deleted_at IS NULL")
+
+	// admin/super_admin filter ด้วย filterRole ได้, user/driver กรองตาม role ตัวเองเสมอ
+	if callerRole != "admin" && callerRole != "super_admin" {
+		baseQuery = baseQuery.Where("role = ?", callerRole)
+	} else if filterRole != "" {
+		baseQuery = baseQuery.Where("role = ?", filterRole)
+	}
 
 	totalCount, _ := baseQuery.Count(ctx)
 

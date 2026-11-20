@@ -22,7 +22,9 @@ func CreateUser(ctx context.Context, db *bun.DB, cid, fullName, email string) (*
 		Status:   false,
 	}
 
-	_, err := db.NewInsert().Model(user).Exec(ctx)
+	_, err := db.NewInsert().Model(user).
+		Value("status", "?", user.Status).
+		Exec(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("บันทึกข้อมูลไม่สำเร็จ: %w", err)
 	}

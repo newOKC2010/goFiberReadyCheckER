@@ -38,9 +38,20 @@ func AddChecklist(db *bun.DB) fiber.Handler {
 			})
 		}
 
+		// validate role — default "user" ถ้าไม่ระบุ
+		if req.Role == "" {
+			req.Role = "user"
+		}
+		if req.Role != "user" && req.Role != "driver" {
+			return c.Status(400).JSON(addChecklistUtils.AddChecklistResponse{
+				Success: false,
+				Message: "role ต้องเป็น user หรือ driver เท่านั้น",
+			})
+		}
+
 		ctx := context.Background()
 
-		exists, err := serviceAddChecklist.CheckChecklistExists(ctx, db, req.Name)
+		exists, err := serviceAddChecklist.CheckChecklistExists(ctx, db, req.Name, req.Role)
 		if err != nil {
 			return c.Status(500).JSON(addChecklistUtils.AddChecklistResponse{
 				Success: false,
@@ -50,11 +61,11 @@ func AddChecklist(db *bun.DB) fiber.Handler {
 		if exists {
 			return c.Status(400).JSON(addChecklistUtils.AddChecklistResponse{
 				Success: false,
-				Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว",
+				Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว (role เดียวกัน)",
 			})
 		}
 
-		checklistID, err := serviceAddChecklist.CreateChecklist(ctx, db, req.Name)
+		checklistID, err := serviceAddChecklist.CreateChecklist(ctx, db, req.Name, req.Role)
 		if err != nil {
 			return c.Status(500).JSON(addChecklistUtils.AddChecklistResponse{
 				Success: false,

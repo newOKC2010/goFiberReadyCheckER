@@ -41,7 +41,7 @@ func ViewCarChecked(db *bun.DB) fiber.Handler {
 		var totalCount int
 		var err error
 
-		if user.Role == "user" {
+		if user.Role == "user" || user.Role == "driver" {
 			data, totalCount, err = serviceViews.GetCarCheckedByUserID(ctx, db, user.ID, filters)
 		} else {
 			data, totalCount, err = serviceViews.GetAllCarChecked(ctx, db, filters)

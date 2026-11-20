@@ -9,7 +9,13 @@ import (
 	modelAuth "go-fiber-check-ambu/src/database/models/auth"
 )
 
-func GetAllStaff(ctx context.Context, db *bun.DB, callerRole string) ([]listUtils.StaffItem, error) {
+type StaffFilter struct {
+	Search string
+	Role   string
+	Status string // "true" | "false" | ""
+}
+
+func GetAllStaff(ctx context.Context, db *bun.DB, callerRole string, offset, limit int, f StaffFilter) ([]listUtils.StaffItem, int, error) {
 	var staff []listUtils.StaffItem
 
 	// admin → เห็นเฉพาะ anonymous, user, driver
@@ -21,12 +27,32 @@ func GetAllStaff(ctx context.Context, db *bun.DB, callerRole string) ([]listUtil
 		allowedRoles = []string{"anonymous", "user", "driver"}
 	}
 
-	err := db.NewSelect().
+	baseQuery := db.NewSelect().
 		Model((*modelAuth.UserER)(nil)).
-		Column("id", "full_name", "email", "role", "status").
-		Where("role IN (?)", bun.In(allowedRoles)).
-		Order("full_name ASC").
-		Scan(ctx, &staff)
+		Where("role IN (?)", bun.In(allowedRoles))
 
-	return staff, err
+	if f.Search != "" {
+		baseQuery = baseQuery.Where("full_name ILIKE ?", "%"+f.Search+"%")
+	}
+	if f.Role != "" {
+		baseQuery = baseQuery.Where("role = ?", f.Role)
+	}
+	switch f.Status {
+	case "true":
+		baseQuery = baseQuery.Where("status = ?", true)
+	case "false":
+		baseQuery = baseQuery.Where("status = ?", false)
+	}
+
+	totalCount, _ := baseQuery.Count(ctx)
+
+	query := baseQuery.
+		Column("id", "full_name", "email", "role", "status").
+		Order("full_name ASC")
+	if limit > 0 {
+		query = query.Limit(limit).Offset(offset)
+	}
+
+	err := query.Scan(ctx, &staff)
+	return staff, totalCount, err
 }

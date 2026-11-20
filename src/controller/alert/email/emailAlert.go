@@ -1,6 +1,7 @@
 package emailAlertSend
 
 import (
+	"mime"
 	"net/smtp"
 
 	handlerEmailAlert "go-fiber-check-ambu/src/controller/alert/email/handler"
@@ -16,10 +17,12 @@ func SendEmailSMTP(to, subject, body string) error {
 	smtpHost := "mail.privateemail.com"
 	smtpPort := "587"
 
+	encodedSubject := mime.BEncoding.Encode("UTF-8", subject)
+
 	msg := []byte(
 		"From: " + from + "\r\n" +
 			"To: " + to + "\r\n" +
-			"Subject: " + subject + "\r\n" +
+			"Subject: " + encodedSubject + "\r\n" +
 			"MIME-Version: 1.0\r\n" +
 			"Content-Type: text/html; charset=UTF-8\r\n" +
 			"\r\n" +
@@ -33,7 +36,7 @@ func SendEmailSMTP(to, subject, body string) error {
 }
 
 func SendOTPEmail(to, otpCode, fullName string) error {
-	subject := "� รหัส OTP สำหรับเข้าใช้งานระบบตรวจสอบรถพยาบาล"
+	subject := "รหัส OTP สำหรับเข้าใช้งานระบบตรวจสอบรถพยาบาล"
 	body := handlerEmailAlert.CreateOTPEmailHTML(otpCode, fullName)
 	return SendEmailSMTP(to, subject, body)
 }

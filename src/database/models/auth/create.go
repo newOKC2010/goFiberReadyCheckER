@@ -23,7 +23,7 @@ type UserER struct {
 	CID          string     `bun:"cid,notnull,unique"`
 	HashCID      string     `bun:"hash_cid,notnull"`
 	Role         UserRole   `bun:"role,notnull,default:'user'"`
-	Status       bool       `bun:"status,notnull,default:true"`
+	Status       bool       `bun:"status,notnull,default:false"`
 	FullName     string     `bun:"full_name,notnull"`
 	Email        string     `bun:"email"`
 	OtpCode      *string    `bun:"otp_code"`

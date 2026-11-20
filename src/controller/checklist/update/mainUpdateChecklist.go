@@ -51,7 +51,28 @@ func UpdateChecklist(db *bun.DB) fiber.Handler {
 			})
 		}
 
-		duplicate, err := serviceUpdateChecklist.CheckNameExists(ctx, db, req.Name, req.ChecklistID)
+		// validate role ถ้าส่งมา
+		if req.Role != nil && *req.Role != "user" && *req.Role != "driver" {
+			return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
+				Success: false,
+				Message: "role ต้องเป็น user หรือ driver เท่านั้น",
+			})
+		}
+
+		// ดึง role ปัจจุบันเพื่อใช้ตรวจสอบชื่อซ้ำ
+		currentRole, err := serviceUpdateChecklist.GetChecklistRole(ctx, db, req.ChecklistID)
+		if err != nil {
+			return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
+				Success: false,
+				Message: "ตรวจสอบข้อมูลไม่สำเร็จ",
+			})
+		}
+		finalRole := currentRole
+		if req.Role != nil {
+			finalRole = *req.Role
+		}
+
+		duplicate, err := serviceUpdateChecklist.CheckNameExists(ctx, db, req.Name, finalRole, req.ChecklistID)
 		if err != nil {
 			return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
 				Success: false,
@@ -61,11 +82,11 @@ func UpdateChecklist(db *bun.DB) fiber.Handler {
 		if duplicate {
 			return c.Status(400).JSON(updateChecklistUtils.UpdateChecklistResponse{
 				Success: false,
-				Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว",
+				Message: "ชื่อรายการตรวจสอบนี้มีในระบบแล้ว (role เดียวกัน)",
 			})
 		}
 
-		if err := serviceUpdateChecklist.UpdateChecklist(ctx, db, req.ChecklistID, req.Name, req.IsActive); err != nil {
+		if err := serviceUpdateChecklist.UpdateChecklist(ctx, db, req.ChecklistID, req.Name, req.Role, req.IsActive); err != nil {
 			return c.Status(500).JSON(updateChecklistUtils.UpdateChecklistResponse{
 				Success: false,
 				Message: err.Error(),

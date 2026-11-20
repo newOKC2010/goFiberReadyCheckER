@@ -9,19 +9,21 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func CheckChecklistExists(ctx context.Context, db *bun.DB, name string) (bool, error) {
+func CheckChecklistExists(ctx context.Context, db *bun.DB, name, role string) (bool, error) {
 	count, err := db.NewSelect().
 		Model((*modelCheckAmbu.Checklist)(nil)).
 		Where("name = ?", name).
+		Where("role = ?", role).
 		Where("deleted_at IS NULL").
 		Count(ctx)
 
 	return count > 0, err
 }
 
-func CreateChecklist(ctx context.Context, db *bun.DB, name string) (int64, error) {
+func CreateChecklist(ctx context.Context, db *bun.DB, name, role string) (int64, error) {
 	checklist := &modelCheckAmbu.Checklist{
 		Name:     name,
+		Role:     role,
 		IsActive: true,
 	}
 

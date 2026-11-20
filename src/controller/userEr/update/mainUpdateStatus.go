@@ -71,6 +71,11 @@ func UpdateUserStatus(db *bun.DB) fiber.Handler {
 }
 
 func notifyUser(info *serviceUpdate.UserBasicInfo, approved bool) {
+	action := "ระงับ"
+	if approved {
+		action = "อนุมัติ"
+	}
+
 	// MOPH
 	if info.CID != "" {
 		flexMsg := handlerMophAlert.CreateStatusChangeFlexMessage(info.FullName, approved)
@@ -79,12 +84,17 @@ func notifyUser(info *serviceUpdate.UserBasicInfo, approved bool) {
 			Messages: []mophAlertUtils.FlexMessage{flexMsg},
 		})
 		if result.MessageCode != 200 {
-			log.Printf("⚠️ ส่ง MOPH status alert ไม่สำเร็จ: %s", result.Message)
+			log.Printf("⚠️ ส่ง MOPH %s alert ไม่สำเร็จ: %s", action, result.Message)
+		} else {
+			log.Printf("✅ ส่ง MOPH %s alert ไปยัง CID %s สำเร็จ", action, info.CID)
 		}
+	} else {
+		log.Printf("⚠️ user %s ไม่มี CID ข้าม MOPH", info.FullName)
 	}
 
 	// Email
 	if info.Email == "" {
+		log.Printf("⚠️ user %s ไม่มี email ข้าม email alert", info.FullName)
 		return
 	}
 	var subject, body string
@@ -96,6 +106,8 @@ func notifyUser(info *serviceUpdate.UserBasicInfo, approved bool) {
 		body = handlerEmailAlert.CreateSuspendEmailHTML(info.FullName)
 	}
 	if err := emailAlert.SendEmailSMTP(info.Email, subject, body); err != nil {
-		log.Printf("⚠️ ส่ง email status ไม่สำเร็จ: %v", err)
+		log.Printf("⚠️ ส่ง email %s alert ไม่สำเร็จ (%s): %v", action, info.Email, err)
+	} else {
+		log.Printf("✅ ส่ง email %s alert ไปยัง %s สำเร็จ", action, info.Email)
 	}
 }

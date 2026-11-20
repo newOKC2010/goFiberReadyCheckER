@@ -22,8 +22,16 @@ func ListAllStaff(db *bun.DB) fiber.Handler {
 			})
 		}
 
+		offset := c.QueryInt("offset", 0)
+		limit := c.QueryInt("limit", 0)
+		filter := serviceList.StaffFilter{
+			Search: c.Query("search"),
+			Role:   c.Query("role"),
+			Status: c.Query("status"),
+		}
+
 		ctx := context.Background()
-		staff, err := serviceList.GetAllStaff(ctx, db, user.Role)
+		staff, totalCount, err := serviceList.GetAllStaff(ctx, db, user.Role, offset, limit, filter)
 
 		if err != nil {
 			return c.Status(500).JSON(listUtils.ListStaffResponse{
@@ -32,10 +40,20 @@ func ListAllStaff(db *bun.DB) fiber.Handler {
 			})
 		}
 
+		totalPages := 0
+		currentPage := 1
+		if limit > 0 {
+			totalPages = (totalCount + limit - 1) / limit
+			currentPage = (offset / limit) + 1
+		}
+
 		return c.Status(200).JSON(listUtils.ListStaffResponse{
-			Success: true,
-			Message: "ดึงข้อมูลสำเร็จ",
-			Data:    staff,
+			Success:     true,
+			Message:     "ดึงข้อมูลสำเร็จ",
+			Data:        staff,
+			TotalCount:  totalCount,
+			TotalPages:  totalPages,
+			CurrentPage: currentPage,
 		})
 	}
 }

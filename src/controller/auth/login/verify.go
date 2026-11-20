@@ -43,21 +43,22 @@ func VerifyOTP(db *bun.DB) fiber.Handler {
 				Message: "บัญชีผู้ใช้ถูกระงับ กรุณาติดต่อผู้ดูแลระบบ",
 			})
 		}
-		cidValid, err := handlerLogin.CheckCIDWithAPI(user.CID)
-		if err != nil {
-			log.Printf("❌ Check CID API: %v", err)
-			return c.Status(403).JSON(loginUtils.Response{
-				Success: false,
-				Message: "ไม่สามารถยืนยันตัวตนได้ กรุณาติดต่อผู้ดูแลระบบ",
-			})
-		}
-
-		if !cidValid {
-			return c.Status(403).JSON(loginUtils.Response{
-				Success: false,
-				Message: "ไม่สามารถยืนยันตัวตนได้",
-			})
-		}
+		// ปิดการเช็ค CID กับ HOSxp API ชั่วคราว
+		// cidValid, err := handlerLogin.CheckCIDWithAPI(user.CID)
+		// if err != nil {
+		// 	log.Printf("❌ Check CID API: %v", err)
+		// 	return c.Status(403).JSON(loginUtils.Response{
+		// 		Success: false,
+		// 		Message: "ไม่สามารถยืนยันตัวตนได้ กรุณาติดต่อผู้ดูแลระบบ",
+		// 	})
+		// }
+		//
+		// if !cidValid {
+		// 	return c.Status(403).JSON(loginUtils.Response{
+		// 		Success: false,
+		// 		Message: "ไม่สามารถยืนยันตัวตนได้",
+		// 	})
+		// }
 
 		token, err := handlerLogin.GenerateJWT(user.ID, user.Email, string(user.Role))
 		if err != nil {

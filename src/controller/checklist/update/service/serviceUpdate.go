@@ -19,10 +19,22 @@ func CheckChecklistExists(ctx context.Context, db *bun.DB, checklistID int64) (b
 	return count > 0, err
 }
 
-func CheckNameExists(ctx context.Context, db *bun.DB, name string, excludeID int64) (bool, error) {
+func GetChecklistRole(ctx context.Context, db *bun.DB, checklistID int64) (string, error) {
+	var item modelCheckAmbu.Checklist
+	err := db.NewSelect().
+		Model(&item).
+		Column("role").
+		Where("id = ?", checklistID).
+		Where("deleted_at IS NULL").
+		Scan(ctx)
+	return item.Role, err
+}
+
+func CheckNameExists(ctx context.Context, db *bun.DB, name, role string, excludeID int64) (bool, error) {
 	count, err := db.NewSelect().
 		Model((*modelCheckAmbu.Checklist)(nil)).
 		Where("name = ?", name).
+		Where("role = ?", role).
 		Where("id != ?", excludeID).
 		Where("deleted_at IS NULL").
 		Count(ctx)
@@ -30,13 +42,16 @@ func CheckNameExists(ctx context.Context, db *bun.DB, name string, excludeID int
 	return count > 0, err
 }
 
-func UpdateChecklist(ctx context.Context, db *bun.DB, checklistID int64, name string, isActive *bool) error {
+func UpdateChecklist(ctx context.Context, db *bun.DB, checklistID int64, name string, role *string, isActive *bool) error {
 	query := db.NewUpdate().
 		Model((*modelCheckAmbu.Checklist)(nil)).
 		Where("id = ?", checklistID).
 		Where("deleted_at IS NULL").
 		Set("name = ?", name)
 
+	if role != nil {
+		query = query.Set("role = ?", *role)
+	}
 	if isActive != nil {
 		query = query.Set("is_active = ?", *isActive)
 	}

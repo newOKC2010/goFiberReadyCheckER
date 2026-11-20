@@ -5,6 +5,7 @@ import (
 
 	serviceViewsChecklist "go-fiber-check-ambu/src/controller/checklist/views/service"
 	viewsChecklistUtils "go-fiber-check-ambu/src/controller/checklist/views/utils"
+	middleware "go-fiber-check-ambu/src/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/uptrace/bun"
@@ -12,13 +13,14 @@ import (
 
 func ViewsChecklists(db *bun.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		caller := c.Locals("user_er").(*middleware.UserERInfo)
 
 		ctx := context.Background()
 
 		offset := c.QueryInt("offset", 0)
 		limit := c.QueryInt("limit", 0)
 
-		checklists, totalCount, err := serviceViewsChecklist.GetAllChecklists(ctx, db, offset, limit)
+		checklists, totalCount, err := serviceViewsChecklist.GetAllChecklists(ctx, db, offset, limit, caller.Role, c.Query("role"))
 		if err != nil {
 			return c.Status(500).JSON(viewsChecklistUtils.ViewsChecklistsResponse{
 				Success: false,
@@ -31,6 +33,7 @@ func ViewsChecklists(db *bun.DB) fiber.Handler {
 			checklistResponses[i] = viewsChecklistUtils.ChecklistResponse{
 				ID:        checklist.ID,
 				Name:      checklist.Name,
+				Role:      checklist.Role,
 				IsActive:  checklist.IsActive,
 				CreatedAt: checklist.CreatedAt,
 				UpdatedAt: checklist.UpdatedAt,

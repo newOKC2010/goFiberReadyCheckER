@@ -61,19 +61,25 @@ func NotifyAdminsNewRegister(db *bun.DB, fullName string) {
 		if result.MessageCode != 200 {
 			log.Printf("⚠️ ส่ง MOPH register alert ไม่สำเร็จ: %s", result.Message)
 		} else {
-			log.Printf("✅ ส่ง MOPH register alert ไปยัง %d admin", len(cids))
+			log.Printf("✅ ส่ง MOPH register alert ไปยัง %d admin/super_admin", len(cids))
 		}
 
 		// Email
 		subject := "🔔 มีผู้สมัครเข้าใช้งานระบบใหม่"
 		body := handlerEmailAlert.CreateNewRegisterEmailHTML(fullName)
+		emailCount := 0
 		for _, a := range admins {
 			if a.Email == "" {
+				log.Printf("⚠️ admin CID %s ไม่มี email ข้ามไป", a.CID)
 				continue
 			}
 			if err := emailAlert.SendEmailSMTP(a.Email, subject, body); err != nil {
 				log.Printf("⚠️ ส่ง email ไม่สำเร็จ (%s): %v", a.Email, err)
+			} else {
+				log.Printf("✅ ส่ง email register alert ไปยัง %s สำเร็จ", a.Email)
+				emailCount++
 			}
 		}
+		log.Printf("📧 ส่ง email register alert ทั้งหมด %d/%d admin/super_admin", emailCount, len(admins))
 	}()
 }
